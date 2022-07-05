@@ -1,0 +1,189 @@
+.detail-pay{
+    position: relative;
+    .column-detail-pay{
+        max-width: 1400px;
+        margin: auto;
+        .text-top{
+            margin-top: 3rem;
+            text-align: center;
+        }
+        .column-table{
+            border: 1px solid #B8B8B8;
+            border-radius: 10px;
+            margin-top: 2rem;
+            table{
+                border-collapse: collapse;
+                width: 100%;
+                background: #FAFAFA;
+                border: none;
+                // border: 1px solid #B8B8B8;
+                box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.15);
+                border-radius: 10px;
+                th, td {
+                    padding: 8px;
+                    text-align: left;
+                    border-bottom: 1px solid #B8B8B8;
+                }  
+                th{
+                    background: #D9D9D9;
+                }
+                .td-right{
+                    border-left: 1px solid #B8B8B8;
+                }
+            }
+        }
+        .column-detail-member{
+            margin: 2rem auto;
+            max-width: 600px;
+            h2{
+                text-align: center;
+            }
+            .text-column{
+                display: flex;
+                background: #FAFAFA;
+                border: 1px solid #B8B8B8;
+                box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.15);
+                border-radius: 10px;
+                padding: 2rem;
+                .column-left{
+                    width: 50%;
+                    span{
+                        font-size: 12px;
+                        margin-left: 10px;
+                    }
+                }
+                .column-right{
+                    span{
+                        font-size: 12px;
+                        margin-left: 10px;
+                    }
+                    button{
+                        background: none;
+                        border: none;
+                        cursor: pointer;
+                        margin-left: 10px;
+                    }
+                }
+            }
+        }
+        .column-pay-subscription{
+            margin: auto;
+            max-width: 600px;
+            h2{
+                text-align: center;
+            }
+            .column-pay{
+                background: #FAFAFA;
+                border: 1px solid #B8B8B8;
+                box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.15);
+                border-radius: 10px;
+                padding: 2rem;
+                .pay-dropdown{
+                    position: relative;
+                    .dropdown-toggle{
+                        background: #FFFFFF;
+                        border: 1px solid #747474;
+                        border-radius: 5px;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        padding: 5px 10px;
+                        font-size: 15px;
+                        cursor: pointer;
+                    }
+                    .pay-dropdown-menu{
+                        border: 1px solid #747474;
+                        background: #FFFFFF;
+                        display: none;
+                        width: 100%;
+                        &.active{
+                            display: block;
+                            position: absolute;
+                            top: 100%;
+                            width: 100%;
+                            
+                        }
+                        img{
+                            width: 47px;
+                            height: 25px;
+                            border-radius: 3px;
+                        }
+                        .dropdown-item{
+                            display: flex;
+                            column-gap: 1rem;
+                            align-items: center;
+                            padding: 5px 10px;
+                            font-size: 15px;
+                            cursor: pointer;
+                            &:hover{
+                                background-color: #dbdbdb;
+                            }
+                        }
+                    }
+                }
+                select{
+                    width: 100%;
+                    background: #FFFFFF;
+                    border: 1px solid #747474;
+                    border-radius: 5px;
+                    height: 39px;
+                    outline-style: none;
+                }
+                .column-img-pay{
+                    display: flex;
+                    column-gap: 2rem;
+                    margin-top: 2rem;
+                    // width: 100%;
+                    .column-left{
+                        width: 50%;
+                        // width: 100%;
+                        background: #FFFFFF;
+                        border: 1px solid #686868;
+                        border-radius: 5px;
+                        display: flex;
+                        justify-content: center;
+                        i{
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                        }
+                    }
+                    .column-right{
+                        width: 50%;
+                        button{
+                            background: linear-gradient(180deg, #FF95B5 0%, #C93A87 100%);
+                            border-radius: 50px;
+                            width: 120px;
+                            height: 30px;
+                            color: white;
+                            border: none;
+                            cursor: pointer;
+                            font-size: 16px;
+                        }
+                    }
+                }
+            }
+        }
+        .btn-bottom{
+            text-align: center;
+            .btn-out{
+                width: 600px;
+                height: 50px;
+                margin: 2.5rem auto;
+                text-align: center;
+                background: linear-gradient(180deg, #FF95B5 0%, #C93A87 100%);
+                border-radius: 10px;
+                border: none;
+                color: white;
+                font-size: 25px;
+                &:hover{
+                    background: linear-gradient(180deg, #FFFFFF 0%, #FFCCDE 100%);
+                    border: 2px solid #FF1C88;
+                    border-radius: 10px;
+                    color: #FF1C88;
+                }
+            }
+        }
+        
+    }
+}

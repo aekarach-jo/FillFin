@@ -1,0 +1,42 @@
+http://localhost:3000/  --เลือกเพศ เก็บ value ใน localStorage
+
+
+http://localhost:3000/login --ถ้ายังไม่ล็อกอิน ให้ไปล็อกอิน *Auth
+--> http://localhost:3000/member/register --หน้าสมัครผู้ใช้
+----> http://localhost:3000/member/payment --หน้ารายละเอียดการชำระ
+------> http://localhost:3000/login --redirect ให้กลับไปล็อกอิน
+
+--> http://localhost:3000/store/register  --สมัครร้านค้า
+----> http://localhost:3000/login -- edirect ให้กลับไปล็อกอิน
+
+
+
+<==================== after member logged in ==========================>
+
+
+http://localhost:3000/member --หน้าหลักผู้ใช้
+
+--> http://localhost:3000/member/store/{store-id} --แสดงร้านค้าที่เลือก  --Layout สิทธิ์ member กับ premium, exclusive ต่างกัน   
+----> http://localhost:3000/member/store/{store-id}/product/{product-id} --แสดงสินค้าที่เลือก  
+
+--> http://localhost:3000/member/cart --หน้าตะกร้าสินค้า
+---->  http://localhost:3000/member/cart/payment --หน้าสรุปรายการชำระเงิน
+------>  http://localhost:3000/member/order --รายการคำสั่งซื้อ
+
+
+
+<==================== after store logged in ==========================>
+
+
+http://localhost:3000/store --หน้าหลักร้านค้า
+--> http://localhost:3000/store/preview --ดูมุมมองลูกค้า **เปลี่ยน Layout
+
+--> http://localhost:3000/store/order --รายการออเดอร์
+
+
+
+=================================================================
+
+
+
+

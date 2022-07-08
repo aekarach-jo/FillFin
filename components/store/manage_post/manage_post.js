@@ -5,9 +5,10 @@ import Image from 'next/image'
 import React, { Fragment, useRef, useState } from 'react'
 import Swal from 'sweetalert2'
 import nextConfig from '../../../next.config'
+import moment from 'moment'
 
 const apiUrl = nextConfig.apiPath
-export default function Manage_profile({ status }) {
+export default function Manage_post({ status }) {
     const inputFirstImage = useRef([])
     const inputSecondImage = useRef([])
     const inputThirdImage = useRef([])
@@ -15,6 +16,12 @@ export default function Manage_profile({ status }) {
 
     const [imageObj, setImageobj] = useState({})
     const [caption, setCaption] = useState()
+    const dateToday = useRef(new Date)
+
+    function FormetDate({ dateTime }) {
+        dateTime = moment().format("DD MMM YYYY");
+        return <h4>{dateTime}</h4>
+    }
 
     function inputImageOnChange(e, name) {
         if (!e.target.files.length) {
@@ -75,17 +82,24 @@ export default function Manage_profile({ status }) {
                 },
                 data: params
             })
-            console.log(onCreate)
+            status()
             Swal.fire({
                 title: "success",
                 icon: "success",
                 position: "center",
-            });
-            status()
+            }).then(() => {
+                emptyForm()
+            })
         }
         catch (error) {
             console.log(error);
         }
+    }
+
+
+    function emptyForm() {
+        setImageobj("")
+        setCaption("")
     }
     return (
         <Fragment>
@@ -96,7 +110,7 @@ export default function Manage_profile({ status }) {
                 <div className="recommend-column">
                     <div className="column-calendar">
                         <img src="/assets/icons/icon-calendar.png" />
-                        <h4>16 June 2023</h4>
+                        <FormetDate dateTime={dateToday} />
                     </div>
                     <div className="detail-text">
                     </div>
@@ -104,25 +118,20 @@ export default function Manage_profile({ status }) {
                         {imageObj.first
                             ? (
                                 <img
-                                    // width={350}
-                                    // height={400}
+                                    style={{
+                                        borderRadius: "10px",
+                                        width: "100%",
+                                        height: "100%",
+                                        objectFit: "cover",
+                                        cursor: "pointer"
+                                    }}
                                     src={imageObj.first}
-                                    // style={{
-                                    //     borderRadius: "20px",
-                                    //     width: "100%",
-                                    //     height: "100%",
-                                    //     objectFit: "cover",
-                                    //     cursor: "pointer"
-                                    // }}
                                     onClick={() => inputFirstImage.current.click()}
                                 />
                             ) : (
-                                <img
-                                    src="/assets/images/empty.png"
-                                    alt=""
-                                    style={{ cursor: "pointer" }}
-                                    onClick={() => inputFirstImage.current.click()}
-                                />
+                                <div class="bg-img" onClick={() => inputFirstImage.current.click()}>
+                                    <i class="fa-regular fa-image"></i>
+                                </div>
                             )}
                         <input
                             type="file"
@@ -134,25 +143,20 @@ export default function Manage_profile({ status }) {
                         {imageObj.second
                             ? (
                                 <img
-                                    // width={350}
-                                    // height={400}
                                     src={imageObj.second}
-                                    // style={{
-                                    //     borderRadius: "20px",
-                                    //     width: "100%",
-                                    //     height: "100%",
-                                    //     objectFit: "cover",
-                                    //     cursor: "pointer"
-                                    // }}
+                                    style={{
+                                        borderRadius: "10px",
+                                        width: "100%",
+                                        height: "100%",
+                                        objectFit: "cover",
+                                        cursor: "pointer"
+                                    }}
                                     onClick={() => inputSecondImage.current.click()}
                                 />
                             ) : (
-                                <img
-                                    src="/assets/images/empty.png"
-                                    alt=""
-                                    style={{ cursor: "pointer" }}
-                                    onClick={() => inputSecondImage.current.click()}
-                                />
+                                <div class="bg-img" onClick={() => inputSecondImage.current.click()}>
+                                    <i class="fa-regular fa-image"></i>
+                                </div>
                             )}
                         <input
                             type="file"
@@ -164,25 +168,20 @@ export default function Manage_profile({ status }) {
                         {imageObj.third
                             ? (
                                 <img
-                                    // width={350}
-                                    // height={400}
                                     src={imageObj.third}
-                                    // style={{
-                                    //     borderRadius: "20px",
-                                    //     width: "100%",
-                                    //     height: "100%",
-                                    //     objectFit: "cover",
-                                    //     cursor: "pointer"
-                                    // }}
+                                    style={{
+                                        borderRadius: "10px",
+                                        width: "100%",
+                                        height: "100%",
+                                        objectFit: "cover",
+                                        cursor: "pointer"
+                                    }}
                                     onClick={() => inputThirdImage.current.click()}
                                 />
                             ) : (
-                                <img
-                                    src="/assets/images/empty.png"
-                                    alt=""
-                                    style={{ cursor: "pointer" }}
-                                    onClick={() => inputThirdImage.current.click()}
-                                />
+                                <div class="bg-img" onClick={() => inputThirdImage.current.click()}>
+                                    <i class="fa-regular fa-image"></i>
+                                </div>
                             )}
                         <input
                             type="file"
@@ -194,25 +193,20 @@ export default function Manage_profile({ status }) {
                         {imageObj.fourth
                             ? (
                                 <img
-                                    // width={350}
-                                    // height={400}
                                     src={imageObj.fourth}
-                                    // style={{
-                                    //     borderRadius: "20px",
-                                    //     width: "100%",
-                                    //     height: "100%",
-                                    //     objectFit: "cover",
-                                    //     cursor: "pointer"
-                                    // }}
+                                    style={{
+                                        borderRadius: "10px",
+                                        width: "100%",
+                                        height: "100%",
+                                        objectFit: "cover",
+                                        cursor: "pointer"
+                                    }}
                                     onClick={() => inputFourthImage.current.click()}
                                 />
                             ) : (
-                                <img
-                                    src="/assets/images/empty.png"
-                                    alt=""
-                                    style={{ cursor: "pointer" }}
-                                    onClick={() => inputFourthImage.current.click()}
-                                />
+                                <div class="bg-img" onClick={() => inputFourthImage.current.click()}>
+                                    <i class="fa-regular fa-image"></i>
+                                </div>
                             )}
                         <input
                             type="file"

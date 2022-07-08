@@ -95,7 +95,6 @@ export default function Manage_preorder({ status }) {
                 },
                 data: params
             })
-            console.log(onCreate)
             Swal.fire({
                 title: "success",
                 icon: "success",
@@ -124,14 +123,13 @@ export default function Manage_preorder({ status }) {
                         <div className="left">
                             {imageObj.first
                                 ? (
-                                    <Image
-                                        width={500}
-                                        height={500}
+                                    <img
                                         src={imageObj.first}
                                         style={{
+                                            border: '1px solid #e7e7e7',
                                             borderRadius: "20px",
-                                            width: "100%",
-                                            height: "100%",
+                                            width: "246px",
+                                            height: "246px",
                                             objectFit: "cover",
                                             cursor: "pointer"
                                         }}
@@ -151,14 +149,13 @@ export default function Manage_preorder({ status }) {
                             />
                             {imageObj.second
                                 ? (
-                                    <Image
-                                        width={500}
-                                        height={500}
+                                    <img
                                         src={imageObj.second}
                                         style={{
+                                            border: '1px solid #e7e7e7',
                                             borderRadius: "20px",
-                                            width: "100%",
-                                            height: "100%",
+                                            width: "246px",
+                                            height: "246px",
                                             objectFit: "cover",
                                             cursor: "pointer"
                                         }}
@@ -183,13 +180,13 @@ export default function Manage_preorder({ status }) {
                                     <label >ราคา</label>
                                     <label >BTH</label>
                                 </div>
-                                <input 
-                                type="text" 
-                                onChange={(e) => setPrice(e.target.value)}
-                                value={price}
+                                <input
+                                    type="text"
+                                    onChange={(e) => setPrice(e.target.value)}
+                                    value={price}
                                 />
                                 <div className="column-checkbox">
-                                    <input className="check-input" type="checkbox" value={clip} onChange={() => setClip('yes')}/>
+                                    <input className="check-input" type="checkbox" value={clip} onChange={() => setClip('yes')} />
                                     <label>มีคลิป</label>
                                 </div>
                                 <div className="text-bottom">
@@ -201,17 +198,17 @@ export default function Manage_preorder({ status }) {
                     <form>
                         <div className="column-input">
                             <label >ชื่อสินค้า</label>
-                            <input 
-                            type="text"
-                            value={productName}
-                            onChange={(e) => setProductName(e.target.value)}
+                            <input
+                                type="text"
+                                value={productName}
+                                onChange={(e) => setProductName(e.target.value)}
                             />
                         </div>
                         <div className="column-input">
                             <label >รายละเอียดสินค้า</label>
-                            <textarea 
-                            value={description}
-                            onChange={(e) => setDescription(e.target.value)}
+                            <textarea
+                                value={description}
+                                onChange={(e) => setDescription(e.target.value)}
                             />
                         </div>
                     </form>

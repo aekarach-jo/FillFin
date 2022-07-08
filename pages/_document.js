@@ -34,25 +34,34 @@ export default function Document() {
         {/* หน้า Cart */}
         <link rel="stylesheet" href="/assets/css/shopping-cart.min.css" />
 
-          {/* All using */}
-          <link rel="stylesheet" href="/assets/css/global.min.css" />
-          <link rel="preconnect" href="https://fonts.googleapis.com" />
-          <link rel="preconnect" href="https://fonts.gstatic.com" />
-          <link
-            href="https://fonts.googleapis.com/css2?family=Kanit:wght@200;300;400;500&display=swap"
-            rel="stylesheet"
-          />
-          <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-            integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
-            crossOrigin="anonymous"
-            referrerPolicy="no-referrer"
-          />
-          <link
-            rel="stylesheet"
-            href="https://unpkg.com/swiper@8/swiper-bundle.min.css"
-          />
+        {/* หน้า preview product */}
+        <link rel="stylesheet" href="/assets/css/detail-product.min.css" />
+
+        {/* หน้า Pay Sunmmary */}
+        <link rel="stylesheet" href="/assets/css/pay-summery.min.css" />
+
+        {/* หน้า Oder member */}
+        <link rel="stylesheet" href="/assets/css/order-list.min.css" />
+
+        {/* All using */}
+        <link rel="stylesheet" href="/assets/css/global.min.css" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Kanit:wght@200;300;400;500&display=swap"
+          rel="stylesheet"
+        />
+        <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+          integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+          crossOrigin="anonymous"
+          referrerPolicy="no-referrer"
+        />
+        <link
+          rel="stylesheet"
+          href="https://unpkg.com/swiper@8/swiper-bundle.min.css"
+        />
       </Head>
       <body>
         <Main />

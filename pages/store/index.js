@@ -7,10 +7,8 @@ import Store from '../../components/store/Store';
 import Cover from '../../components/subComponent/cover';
 import nextConfig from '../../next.config';
 
-export default function StorePage({ storeObj, statusView }) {
-  console.log(statusView);
+export default function StorePage({ storeObj }) {
   const [changeView, setChangeView] = useState(true)
-
   function updateChangeView(bool) {
     setChangeView(bool);
   }

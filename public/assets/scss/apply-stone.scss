@@ -1,20 +1,54 @@
+$_sm: 640px;
+$_md: 768px;
+$_lg: 1024px;
+$_xl: 1280px;
+$_2xl: 1536px;
 .apply{
     position: relative;
+    padding: 0 1rem;
+    @media screen and(min-width:$_xl){
+        padding: unset;
+    }
     .column-apply{
         max-width: 1400px;
         margin: auto;
         .column-top-apply{
-            display: flex;
-            margin: 2rem 0;
-            column-gap: 2rem;
-            .column-left{}
+            margin: 1rem 0;
+            @media screen and(min-width:$_md){
+                display: flex;
+                margin: 1rem 0;
+                column-gap: 1rem;
+            }
+            @media screen and(min-width:$_xl){
+                display: flex;
+                margin: 2rem 0;
+                column-gap: 2rem;
+            }
+            .column-left{
+                @media screen and(min-width:$_md){
+                    width: 50%;
+                }
+                iframe{
+                    width: 100%;
+                    @media screen and(min-width:$_xl){
+                        width: 536px;
+                        height: 300px;
+                    }
+                }
+            }
             .column-right{
                 height: 300px;
                 overflow-y: auto;
                 background: #FFCCDE;
                 box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.25);
                 border-radius: 10px;
-                padding: 2rem;
+                padding: 1rem;
+                @media screen and(min-width:$_md){
+                    width: 50%;
+                }
+                @media screen and(min-width:$_xl){
+                    padding: 2rem;
+                }
                 p{
                     text-align: start;
                     text-indent: 30px;
@@ -22,25 +56,33 @@
             }
         }
         .column-center-apply{
-            display: flex;
-            column-gap: 2rem;
-            align-items: center;
+            @media screen and(min-width:$_xl){
+                display: flex;
+                column-gap: 2rem;
+                align-items: center;
+            }
             .column-left{
-                width: 70%;
+                @media screen and(min-width:$_xl){
+                    width: 70%;
+                }
                 h2{
                     text-align: center;
+                    margin: 1rem 0;
                 }
                 .column{
-                    display: flex;
-                    column-gap: 2rem;
+                    @media screen and(min-width:$_md){
+                        display: flex;
+                        column-gap: 2rem;
+                    }
                     .left{
-                        width: 50%;
+                        @media screen and(min-width:$_md){
+                            width: 50%;
+                        }
                         .box-column-login{ 
                             .form-user-login{
                                 // padding: 2rem 1rem 0 1rem;
                                 .form{
                                     margin-bottom: 1rem;
-                                    
                                     .label-top{
                                         display: flex;
                                         justify-content: space-between;
@@ -84,9 +126,17 @@
                                 }
                             }
                         }
+                        .form-check{
+                            display: none;
+                            @media screen and(min-width:$_md){
+                                display: block;
+                            }
+                        }
                     }
                     .right{
-                        width: 50%;
+                        @media screen and(min-width:$_md){
+                            width: 50%;
+                        }
                         .box-column-login{ 
                             .form-user-login{
                                 // padding: 2rem 1rem 0 1rem;
@@ -174,25 +224,45 @@
                 
             }
             .column-qr-right{
-                display: flex; 
                 background: #D9D9D9;
                 border-radius: 5px;
-                padding: 2rem;
+                padding: 1rem;
+                display: flex; 
                 justify-content: space-between;
-                // column-gap: 4rem;
-                width: 30%;
-                height: 213px;
+                margin-top: 1rem;
+                @media screen and(min-width:$_md){
+                    width: 50%;
+                    margin: 2rem auto;
+                }
+                @media screen and(min-width:$_xl){
+                    width: 30%;
+                    padding: 2rem;
+                    height: 213px;
+                    margin: unset;
+                }
                 .left{
-                    width: 40%;
+                    @media screen and(min-width:$_md){
+                        width: 40%; 
+                    }
                 }
                 .right{
 
                 }
             }
         }
+        .form-check{
+            display: block;
+            margin-top: 1rem;
+            @media screen and(min-width:$_md){
+                display: none;
+            }
+        }
         .line{
-            margin-top: 5rem;
+            margin-top: 2rem;
             border: 1px dashed #747474;
+            @media screen and(min-width:$_xl){
+                margin-top: 5rem;
+            }
         }
         .btn-column{
             // margin: 3rem auto;

@@ -69,8 +69,6 @@ export default function StoreRegister() {
       });
       return false;
     }
-
-
     register()
   }
 

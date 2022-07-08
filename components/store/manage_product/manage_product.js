@@ -8,7 +8,7 @@ import nextConfig from '../../../next.config';
 
 const apiUrl = nextConfig.apiPath
 
-export default function Manage_product({status}) {
+export default function Manage_product({ status }) {
     const inputFirstImage = useRef([])
     const inputSecondImage = useRef([])
     const inputThirdImage = useRef([])
@@ -41,8 +41,8 @@ export default function Manage_product({status}) {
                 title: "กรุณาอัปโหลดเฉพาะไฟล์รูปภาพ",
                 icon: "warning",
                 position: "center",
-                timer : 1000,
-                showConfirmButton : false
+                timer: 1000,
+                showConfirmButton: false
             });
         }
     }
@@ -57,8 +57,8 @@ export default function Manage_product({status}) {
                 title: "กรุณาเพิ่มรูปภาพให้ครบ",
                 icon: "warning",
                 position: "center",
-                timer : 1000,
-                showConfirmButton : false
+                timer: 1000,
+                showConfirmButton: false
             });
             return false;
         }
@@ -94,7 +94,6 @@ export default function Manage_product({status}) {
                 },
                 data: params
             })
-            console.log(onCreate)
             status()
         }
         catch (error) {
@@ -117,14 +116,13 @@ export default function Manage_product({status}) {
                         <div className="left">
                             {imageObj.first
                                 ? (
-                                    <Image
-                                        width={500}
-                                        height={500}
+                                    <img
                                         src={imageObj.first}
                                         style={{
+                                            border: '1px solid #e7e7e7',
                                             borderRadius: "20px",
-                                            width: "100%",
-                                            height: "100%",
+                                            width: "250px",
+                                            height: "250px",
                                             objectFit: "cover",
                                             cursor: "pointer"
                                         }}
@@ -144,14 +142,13 @@ export default function Manage_product({status}) {
                             />
                             {imageObj.second
                                 ? (
-                                    <Image
-                                        width={500}
-                                        height={500}
+                                    <img
                                         src={imageObj.second}
                                         style={{
+                                            border: '1px solid #e7e7e7',
                                             borderRadius: "20px",
-                                            width: "100%",
-                                            height: "100%",
+                                            width: "250px",
+                                            height: "250px",
                                             objectFit: "cover",
                                             cursor: "pointer"
                                         }}
@@ -209,14 +206,13 @@ export default function Manage_product({status}) {
                         <div className="left">
                             {imageObj.third
                                 ? (
-                                    <Image
-                                        width={500}
-                                        height={500}
+                                    <img
                                         src={imageObj.third}
                                         style={{
+                                            border: '1px solid #e7e7e7',
                                             borderRadius: "20px",
-                                            width: "100%",
-                                            height: "100%",
+                                            width: "250px",
+                                            height: "250px",
                                             objectFit: "cover",
                                             cursor: "pointer"
                                         }}
@@ -236,14 +232,13 @@ export default function Manage_product({status}) {
                             />
                             {imageObj.fourth
                                 ? (
-                                    <Image
-                                        width={500}
-                                        height={500}
+                                    <img
                                         src={imageObj.fourth}
                                         style={{
+                                            border: '1px solid #e7e7e7',
                                             borderRadius: "20px",
-                                            width: "100%",
-                                            height: "100%",
+                                            width: "250px",
+                                            height: "250px",
                                             objectFit: "cover",
                                             cursor: "pointer"
                                         }}

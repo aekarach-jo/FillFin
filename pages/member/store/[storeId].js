@@ -6,14 +6,15 @@ import axios from 'axios';
 import Store_member from '../../../components/member/store/store_member/store_member';
 import Store_premium from '../../../components/member/store/store_premium/store_premium';
 
-export default function StoreId({ store }) {
+export default function StoreId({ store, bannerCover, bannerAds }) {
+  console.log(bannerAds);
   const standard = store.standard
   if (standard) { // package guest and member
     return (
       <Fragment>
         <Head>Store</Head>
-        <Cover />
-        <Store_member stores={store} />
+        <Cover banner={bannerCover.banner} />
+        <Store_member stores={store} bannerAds={bannerAds.ads} />
       </Fragment>
     )
   }
@@ -21,7 +22,7 @@ export default function StoreId({ store }) {
     return (
       <Fragment>
         <Head>Store</Head>
-        <Cover />
+        <Cover banner={bannerCover.banner} />
         <Store_premium stores={store} />
       </Fragment>
     )
@@ -33,24 +34,42 @@ export async function getServerSideProps({ query, res }) {
   const access_token = res.req.cookies.access_token;
   const gender = res.req.cookies.gender;
   const store_code = query.storeId
-
+  const formGetBanner = {
+    gender: gender,
+    page: "store"
+  }
   try {
-    const getStorebyStoreCode = await axios({
-      method: 'GET',
-      url: `${apiUrl}/api/product/${gender}/store/${store_code}`,
-      headers: {
-        Authorization: `Bearer ${access_token}`
-      },
-      timeout : 5000
-    })
+    const [getStorebyStoreCode, getBannerCover, getBannerAds] = await Promise.all([
+      axios({
+        method: 'GET',
+        url: `${apiUrl}/api/product/${gender}/store/${store_code}`,
+        headers: {
+          Authorization: `Bearer ${access_token}`
+        }
+      }),
+      axios({
+        method: 'POST',
+        url: `${apiUrl}/api/website/getBanner`,
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        data: formGetBanner
+      }),
+      axios({
+        method: 'GET',
+        url: `${apiUrl}/api/website/getAds/store`
+      })
+    ])
+
     return {
       props: {
-        store: getStorebyStoreCode.data.data
+        store: getStorebyStoreCode.data.data,
+        bannerCover: getBannerCover.data,
+        bannerAds: getBannerAds.data
       }
     }
   }
   catch (error) {
-    console.log("error")
     console.log(error);
 
     return {

@@ -1,7 +1,9 @@
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
+import Link from 'next/link';
 import React, { Fragment } from 'react'
 import Swal from 'sweetalert2';
+import { useAppContext } from '../../../../../config/state';
 import nextConfig from '../../../../../next.config';
 import ChooseImage from '../../../../subComponent/manage-image/chooseImage'
 import ShowImage from '../../../../subComponent/manage-image/showImage'
@@ -9,39 +11,63 @@ import ShowImage from '../../../../subComponent/manage-image/showImage'
 const apiUrl = nextConfig.apiPath
 export default function Show_product({ productList }) {
 
+    const state = useAppContext()
+
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 800,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    })
+
     async function handleAddtoCard(product_code) {
-        console.log(product_code);
         const access_token = getCookie("access_token")
         const addProductToCart = await axios({
             method: 'GET',
-            url: `${apiUrl}/api/product/addToCart/${product_code}`,
+            url: `${apiUrl}/api/member/cart/add/${product_code}`,
             headers: {
                 Authorization: `Bearer ${access_token}`
             }
-        }).then(() => {
-            Swal.fire({
-                title : 'เพิ่มแล้ว',
-                icon : 'success',
-                position : 'top-right',
-                timer : 800
-            })
-            getCart()
+        }).then((res) => {
+            console.log(res.data);
+            if (res.data.description == 'product was add to cart.') {
+                Toast.fire({
+                    icon: 'success',
+                    title: 'เพิ่มแล้ว'
+                })
+                getCart()
+            }else {
+                Toast.fire({
+                    icon: 'warning',
+                    title: 'สินค้า'+ res.data.productName + "มีในตะกร้าแล้ว"
+                })
+            }
+
+
         })
     }
+
 
     async function getCart() {
         const access_token = getCookie("access_token")
         const getCart = await axios({
             method: 'GET',
-            url: `${apiUrl}/api/product/getCart`,
+            url: `${apiUrl}/api/member/cart/get`,
             headers: {
                 Authorization: `Bearer ${access_token}`
             }
         })
-        console.log(getCart.data.cart);
+        const cartQty = getCart.data.cart.length
+        if (cartQty > 0) {
+            state.cartObj.set_value(getCart.data.cart)
+            state.cartQty.set_cart_qty(cartQty)
+        }
     }
-
-
 
     return (
         <Fragment>
@@ -53,10 +79,13 @@ export default function Show_product({ productList }) {
                 {productList.length > 0
                     ? <>{productList?.map((data, index) => (
                         <div key={index} className="recommend-column">
-                            <ShowImage image={data.product_img} />
+                            <Link href={`/member/store/product/${data.product_code}`} >
+                                <div>
+                                    <ShowImage image={data.product_img} />
+                                </div>
+                            </Link>
                             <div className="column-img-bottom">
                                 <ChooseImage image={data.product_img} />
-                                <p>{data.product_image}</p>
                             </div>
                             <div className="column-text-bottom">
                                 <h4>{data.name_product}</h4>

@@ -7,23 +7,21 @@ $_2xl: 1536px;
     .detil-index{
         position: relative;
         padding: 0 1rem;
-        @media screen and(min-width:$_md){
+        @media screen and(min-width:$_xl){
             padding: unset;
         }
         .img-background{
             display: none;
-            // display: flex;
             justify-content: space-between;
             opacity: 0.2;
             width: 100%;
             .img-left{}
             .img-right{}
-            @media screen and(min-width:$_md){
+            @media screen and(min-width:$_xl){
                 display: flex;
                 width: 100%;
             }
         }
-        
         .column-detil-index{
             // position: absolute;
             top: 0;
@@ -35,11 +33,10 @@ $_2xl: 1536px;
             left: 0;
             right: 0;
             margin: 0 auto;
-            @media screen and(min-width:$_md){
+            @media screen and(min-width:$_xl){
                 position: absolute;
             }
             .column-vedio{
-               
                 // padding:0 10rem;
                 display: flex;
                 justify-content: center;
@@ -78,10 +75,14 @@ $_2xl: 1536px;
                     justify-content: end;
                 }
             }
+            .column-text{
+                margin: 1rem 0;
+            }
             .column-btn{
                 display: flex;
                 justify-content: center;
                 column-gap: 1rem;
+                margin: 2rem 0;
                 button{
                     width: 229px;
                     height: 70px;

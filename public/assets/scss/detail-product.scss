@@ -1,42 +1,98 @@
+$_sm: 640px;
+$_md: 768px;
+$_lg: 1024px;
+$_xl: 1280px;
+$_2xl: 1536px;
 .detail-product{
-    display: flex;
-    justify-content: space-between;
-    max-width: 1200px;
-    column-gap: 4rem;
-    margin: 0 auto;
-    .detail-left{
-        width: 40%;
-        .column-images{
-            display: flex;
-            column-gap: 2rem;
-            img{
-                width: 88px;
-                height: 88px;
-                border-radius: 5px;
-                object-fit: cover;
-                cursor: pointer;
-            }
-        }
+    padding: 0 1rem;
+    position: relative;
+    @media screen and(min-width:$_xl){
+        padding: unset;
     }
-    .detail-right{
-        width: 70%;
-        display: flex;
-        align-items: start;
-        column-gap: 2rem;
-        background-color: aqua;
-        img{
-            width: 647px;
-            height: 647px;
-            object-fit: cover;
+    .detail-product-column{
+        @media screen and(min-width:$_xl){
+            display: flex;
+            justify-content: space-between;
+            max-width: 1200px;
+            column-gap: 4rem;
+            margin: 4rem auto 0 auto;
         }
-        #img-product1,#img-product2,#img-product3,#img-product4{
-            display: none;
-            &.active{
-                display: flex;
+        .detail-left{
+            @media screen and(min-width:$_xl){
+                width: 40%;
+            }
+            .column-images{
+                display: none;
+                @media screen and(min-width:$_xl){
+                    column-gap: 2rem;
+                    display: flex;
+                }
+                img{
+                    width: 100%;
+                    height: 88px;
+                    border-radius: 5px;
+                    object-fit: cover;
+                    cursor: pointer;
+                    @media screen and(min-width:$_xl){
+                        width: 88px;
+                        height: 88px;
+                    }
+                }
             }
         }
-        button{
-
+        .detail-right{
+            @media screen and(min-width:$_xl){
+                width: 70%;
+                display: flex;
+                align-items: start;
+                column-gap: 2rem;
+            }
+            .column-images{
+                display: flex;
+                column-gap: 1rem;
+                margin-bottom: 1rem;
+                @media screen and(min-width:$_xl){
+                    display: none;
+                }
+                img{
+                    width: 100%;
+                    height: 70px;
+                    border-radius: 5px;
+                    object-fit: cover;
+                    cursor: pointer;
+                    @media screen and(min-width:$_md){
+                        width: 100%;
+                        height: 150px;
+                    }
+                    @media screen and(min-width:$_xl){
+                        width: 88px;
+                        height: 88px;
+                    }
+                }
+            }
+            img{
+                width: 100%;
+                height: 400px;
+                object-fit: cover;
+                @media screen and(min-width:$_md){
+                    height: 647px;
+                }
+                @media screen and(min-width:$_xl){
+                    width: 647px;
+                    height: 647px;
+                }
+            }
+            #img-product1,#img-product2,#img-product3,#img-product4{
+                display: none;
+                &.active{
+                    display: flex;
+                }
+            }
+            button{
+                border: none;
+                background: none;
+                font-size: 25px;
+            }
         }
     }
 }

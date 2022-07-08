@@ -12,7 +12,7 @@ import ShowImage from "../subComponent/manage-image/showImage";
 const apiUrl = nextConfig.apiPath;
 
 export default function ShowProduct({ stores }) {
-  const { store_all, product_recom} = stores;
+  const { store_all, product_recom } = stores;
 
   useEffect(() => {
   }, []);
@@ -30,9 +30,7 @@ export default function ShowProduct({ stores }) {
                 {product_recom?.map((data, index) => (
                   <Fragment key={index}>
                     <div className="recommend-column">
-                      <Link href={`/member/store/product/${data.product_code}`}>
-                        <ShowImage image={data.product_img} />
-                      </Link>
+                      <ShowImage image={data.product_img} />
                       <div className="column-img-bottom">
                         <ChooseImage image={data.product_img} />
                       </div>

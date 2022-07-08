@@ -5,7 +5,6 @@ import moment from 'moment'
 
 const apiUrl = nextConfig.apiPath
 export default function Show_post({ postList }) {
-    console.log(postList);
     return (
         <Fragment>
             <div className="text-box-top">

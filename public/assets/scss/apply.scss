@@ -1,20 +1,57 @@
+$_sm: 640px;
+$_md: 768px;
+$_lg: 1024px;
+$_xl: 1280px;
+$_2xl: 1536px;
 .apply{
     position: relative;
     .column-apply{
         max-width: 1400px;
         margin: auto;
+        padding: 0 1rem;
+        @media screen and(min-width:$_xl){
+            padding: unset;
+        }
         .column-top-apply{
-            display: flex;
-            margin: 2rem 0;
-            column-gap: 2rem;
-            .column-left{}
+            margin: 1rem 0;
+            @media screen and(min-width:$_md){
+                display: flex;
+                margin: 1rem 0;
+                column-gap: 1rem;
+            }
+            @media screen and(min-width:$_xl){
+                display: flex;
+                margin: 1rem 0;
+                column-gap: 1rem;
+            }
+            .column-left{
+                width: 50%;
+                iframe{
+                    width: 100%;
+                    @media screen and(min-width:$_md){
+                        height: 300px;
+                    }
+                    @media screen and(min-width:$_xl){
+                        width: 536px;
+                        height: 300px;
+                    }
+                }
+                
+            }
             .column-right{
                 height: 300px;
                 overflow-y: auto;
                 background: #FFCCDE;
                 box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.25);
                 border-radius: 10px;
-                padding: 2rem;
+                padding: 1rem;
+                @media screen and(min-width:$_md){
+                    width: 50%;
+                }
+                @media screen and(min-width:$_xl){
+                    padding: 2rem;
+                    width: unset;
+                }
                 p{
                     text-align: start;
                     text-indent: 30px;
@@ -22,15 +59,18 @@
             }
         }
         .column-center-apply{
-            display: flex;
-            column-gap: 2rem;
+            @media screen and(min-width:$_xl){
+                display: flex;
+                column-gap: 2rem;
+            }
             .column-left{
-                width: 40%;
+                @media screen and(min-width:$_xl){
+                    width: 40%;
+                }
                 .column-text-login{
                     .box-column-login{ 
                         .form-user-login{
                             // padding: 2rem 1rem 0 1rem;
-
                             .form{
                                 margin-bottom: 1rem;
                                 
@@ -81,18 +121,19 @@
                 }
             }
             .column-right{
-                
                 .column{
-                    display: flex;
-                    column-gap: 2rem;
-                    
+                    margin: 0 auto;
+                    @media screen and(min-width:$_md){
+                        display: flex;
+                        column-gap: 2rem;
+                    }
                     .column-detail{
                         width: 217px;
                         height: 280px;
                         background: #FFFFFF;
                         box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
                         border-radius: 10px;
-                        
+                        margin: 0 auto 1rem auto;
                         .column-img{
                             position: relative;
                             img{
@@ -179,7 +220,7 @@
             }
         }
         .line{
-            margin-top: 5rem;
+            margin-top: 2rem;
             border: 1px dashed #747474;
         }
         .btn-column{
@@ -196,7 +237,7 @@
                 font-size: 25px;
                 border: none;
                 cursor: pointer;
-                margin: 3rem 0;
+                margin: 2rem 0;
             }
             .btn-right{
                 width: 150px;
@@ -207,7 +248,7 @@
                 font-size: 25px;
                 border: none;
                 cursor: pointer;
-                margin: 3rem 0;
+                margin: 2rem 0;
             }
         }
     }

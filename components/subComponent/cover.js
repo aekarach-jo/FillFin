@@ -1,8 +1,9 @@
 import Image from "next/image";
 import React, { Fragment, useState } from "react";
+import nextConfig from "../../next.config";
 
-export default function Cover({ data }) {
-  const [cover, setCover] = useState([data]);
+const apiUrl = nextConfig.apiPath
+export default function Cover({ banner }) {
   return (
     <Fragment>
       <div className="banner-top">
@@ -10,16 +11,14 @@ export default function Cover({ data }) {
           <div className="column-banner">
           </div>
             <Image
-              src="/assets/images/banner.png"
-              // width={200}
-              // height={200}
+              src={`${apiUrl}/${banner.image}`}
               layout="fill"
               alt="iamge-cover"
             />
           <div className="column-text">
             <div className="column">
-              <h1>WOMEN</h1>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. </p>
+              <h1>{banner.title}</h1>
+              <p>{banner.content}</p>
             </div>
           </div>
         </div>

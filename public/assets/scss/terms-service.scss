@@ -1,10 +1,23 @@
+$_sm: 640px;
+$_md: 768px;
+$_lg: 1024px;
+$_xl: 1280px;
+$_2xl: 1536px;
 .terms-service{
     position: relative;
+    padding: 0 1rem;
+    @media screen and(min-width:$_xl){
+        position: relative;
+        padding: unset;
+    }
     .img-background{
-        display: flex;
-        justify-content: space-between;
-        opacity: 0.2;
-        width: 100%;
+        display: none;
+        @media screen and(min-width:$_xl){
+            display: flex;
+            justify-content: space-between;
+            opacity: 0.2;
+            width: 100%;
+        }
         .img-left{
             
         }
@@ -12,18 +25,27 @@
         }
     }
     .terms-service-column{
-        position: absolute;
-        top: 0;
-        max-width: 1000px;
-        left: 0;
-        right: 0;
-        margin: 0 auto;
+        
+        @media screen and(min-width:$_xl){
+            position: absolute;
+            top: 0;
+            max-width: 1000px;
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+        }
         .text-head{
-            margin: 3rem 0;
+            margin: 1rem 0;
             text-align: center;
+            @media screen and(min-width:$_xl){
+                margin: 3rem 0;
+            }
         }
         .column-text{
-            margin: 2rem 0;
+            margin: 1rem 0;
+            @media screen and(min-width:$_md){
+                margin: 2rem 0;
+            }
         }
     }
 }

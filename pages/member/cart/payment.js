@@ -1,7 +1,12 @@
-import React from 'react'
+import Head from 'next/head'
+import React, { Fragment } from 'react'
+import PaymentSummary from '../../../components/member/cart/paymentSummary/paymentSummary'
 
 export default function payment() {
   return (
-    <div>payment</div>
+    <Fragment>
+      <Head><title>Payment</title></Head>
+      <PaymentSummary />
+    </Fragment>
   )
 }

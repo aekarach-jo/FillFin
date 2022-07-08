@@ -1,29 +1,59 @@
+$_sm: 640px;
+$_md: 768px;
+$_lg: 1024px;
+$_xl: 1280px;
+$_2xl: 1536px;
 .detil-login{
     position: relative;
+    padding: 0 1rem;
+    @media screen and(min-width:$_xl){
+        padding: unset;
+    }
     .img-background{
-        display: flex;
+        display: none;
         justify-content: space-between;
         opacity: 0.2;
         width: 100%;
         .img-left{}
         .img-right{}
+        @media screen and(min-width:$_xl){
+            display: flex;
+            width: 100%;
+        }
     }
     .column-login{
-        position: absolute;
+        // position: absolute;
         top: 0;
         width: 100%;
         text-align: center;
-        padding:0 20rem;
-        margin-top: 3rem;
+        // padding:0 20rem;
+        margin-top: 1rem;
+        @media screen and(min-width:$_xl){
+            position: absolute;
+            left: 0;
+            right: 0;
+            max-width: 1100px;
+            margin: 3rem auto 0 auto;
+        }
+        .column-img-top{
+            img{
+                width: 100%;
+            }
+        }
     }
     .column-text-login{
+        h2{
+            margin: 1rem 0;
+        }
         .box-column-login{
-            width: 475px;
             margin: auto;
             background: #FAFAFA;
             border: 1px solid #B8B8B8;
             box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.15);
             border-radius: 10px;    
+            @media screen and(min-width:$_md){
+                width: 475px;
+            }
             .menu-navbar{
                 background: linear-gradient(180deg, #FF95B5 0%, #C93A87 100%);
                 border-radius: 9px 9px 0px 0px;
@@ -31,7 +61,11 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                column-gap: 7rem;
+                justify-content: space-between;
+                padding: 0 1rem;
+                @media screen and(min-width:$_md){
+                    justify-content: space-around;
+                }
                 button{
                     border: none;
                     background: none;
@@ -177,8 +211,11 @@
                         border-radius: 10px;
                         color: #FF1C88;
                     }
-                }
+            }
         }
+    }
+    .column-text-detail{
+        margin: 1rem 0;
     }
     .btn-menbar{
         background: linear-gradient(180deg, #FF95B5 0%, #C93A87 100%);
@@ -189,5 +226,11 @@
         border: none;
         cursor: pointer;
         font-size: 25px;
+        @media screen and(min-width:$_md){
+            margin: 3rem 0;
+        }
+        @media screen and(min-width:$_xl){
+            margin: unset;
+        }
     }
 }

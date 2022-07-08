@@ -91,6 +91,9 @@ export default function Payment() {
   }
 
   function inputImageOnChange(e) {
+    if (!e.target.files.length) {
+      return false;
+    }
     if (
       ["image/jpeg", "iamge/jpg", "image/png"].includes(e.target.files[0].type)
     ) {

@@ -73,8 +73,15 @@ function ShowImagePost({ image }) {
   let image_split = image.split(",");
   const response = image_split.map((data, index) => {
     return (
-      <img
+      <img  
         src={`${apiUrl}/${data}`}
+        style={{
+          borderRadius: "10px",
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          cursor: "pointer"
+      }}
         key={index}
         onError={e => {
           e.target.setAttribute('src', '/assets/images/empty.png');

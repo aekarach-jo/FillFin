@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React from 'react'
 import nextConfig from '../../../next.config';
 
@@ -7,8 +8,12 @@ export default function ShowImage({ image }) {
     }
     const apiUrl = nextConfig.apiPath
     let image_split = image.split(",");
-    return <img src={`${apiUrl}/${image_split[0]}`} className="image-main" onError={e => {
-        e.target.setAttribute('src', '/assets/images/product.png');
-        return false;
-    }} />;
+    return <img
+        src={`${apiUrl}/${image_split[0]}`}
+        style={{ cursor: "pointer" }}
+        className="image-main"
+        onError={e => {
+            e.target.setAttribute('src', '/assets/images/product.png');
+            return false;
+        }} />;
 }

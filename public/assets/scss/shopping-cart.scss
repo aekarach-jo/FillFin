@@ -1,31 +1,66 @@
+$_sm: 640px;
+$_md: 768px;
+$_lg: 1024px;
+$_xl: 1280px;
+$_2xl: 1536px;
 .shopping-cart{
     position: relative;
+    padding: 0 1rem;
+    @media screen and(min-width:$_xl){
+        padding: unset;
+    }
     h2{
         max-width: 1600px;
-        margin: 2rem auto;
+        margin: 1rem auto;
+        @media screen and(min-width:$_md){
+            margin: 2rem auto;
+        }
     }
     .shopping-cart-column{
         max-width: 1600px;
-        margin: 2rem auto;
-        display: flex;
-        column-gap: 2rem;
-        align-items: baseline;
+        margin: 1rem auto;
+        column-gap: 1rem;
+        @media screen and(min-width:$_md){
+            margin: 1rem auto;
+        }
+        @media screen and(min-width:$_xl){
+            display: flex;
+            column-gap: 2rem;
+            align-items: baseline;
+            margin: 2rem auto;
+        }
         .column-list-left{
-            width: 50%;
+            width: 100%;
+            @media screen and(min-width:$_md){
+                width: 100%;
+            }
+            @media screen and(min-width:$_xl){
+                width: 50%;
+            }
             h2{
                 margin: 3rem 0;
             }
             table{
+                display: block;
+                max-width: -moz-fit-content;
+                max-width: fit-content;
+                margin: 0 auto;
+                overflow-x: auto;
+                white-space: nowrap;
                 border-collapse: collapse;
                 width: 100%;
                 border-bottom: 1px solid #ddd;
-                border-collapse: collapse;
-                width: 100%;
                 // background: #FAFAFA;
                 border: none;
                 // border: 1px solid #B8B8B8;
                 box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.15);
                 border-radius: 10px;
+                @media screen and(min-width:$_md){
+                    display: unset;
+                    margin: unset;
+                    max-width: unset;
+                    white-space: unset;
+                }
                 .head-table{
                     background-color: #D9D9D9;
                     border-radius: 10px;
@@ -102,25 +137,44 @@
               border-radius: 0 0 10px 0;
             }  
             .column-text-box{
-                margin: 5.2rem 0;
+                margin: 1rem 0;
+                @media screen and(min-width:$_md){
+                    margin: 2rem 0;
+                }
+                @media screen and(min-width:$_xl){
+                    margin: 5.2rem 0;
+                }
                 p{
                     text-indent: 30px;
                 }
             }          
         }
         .column-list-right{
-            width: 50%;
+            width: 100%;
+            @media screen and(min-width:$_xl){
+                width: 50%;
+            }
             table{
+                display: block;
+                max-width: -moz-fit-content;
+                max-width: fit-content;
+                margin: 0 auto;
+                overflow-x: auto;
+                white-space: nowrap;
                 border-collapse: collapse;
                 width: 100%;
                 border-bottom: 1px solid #ddd;
-                border-collapse: collapse;
-                width: 100%;
                 // background: #FAFAFA;
                 border: none;
                 // border: 1px solid #B8B8B8;
                 box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.15);
                 border-radius: 10px;
+                @media screen and(min-width:$_md){
+                    display: unset;
+                    margin: unset;
+                    max-width: unset;
+                    white-space: unset;
+                }
                 .head-table{
                     background-color: #D9D9D9;
                     border-radius: 10px;

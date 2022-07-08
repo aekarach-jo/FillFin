@@ -7,14 +7,16 @@ import StorePage from "../../pages/store";
 import Manage_profilePost from "./manage_allPost/manage_allPost";
 import Manage_allPreorder from "./manage_allPreorder/manage_allPreorder";
 import Manage_allProduct from "./manage_allProduct/manage_allProduct";
+import Manage_post from "./manage_post/manage_post";
 import Manage_preorder from "./manage_preorder/manage_preorder";
 import Manage_product from "./manage_product/manage_product";
-import Manage_profile from "./manage_profile/manage_profile";
 
 const apiUrl = nextConfig.apiPath;
 export default function Store({ stores, statusChange }) {
-  console.log(stores);
   const { all_product, pre_order, review, store_detail, store_post } = stores;
+  const [allProduct, setAllProduct] = useState(all_product)
+  const [preAllOder, setPreAllOder] = useState(pre_order)
+  const [storePost, setStorePost] = useState(store_post)
   const [statusGetDataAll, setStatusGetDataAll] = useState(false);
   const [concept, setConcept] = useState("")
 
@@ -42,20 +44,21 @@ export default function Store({ stores, statusChange }) {
   }
 
   async function getDataAll() {
-    console.log("getDataAll");
     const access_token = getCookie("access_token");
-    const apiGetProduct = await axios({
+    const response = await axios({
       method: "GET",
       url: `${apiUrl}/api/store/getDataAll`,
       headers: {
         Authorization: `Bearer ${access_token}`,
       },
     });
-    console.log(apiGetProduct);
+    setAllProduct(response.data.data.all_product)
+    setStorePost(response.data.data.store_post)
+    setPreAllOder(response.data.data.pre_order)
     setStatusGetDataAll(false);
   }
 
-  async function handleStatusChange() {
+  function handleStatusChange() {
     setStatusGetDataAll(true);
   }
   return (
@@ -83,7 +86,7 @@ export default function Store({ stores, statusChange }) {
                     <p>สัดส่วน BWH : {store_detail.bwh}35-18-36</p>
                   </div>
                   <div className="text-center">
-                    <p>น้ำหนัก : {store_detail.weight}43 กล.</p>
+                    <p>น้ำหนัก : {store_detail.weight}43 กก.</p>
                     <p>ส่วนสูง : {store_detail.height}167 ชม.</p>
                   </div>
                   <div className="text-right">
@@ -122,10 +125,10 @@ export default function Store({ stores, statusChange }) {
               </p>
             </div>
             <div className="column-seller-profile">
-              <Manage_profile status={handleStatusChange} />
+              <Manage_post status={handleStatusChange} />
             </div>
             <div className="column-box-product">
-              <Manage_profilePost postList={store_post} />
+              <Manage_profilePost postList={storePost} />
             </div>
           </div>
           <div className="product-column-right">
@@ -137,10 +140,10 @@ export default function Store({ stores, statusChange }) {
             </div>
 
             <div className="column-box-product">
-              <Manage_allProduct productList={all_product} />
+              <Manage_allProduct productList={allProduct} />
             </div>
             <div className="column-box-product">
-              <Manage_allPreorder preOrderList={pre_order} />
+              <Manage_allPreorder preOrderList={preAllOder} />
             </div>
           </div>
         </div>

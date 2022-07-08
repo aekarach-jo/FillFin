@@ -1,4 +1,5 @@
 import { setCookies } from 'cookies-next';
+import Image from 'next/image';
 import React, { Fragment } from 'react'
 import nextConfig from '../../../../next.config';
 import Show_post from './show_post/show_post';
@@ -6,8 +7,7 @@ import Show_preoder from './show_preoder/show_preoder';
 import Show_product from './show_product/show_product';
 
 const apiUrl = nextConfig.apiPath
-export default function Store_premium({ stores, statusChange }) {
-    console.log(stores);
+export default function Store_premium({ stores }) {
     const { all_product, pre_order, review, store_detail, store_post } = stores;
 
     return (
@@ -16,7 +16,7 @@ export default function Store_premium({ stores, statusChange }) {
                 <div className="premiem-column-left">
                     <div className="column-text-top">
                         <div className="column-text-left">
-                            <img src={`${apiUrl}/${store_detail.profile_img}`} />
+                        <Image width={100} height={100} src={`${apiUrl}/${store_detail.profile_img}`} />
                         </div>
                         <div className="column-text-right">
                             <h2>{store_detail.name}</h2>
@@ -40,7 +40,16 @@ export default function Store_premium({ stores, statusChange }) {
                         <h3>คอนเซ็ปร้าน</h3>
                         <p>{store_detail.concept}</p>
                     </div>
-                    <iframe width="100%" height={430} src="https://www.youtube.com/embed/CUfPYWtydgk" title="YouTube video player" frameBorder={0} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
+                    {/* <iframe src={"https://www.youtube.com/embed/CUfPYWtydgk"} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe> */}
+                     <video
+                        style={{ width : '100%'}}
+                        controls
+                        muted
+                        autoPlay
+                        src={`http://192.168.1.51:3000/video/AWAKENING_NEWZEALAND.mp4`}
+                        // poster='/assets/images/sale.png'
+                        
+                    />
                     <div className="column-box-product">
                         <Show_post postList={store_post} />
                     </div>

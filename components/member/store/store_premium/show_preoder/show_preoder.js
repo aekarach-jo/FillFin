@@ -17,7 +17,7 @@ export default function Show_preoder({ preOrderList }) {
                             <ChooseImage image={data.product_img} />
                         </div>
                         <div className="column-text-bottom">
-                            <h4>{data.name}</h4>
+                            <h4>{data.name_product}</h4>
                             <div className="column-gift">
                                 {data.show_gift != "no"
                                     ?

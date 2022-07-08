@@ -7,8 +7,10 @@ import Image from "next/image";
 import nextConfig from "../../next.config";
 import { getCookie, removeCookies, setCookies } from "cookies-next";
 import axios from "axios";
+import { useAppContext } from "../../config/state";
 
 export default function Login() {
+  const state = useAppContext()
   const apiUrl = nextConfig.apiPath
   const router = useRouter();
   const [pathLogin, setPathLogin] = useState("");
@@ -49,13 +51,16 @@ export default function Login() {
       const onLogin = await axios.post(
         `${apiUrl}/api/${pathLogin}/signin`, formLogin)
       const data = onLogin.data
+      console.log(data);
       if (data.status) {
+        state.isLogin.set_login(true)
         setCookies("access_token", data.data.access_token);
         setCookies("refresh_token", data.data.refresh_token);
         setCookies("member_code", data.data.member_code);
         setCookies("store_code", data.data.store_code);
         setCookies("gender", data.data.gender)
-        console.log(data)
+        setCookies("name", data.data.userName)
+        
         Swal.fire({
           title: data.description,
           icon: "success",
@@ -102,7 +107,6 @@ export default function Login() {
       }
     })
     const statusJson = await sPackage.json()
-    console.log(statusJson);
     if (statusJson.data == 'notpay' || statusJson.data == 'pending') {
       router.push(`/member/payment`)
     } else {
@@ -134,7 +138,7 @@ export default function Login() {
             />
           </div>
           <ContactUs />
-          <div className="column-shadow">
+          <div className="column-shadow" style={{ zIndex: '-1'}}>
             <div className="shadow-left" />
             <div className="shadow-right" />
           </div>

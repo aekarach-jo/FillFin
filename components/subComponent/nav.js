@@ -16,10 +16,11 @@ export default function Nav() {
   const [dropdownActive, setDropdownActive] = useState(false)
   const [dropdownActiveMenu, setDropdownActiveMenu] = useState(false)
   const isLogin = state.isLogin.get_login
-
   useEffect(() => {
-    getCartList()
-    getUsername()
+    if (isLogin == 0) {
+      getCartList()
+      getUsername()
+    }
   }, [])
 
   function getUsername() {
@@ -35,21 +36,16 @@ export default function Nav() {
   }
 
   async function getCartList() {
-    try {
-      const access_token = getCookie("access_token")
-      const getCart = await axios({
-        method: 'GET',
-        url: `${apiUrl}/api/member/cart/get`,
-        headers: {
-          Authorization: `Bearer ${access_token}`
-        }
-      })
-      const dataCart = getCart.data.cart.length
-      setCart(dataCart)
-    }
-    catch (error) {
-      console.log(error);
-    }
+    const access_token = getCookie("access_token")
+    const getCart = await axios({
+      method: 'GET',
+      url: `${apiUrl}/api/member/cart/get`,
+      headers: {
+        Authorization: `Bearer ${access_token}`
+      }
+    })
+    const dataCart = getCart.data.cart.length
+    setCart(dataCart)
   }
 
   async function onSignOut() {
@@ -68,11 +64,11 @@ export default function Nav() {
     <Fragment>
       <header>
         <div className="column-right">
-          <a href="/">
-            <div className="column-left">
+          <div className="column-left">
+            <Link href='/'>
               <img src="/assets/images/logo-fillfin.png" />
-            </div>
-          </a>
+            </Link>
+          </div>
         </div>
         <div className="column-right">
           {isLogin
@@ -108,9 +104,15 @@ export default function Nav() {
                 <button className="btn-bars" onClick={() => setDropdownActiveMenu(prev => !prev)}><i className="fa-solid fa-bars" /></button>
                 <div className={`navbar ${dropdownActiveMenu && 'active'}`} id="navbar">
                   <ul>
-                    <li><a href="#">Terms of Service</a></li>
-                    <li><a href="#">Privacy Policy</a></li>
-                    <li><a href="#">ติดต่อเรา</a></li>
+                    <li>
+                      <Link href="/content/1">Terms of Service</Link>
+                    </li>
+                    <li>
+                      <Link href="/content/2">Privacy Policy</Link>
+                    </li>
+                    <li>
+                      <Link href="#">ติดต่อเรา</Link>
+                    </li>
                   </ul>
                 </div>
               </div>
@@ -123,11 +125,11 @@ export default function Nav() {
               <Link href="/store/register">
                 <button className="btn-apply">สมัครร้านค้า</button>
               </Link>
-              {/* <Link href="/member/cart"> */}
+              {/* <Link href="/member/cart">
               <button className="btn">
                 <i className="fa-solid fa-cart-shopping" />
               </button>
-              {/* </Link> */}
+              </Link> */}
             </>
           }
         </div>

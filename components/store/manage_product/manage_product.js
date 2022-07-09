@@ -83,22 +83,17 @@ export default function Manage_product({ status }) {
         createProduct(formData)
     }
     async function createProduct(params) {
-        try {
-            const access_token = getCookie("access_token")
-            const onCreate = await axios({
-                method: 'POST',
-                url: `${apiUrl}/api/store/product/create`,
-                headers: {
-                    Authorization: `Bearer ${access_token}`,
-                    "Content-Type": "multipart/form-data"
-                },
-                data: params
-            })
-            status()
-        }
-        catch (error) {
-            console.log(error);
-        }
+        const access_token = getCookie("access_token")
+        const onCreate = await axios({
+            method: 'POST',
+            url: `${apiUrl}/api/store/product/create`,
+            headers: {
+                Authorization: `Bearer ${access_token}`,
+                "Content-Type": "multipart/form-data"
+            },
+            data: params
+        })
+        status()
     }
     return (
         <Fragment>

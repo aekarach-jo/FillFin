@@ -17,9 +17,8 @@ export default function index({ data }) {
     // )
 }
 
-
-// export async function getServerSideProps(context) {
-//     return {
-//         props: { data: context.params }
-//     }
-// }
+export async function getServerSideProps(){
+    return {
+      props : {data : []}
+    }
+  }

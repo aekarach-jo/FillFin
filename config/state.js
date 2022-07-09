@@ -44,7 +44,7 @@ export function AppWrapper({ children }) {
         }
     }
 
-    console.log(state);
+    // console.log(state);
     return <AppContext.Provider value={value}>{children}</AppContext.Provider>
 }
 

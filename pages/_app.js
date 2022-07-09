@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
+import { useState } from "react";
 import "../styles/globals.scss";
 import Head from "next/head";
 import Nav from "../components/subComponent/nav";
@@ -9,8 +9,6 @@ import { AppWrapper } from "../config/state";
 function MyApp({ Component, pageProps }) {
   const router = useRouter()
   const [isFooter, setFooter] = useState(router.pathname)
-  useEffect(() => {
-  }, []);
 
   return (
     <AppWrapper>
@@ -19,7 +17,7 @@ function MyApp({ Component, pageProps }) {
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
-      <Nav/>
+      <Nav />
       <Component {...pageProps} />
       {isFooter != '/member/store/product/[id]'
         ? <Footer />

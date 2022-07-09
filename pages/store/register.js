@@ -12,3 +12,8 @@ export default function register() {
   );
 }
 
+export async function getServerSideProps(){
+  return {
+    props : {data : []}
+  }
+}

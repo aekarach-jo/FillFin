@@ -1,9 +1,15 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 
 export default function index() {
   return (
-    <div>
-      
-    </div>
+    <Fragment>
+      <h1>product</h1>
+    </Fragment>
   )
+}
+
+export async function getServerSideProps() {
+  return {
+    props: { data: [] }
+  }
 }

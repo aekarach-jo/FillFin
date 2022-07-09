@@ -15,7 +15,7 @@ export default function Cart() {
     const [totalPrice, setTotalPrice] = useState()
     const isLogin = state.isLogin.get_login
     useEffect(() => {
-        if(isLogin){
+        if (isLogin) {
             getCartList()
         }
     }, [])
@@ -67,23 +67,18 @@ export default function Cart() {
     }
 
     async function getCartList() {
-        try {
-            const access_token = getCookie("access_token")
-            const getCart = await axios({
-                method: 'GET',
-                url: `${apiUrl}/api/member/cart/get`,
-                headers: {
-                    Authorization: `Bearer ${access_token}`
-                }
-            })
-            const dataCart = getCart.data.cart
-            setTotalPrice(getCart.data.totalprice)
-            setCartList(dataCart)
-            state.cartQty.set_cart_qty(dataCart.length)
-        }
-        catch (error) {
-            console.log(error);
-        }
+        const access_token = getCookie("access_token")
+        const getCart = await axios({
+            method: 'GET',
+            url: `${apiUrl}/api/member/cart/get`,
+            headers: {
+                Authorization: `Bearer ${access_token}`
+            }
+        })
+        const dataCart = getCart.data.cart
+        setTotalPrice(getCart.data.totalprice)
+        setCartList(dataCart)
+        state.cartQty.set_cart_qty(dataCart.length)
     }
 
     async function handleCheckProduct() {
@@ -115,12 +110,12 @@ export default function Cart() {
         <Fragment>
             <div className="shopping-cart">
                 <h2>ตระกร้าสินค้า</h2>
-                <div className="shopping-cart-column">
+                <div className="shopping-cart-column" style={{ height: '100vh' }}>
                     <div className="column-list-left">
                         <table>
                             <thead>
                                 <tr className="head-table">
-                                    <th>รายการสินค้า</th>
+                                    <th style={{ width: '100%' }}>รายการสินค้า</th>
                                     <th className="total">ราคา </th>
                                 </tr>
                             </thead>
@@ -131,7 +126,7 @@ export default function Cart() {
                                             <tr key={index}>
                                                 <td>
                                                     <div className="column-left">
-                                                        <img src={`${apiUrl}/${data.productImg}`} />
+                                                        <img src={`${apiUrl}${data.productImg}`} />
                                                         <div className="column-text">
                                                             <h4>{data.productName}</h4>
                                                             <p>{data.productContent}</p>

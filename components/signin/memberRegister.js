@@ -24,8 +24,8 @@ export default function MemberRegister({ packageData }) {
       const found = packageGender.filter((p) => p.gender == gender)
       setPackage(found)
     } else {
-       const found = packageGender.filter((p) => p.gender == 'men')
-    setPackage(found)
+      const found = packageGender.filter((p) => p.gender == 'men')
+      setPackage(found)
     }
   }, [gender, packageGender]);
 
@@ -82,38 +82,35 @@ export default function MemberRegister({ packageData }) {
   }
 
 
-  const register = async (formRegis) => {
-    try {
-      const fetchRegis = await fetch(`${apiUrl}/api/member/register`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formRegis),
+  async function register(formRegis) {
+    const fetchRegis = await fetch(`${apiUrl}/api/member/register`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formRegis),
+    })
+    const resJson = await fetchRegis.json();
+    if (resJson.status == true) {
+      await Swal.fire({
+        icon: "success",
+        title: resJson.description,
+        position: "center",
+        showConfirmButton: false,
+        timer: 1000,
+      }).then(() => {
+        console.log(resJson.data);
+        setCookies("member_code", resJson.data); // เก็บ user-code ไว้ดึงข้อมูลในหน้า payment
+        router.push(`/member/payment`)
+      });
+    } else {
+      await Swal.fire({
+        icon: "error",
+        title: resJson.description,
+        position: "center",
+        showConfirmButton: false,
+        timer: 1000,
       })
-      const resJson = await fetchRegis.json();
-      if (resJson.status == true) {
-        await Swal.fire({
-          icon: "success",
-          title: resJson.description,
-          position: "center",
-          showConfirmButton: false,
-          timer: 1000,
-        }).then(() => {
-          setCookies("member_code", resJson.data); // เก็บ user-code ไว้ดึงข้อมูลในหน้า payment
-          router.push(`/member/payment`)
-        });
-      } else {
-        await Swal.fire({
-          icon: "error",
-          title: resJson.description,
-          position: "center",
-          showConfirmButton: false,
-          timer: 1000,
-        })
-      }
-    } catch (err) {
-      console.log(err);
     }
   }
 
@@ -212,13 +209,13 @@ export default function MemberRegister({ packageData }) {
                             //     e.target.value.trim()
                             //   ) || e.target.value == ""
                             // ) {
-                              setUsername(e.target.value.trim());
+                            setUsername(e.target.value.trim());
                             // }
                           }}
                           type="text"
                           value={username}
                           placeholder="Username"
-                          // maxLength={10}
+                        // maxLength={10}
                         />
                       </div>
                       <div className="form">
@@ -271,7 +268,7 @@ export default function MemberRegister({ packageData }) {
                     </div>
                   </div>
                 </div>
-                <div className="form-check">
+                <div className="form-check" style={{ display: 'block' }}>
                   <input
                     onClick={() => setIsRegister(true)}
                     className="form-check-input"
@@ -291,23 +288,34 @@ export default function MemberRegister({ packageData }) {
                 <h2>เลือกแพ็กเก็จ</h2>
                 <div className="column">
                   {packages.length > 0 && packages?.map((data, index) => (
-                    <button
-                      key={index}
-                      onClick={() => setPackageId(data.package_id)}
-                      className="column-detail"
-                    >
-                      <Image
-                        width={203}
-                        height={230}
-                        src={`${apiUrl}${data.image}`}
-                        style={{ cursor: "pointer" }}
-                        alt="image-package"
-                        quality={20}
-                      />
-                      <div className="text-line">
-                        <p>{data.name}</p>
+                    <div key={index}>
+                      <div className="column-detail">
+                        <div className="column-img">
+                          <Image
+                            width={217}
+                            height={223}
+                            src={`${apiUrl}${data.image}`}
+                            style={{ cursor: "pointer" }}
+                            alt="image-package"
+                            quality={20}
+                          />                      <div className="bg-img">
+                            <div className="bg-color">
+                            </div>
+                            <div className="text">
+                              <h2>{data.name}</h2>
+                              <button
+                                onClick={() => setPackageId(data.package_id)}
+                                style={{ cursor: "pointer" }}
+                                className="column-detail"
+                              >เลือก</button>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="text-line">
+                          <p>{data.content}</p>
+                        </div>
                       </div>
-                    </button>
+                    </div>
                   ))}
                 </div>
               </div>

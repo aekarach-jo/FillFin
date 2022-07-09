@@ -1,9 +1,8 @@
 import axios from "axios";
-import { getCookie, setCookies } from "cookies-next";
-import React, { Fragment, useEffect, useRef, useState } from "react";
+import { getCookie } from "cookies-next";
+import React, { Fragment, useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import nextConfig from "../../next.config";
-import StorePage from "../../pages/store";
 import Manage_profilePost from "./manage_allPost/manage_allPost";
 import Manage_allPreorder from "./manage_allPreorder/manage_allPreorder";
 import Manage_allProduct from "./manage_allProduct/manage_allProduct";

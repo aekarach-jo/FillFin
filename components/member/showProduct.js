@@ -88,7 +88,7 @@ export default function ShowProduct({ stores }) {
                     <div className="column-bottom">
                       {data.canbuy
                         ? <button><i className="fa-solid fa-cart-shopping" />{data.price}</button>
-                        : <button style={{ cursor: "not-allowed" }} ><i className="fa-solid fa fa-eye-slash" aria-hidden="true" /></button>
+                        : <button style={{ cursor: "not-allowed",  bottom: 0 }} ><i className="fa-solid fa fa-eye-slash" aria-hidden="true" /></button>
                       }
                     </div>
                   </div>

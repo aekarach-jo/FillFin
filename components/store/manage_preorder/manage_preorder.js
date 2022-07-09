@@ -83,28 +83,23 @@ export default function Manage_preorder({ status }) {
     }
 
     async function createPost(params) {
-        try {
-            const apiUrl = nextConfig.apiPath
-            const access_token = getCookie('access_token')
-            const onCreate = await axios({
-                method: 'POST',
-                url: `${apiUrl}/api/store/productPre/create`,
-                headers: {
-                    Authorization: `Bearer ${access_token}`,
-                    "Content-Type": "multipart/form-data"
-                },
-                data: params
-            })
-            Swal.fire({
-                title: "success",
-                icon: "success",
-                position: "center",
-            });
-            status()
-        }
-        catch (error) {
-            console.log(error);
-        }
+        const apiUrl = nextConfig.apiPath
+        const access_token = getCookie('access_token')
+        const onCreate = await axios({
+            method: 'POST',
+            url: `${apiUrl}/api/store/productPre/create`,
+            headers: {
+                Authorization: `Bearer ${access_token}`,
+                "Content-Type": "multipart/form-data"
+            },
+            data: params
+        })
+        Swal.fire({
+            title: "success",
+            icon: "success",
+            position: "center",
+        });
+        status()
     }
 
     return (

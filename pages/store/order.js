@@ -1,7 +1,13 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 
 export default function order() {
   return (
-    <div>order</div>
+    <Fragment><h1>Order</h1></Fragment>
   )
+}
+
+export async function getServerSideProps(){
+  return {
+    props : {data : []}
+  }
 }

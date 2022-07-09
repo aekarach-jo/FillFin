@@ -71,29 +71,24 @@ export default function Manage_post({ status }) {
     }
 
     async function createPost(params) {
-        try {
-            const access_token = getCookie("access_token")
-            const onCreate = await axios({
-                method: 'POST',
-                url: `${apiUrl}/api/store/post/create`,
-                headers: {
-                    Authorization: `Bearer ${access_token}`,
-                    "Content-Type": "multipart/form-data"
-                },
-                data: params
-            })
-            status()
-            Swal.fire({
-                title: "success",
-                icon: "success",
-                position: "center",
-            }).then(() => {
-                emptyForm()
-            })
-        }
-        catch (error) {
-            console.log(error);
-        }
+        const access_token = getCookie("access_token")
+        const onCreate = await axios({
+            method: 'POST',
+            url: `${apiUrl}/api/store/post/create`,
+            headers: {
+                Authorization: `Bearer ${access_token}`,
+                "Content-Type": "multipart/form-data"
+            },
+            data: params
+        })
+        status()
+        Swal.fire({
+            title: "success",
+            icon: "success",
+            position: "center",
+        }).then(() => {
+            emptyForm()
+        })
     }
 
 
@@ -129,8 +124,8 @@ export default function Manage_post({ status }) {
                                     onClick={() => inputFirstImage.current.click()}
                                 />
                             ) : (
-                                <div class="bg-img" onClick={() => inputFirstImage.current.click()}>
-                                    <i class="fa-regular fa-image"></i>
+                                <div className="bg-img" onClick={() => inputFirstImage.current.click()}>
+                                    <i className="fa-regular fa-image"></i>
                                 </div>
                             )}
                         <input
@@ -154,8 +149,8 @@ export default function Manage_post({ status }) {
                                     onClick={() => inputSecondImage.current.click()}
                                 />
                             ) : (
-                                <div class="bg-img" onClick={() => inputSecondImage.current.click()}>
-                                    <i class="fa-regular fa-image"></i>
+                                <div className="bg-img" onClick={() => inputSecondImage.current.click()}>
+                                    <i className="fa-regular fa-image"></i>
                                 </div>
                             )}
                         <input
@@ -179,8 +174,8 @@ export default function Manage_post({ status }) {
                                     onClick={() => inputThirdImage.current.click()}
                                 />
                             ) : (
-                                <div class="bg-img" onClick={() => inputThirdImage.current.click()}>
-                                    <i class="fa-regular fa-image"></i>
+                                <div className="bg-img" onClick={() => inputThirdImage.current.click()}>
+                                    <i className="fa-regular fa-image"></i>
                                 </div>
                             )}
                         <input
@@ -204,8 +199,8 @@ export default function Manage_post({ status }) {
                                     onClick={() => inputFourthImage.current.click()}
                                 />
                             ) : (
-                                <div class="bg-img" onClick={() => inputFourthImage.current.click()}>
-                                    <i class="fa-regular fa-image"></i>
+                                <div className="bg-img" onClick={() => inputFourthImage.current.click()}>
+                                    <i className="fa-regular fa-image"></i>
                                 </div>
                             )}
                         <input

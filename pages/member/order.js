@@ -10,3 +10,9 @@ export default function order() {
     </Fragment>
   )
 }
+
+export async function getServerSideProps(){
+  return {
+    props : {data : []}
+  }
+}

@@ -18,22 +18,15 @@ export async function getServerSideProps({ query, req }) {
   const access_token = req.cookies.access_token;
   const gender = req.cookies.gender
   const product_code = query.id
-  try {
-    const apiGetProductCode = await axios({
-      method: 'GET',
-      url: `${apiUrl}/api/product/${product_code}?gender=${gender}`,
-      headers: {
-        Authorization: `Bearer ${access_token}`
-      }
-    })
-    return {
-      props: { product: apiGetProductCode.data.data }
+  const apiGetProductCode = await axios({
+    method: 'GET',
+    url: `${apiUrl}/api/product/${product_code}?gender=${gender}`,
+    headers: {
+      Authorization: `Bearer ${access_token}`
     }
+  })
+  return {
+    props: { product: apiGetProductCode.data.data }
   }
-  catch (error) {
-    console.log(error);
-    return {}
-  }
-
 }
 

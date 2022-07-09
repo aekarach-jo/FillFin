@@ -9,14 +9,15 @@ import { getCookie, removeCookies, setCookies } from "cookies-next";
 import axios from "axios";
 import { useAppContext } from "../../config/state";
 
-export default function Login() {
+export default function Login({ banner }) {
   const state = useAppContext()
   const apiUrl = nextConfig.apiPath
   const router = useRouter();
   const [pathLogin, setPathLogin] = useState("");
+  const [showForm, setShowForm] = useState("member");
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [showForm, setShowForm] = useState("member");
 
   useEffect(() => {
     if (showForm) {
@@ -47,52 +48,42 @@ export default function Login() {
     removeCookies("member_code")
     removeCookies("store_code")
     removeCookies("gender")
-    try {
-      const onLogin = await axios.post(
-        `${apiUrl}/api/${pathLogin}/signin`, formLogin)
-      const data = onLogin.data
-      console.log(data);
-      if (data.status) {
-        state.isLogin.set_login(true)
-        setCookies("access_token", data.data.access_token);
-        setCookies("refresh_token", data.data.refresh_token);
-        setCookies("member_code", data.data.member_code);
-        setCookies("store_code", data.data.store_code);
-        setCookies("gender", data.data.gender)
-        setCookies("name", data.data.userName)
-        
-        Swal.fire({
-          title: data.description,
-          icon: "success",
-          timer: 1000,
-          showCancelButton: false,
-          showConfirmButton: false,
+    const onLogin = await axios.post(
+      `${apiUrl}/api/${pathLogin}/signin`, formLogin)
+    const data = onLogin.data
+    console.log(data);
+    if (data.status) {
+      state.isLogin.set_login(true)
+      setCookies("access_token", data.data.access_token);
+      setCookies("refresh_token", data.data.refresh_token);
+      setCookies("member_code", data.data.member_code);
+      setCookies("store_code", data.data.store_code);
+      setCookies("gender", data.data.gender)
+      setCookies("name", data.data.userName)
 
-        }).then(() => {
-          if (pathLogin == 'member') {
-            apiGetStatusPackage()
-          }
-          else if (pathLogin == 'store') {
-            router.push('/store')
-          }
-        })
-
-      } else {
-        await Swal.fire({
-          title: data.description,
-          icon: "error",
-          timer: 1000,
-          showCancelButton: false,
-          showConfirmButton: false,
-        });
-      }
-    } catch (err) {
-      await Swal.fire({
-        title: 'กรุณาลองใหม่อีกครั้ง' + err,
-        icon: "error",
-        // timer: 1500,
+      Swal.fire({
+        title: data.description,
+        icon: "success",
+        timer: 1000,
         showCancelButton: false,
-        showConfirmButton: true,
+        showConfirmButton: false,
+
+      }).then(() => {
+        if (pathLogin == 'member') {
+          apiGetStatusPackage()
+        }
+        else if (pathLogin == 'store') {
+          router.push('/store')
+        }
+      })
+
+    } else {
+      await Swal.fire({
+        title: data.description,
+        icon: "error",
+        timer: 1000,
+        showCancelButton: false,
+        showConfirmButton: false,
       });
     }
   }
@@ -138,13 +129,13 @@ export default function Login() {
             />
           </div>
           <ContactUs />
-          <div className="column-shadow" style={{ zIndex: '-1'}}>
+          <div className="column-shadow" style={{ zIndex: '-1' }}>
             <div className="shadow-left" />
             <div className="shadow-right" />
           </div>
           <div className="column-login">
             <div className="column-img-top">
-              <Image width={1096} height={300} src="/assets/images/sale.png" alt="image-banner" />
+              <Image width={1096} height={300} src={`${apiUrl}/${banner[0].image}`} alt="image-banner" />
             </div>
             <div className="column-text-login">
               <h2>เข้าสู่ระบบ</h2>
@@ -219,7 +210,8 @@ export default function Login() {
                       onChange={(e) => setPassword(e.target.value)}
                       type="password"
                       value={password}
-                      placeholder="User Name"
+                      placeholder="Password"
+                      
                     />
                     <a className="text-bottom">ลืมชื่อผู้ใช้ หรือ รหัสผ่าน</a>
                   </div>
@@ -229,10 +221,10 @@ export default function Login() {
                 </button>
               </div>
             </div>
-            <h2>หรือ</h2>
-            <p>
-              หากคุณยังไม่มีบัญชีผู้ใช้ สามารถเข้าไปสมัครได้ที่ด้านล้างนี้เลย
-            </p>
+            <div className="column-text-detail">
+              <h2>หรือ</h2>
+              <p>หากคุณยังไม่มีบัญชีผู้ใช้ สามารถเข้าไปสมัครได้ที่ด้านล่างนี้เลย</p>
+            </div>
             {showForm == "member" ? (
               <Link href="/member/register">
                 <button className="btn-menbar">สมัครสมาชิก</button>

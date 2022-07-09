@@ -6,6 +6,7 @@ import Image from "next/image";
 import ContactUs from "../subComponent/contactUs";
 import { getCookie } from "cookies-next";
 import { useRouter } from "next/router";
+import axios from "axios";
 
 const apiUrl = nextConfig.apiPath;
 
@@ -15,39 +16,21 @@ export default function Payment() {
   const [image, setImage] = useState(null);
 
   const [bankList, setBankList] = useState([]);
-  const [bank, setBank] = useState("");
-
+  const [bank, setBank] = useState([]);
   const [isLoadSuccess, setIsLoadSuccess] = useState(false);
   const [toggleShowPass, setToggleShowPass] = useState(true);
 
   const [packageData, setpackageData] = useState([]);
   const [member, setMember] = useState([])
   const [statusPackage, setStatusPackage] = useState()
+  const [dropdownActiveBank, setDropdownActiveBank] = useState(false)
+
 
   useEffect(() => {
-    apiGetMember(),
-      apiGetpackage(),
+    apiGetpackage(),
       getBank(),
       apiGetStatusPackage()
   }, []);
-
-  async function apiGetMember() {
-    try {
-      const mcode = getCookie("member_code")
-      const access_token = getCookie("access_token")
-      const getMember = await fetch(`${apiUrl}/api/member/get/${mcode}`, {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${access_token}`
-        }
-      })
-      const memberJson = await getMember.json()
-      setMember(memberJson.data)
-    }
-    catch (err) {
-    }
-  }
-
   async function apiGetpackage() {
     try {
       const mcode = getCookie("member_code")
@@ -58,9 +41,11 @@ export default function Payment() {
         }
       })
       const packageJson = await getPackage.json()
+      console.log(packageJson)
       !packageJson.status
         ? null
         : setpackageData(packageJson.data)
+      setMember(packageJson.data)
     }
     catch (err) {
       console.log(err);
@@ -109,14 +94,15 @@ export default function Payment() {
   }
 
   async function getBank() {
-    const bankData = await fetch(`${apiUrl}/api/bank/get`, {
+    const bankData = await axios(`${apiUrl}/api/bank/get`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
       }
     })
-    const bankJson = await bankData.json()
-    setBankList(bankJson.data);
+    const bank = bankData.data
+    setBank(bank.data[0])
+    setBankList(bank.data)
     setTimeout(() => setIsLoadSuccess(true), 2000);
   };
 
@@ -254,18 +240,39 @@ export default function Payment() {
             </div>
             <div className="column-pay-subscription">
               {statusPackage == "pending"
-                ? <h1>กรุณารอแอดมินยืนยันการชำระเงิน</h1>
-                : <Fragment>
+                ? <h1 style={{ textAlign : 'center'}}>กรุณารอแอดมินยืนยันการชำระเงิน</h1>
+                : <>
                   <h2>ชำระค่าสมัครสมาชิก</h2>
                   <div className="column-pay">
-                    <select onChange={(e) => setBank(e.target.value)} defaultValue="none">
-                      <option disabled value="none">กรุณาเลือกข้อมูล</option>
-                      {bankList?.map((data, index) => (
-                        <option key={index} value={data.id} data-img_src={data.image}>
-                          {data.bank_shortname}/{data.bank_number}/{data.name}
-                        </option>
-                      ))}
-                    </select>
+                    <div className="pay-dropdown">
+                      <div className="dropdown-toggle" onClick={() => setDropdownActiveBank(prev => !prev)}>
+                        <div className="dropdown-toggle-left">
+                          <Image src={`${apiUrl}/${bank.image}`} width={47} height={25} />
+                          {bank.bank_name} / {bank.bank_number} / {bank.name}
+                        </div>
+                        <div className="dropdown-toggle-right">
+                          <i className="fa-solid fa-angle-down" />
+                        </div>
+                      </div>
+                      <div className={`pay-dropdown-menu ${dropdownActiveBank && 'active'}`} id="pay-dropdown-menu">
+                        {bankList
+                          ?
+                          <>
+                            {bankList?.map((data, index) => (
+                              <div key={index} className="dropdown-item" onClick={() => {
+                                setDropdownActiveBank(prev => !prev)
+                                setBank(data)
+                              }
+                              }>
+                                <img src={`${apiUrl}/${data.image}`} />
+                                {data.bank_name} / {data.bank_number} / {data.name}
+                              </div>
+                            ))}
+                          </>
+                          : <p>ไม่มีข้อมูล</p>
+                        }
+                      </div>
+                    </div>
                     <div className="column-img-pay">
                       <div
                         className="column-left"
@@ -300,7 +307,7 @@ export default function Payment() {
                       </div>
                     </div>
                   </div>
-                </Fragment>
+                </>
               }
             </div>
             <div className="btn-bottom">

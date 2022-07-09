@@ -5,3 +5,9 @@ export default function preview() {
     <div>preview</div>
   )
 }
+
+export async function getServerSideProps(){
+  return {
+    props : {}
+  }
+}

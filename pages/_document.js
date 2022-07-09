@@ -43,6 +43,9 @@ export default function Document() {
         {/* หน้า Oder member */}
         <link rel="stylesheet" href="/assets/css/order-list.min.css" />
 
+        {/* หน้า content */}
+        <link rel="stylesheet" href="/assets/css/terms-service.min.css" />
+
         {/* All using */}
         <link rel="stylesheet" href="/assets/css/global.min.css" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -62,6 +65,7 @@ export default function Document() {
           rel="stylesheet"
           href="https://unpkg.com/swiper@8/swiper-bundle.min.css"
         />
+        
       </Head>
       <body>
         <Main />

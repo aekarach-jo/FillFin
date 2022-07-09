@@ -15,7 +15,7 @@ export default function Banner({ banner }) {
         spaceBetween={80}
         slidesPerView={1}
         loop={true}
-        pagination={{ clickable: true , color: "white" }}
+        pagination={{ clickable: true, color: "white" }}
         allowSlideNext={true}
       // onSwiper={(swiper) => console.log(swiper)}
       // onSlideChange={() => console.log('slide change')}
@@ -26,16 +26,14 @@ export default function Banner({ banner }) {
               <div className="swiper-wrapper">
                 <div className="swiper-slide">
                   {/* <Image width={1096} height={300} src={`${apiUrl}/${data.image}`} alt="image-banner1" /> */}
-                  <img style={{ width: "100%"}} src={`${apiUrl}/${data.image}`} alt="image-banner1" />
+                  <Image width={1096} height={300} src={`${apiUrl}${data.image}`} alt="image-banner1" />
                 </div>
               </div>
               <div className="swiper-pagination" />
             </div>
           </SwiperSlide>
         ))}
-
       </Swiper>
-
     </Fragment>
   );
 }

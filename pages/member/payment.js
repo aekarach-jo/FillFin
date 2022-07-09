@@ -12,3 +12,9 @@ export default function payment() {
     </Fragment>
   );
 }
+
+export async function getServerSideProps(){
+  return {
+    props : {data : []}
+  }
+}

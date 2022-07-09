@@ -56,7 +56,6 @@ export default function PaymentSummary() {
     }
 
     async function getCartList() {
-        try {
             const access_token = getCookie("access_token")
             const getCart = await axios({
                 method: 'GET',
@@ -70,10 +69,6 @@ export default function PaymentSummary() {
             setNetPrice(getCart.data.netprice)
             setCartList(dataCart)
             console.log(getCart.data)
-        }
-        catch (error) {
-            console.log(error);
-        }
     }
     async function getBank() {
         const bankData = await fetch(`${apiUrl}/api/bank/get`, {

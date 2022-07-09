@@ -90,7 +90,7 @@ export default function Order_member() {
                                 </div>
                                 <div className="column-none-list active" id="btn-list">
                                     <button className="btn-down" onClick={() => onShowOrderList()}><i className="fa-solid fa-angle-down" />แสดงรายการ รายการ</button>
-                                    <button className="btn-up " id="btn-up" onclick="showlistup('hide')"><i className="fa-solid fa-angle-up" />ซ่อนรายการ รายการ</button>
+                                    <button className="btn-up " id="btn-up" ><i className="fa-solid fa-angle-up" />ซ่อนรายการ รายการ</button>
                                 </div>
                                 <div className="column-address-bottom">
                                     <div className="column-address">ข้อมูลจัดส่ง</div>

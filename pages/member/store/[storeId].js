@@ -38,44 +38,33 @@ export async function getServerSideProps({ query, res }) {
     gender: gender,
     page: "store"
   }
-  try {
-    const [getStorebyStoreCode, getBannerCover, getBannerAds] = await Promise.all([
-      axios({
-        method: 'GET',
-        url: `${apiUrl}/api/product/${gender}/store/${store_code}`,
-        headers: {
-          Authorization: `Bearer ${access_token}`
-        }
-      }),
-      axios({
-        method: 'POST',
-        url: `${apiUrl}/api/website/getBanner`,
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        data: formGetBanner
-      }),
-      axios({
-        method: 'GET',
-        url: `${apiUrl}/api/website/getAds/store`
-      })
-    ])
-
-    return {
-      props: {
-        store: getStorebyStoreCode.data.data,
-        bannerCover: getBannerCover.data,
-        bannerAds: getBannerAds.data
+  const [getStorebyStoreCode, getBannerCover, getBannerAds] = await Promise.all([
+    axios({
+      method: 'GET',
+      url: `${apiUrl}/api/product/${gender}/store/${store_code}`,
+      headers: {
+        Authorization: `Bearer ${access_token}`
       }
+    }),
+    axios({
+      method: 'POST',
+      url: `${apiUrl}/api/website/getBanner`,
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      data: formGetBanner
+    }),
+    axios({
+      method: 'GET',
+      url: `${apiUrl}/api/website/getAds/store`
+    })
+  ])
+  return {
+    props: {
+      store: getStorebyStoreCode.data.data,
+      bannerCover: getBannerCover.data,
+      bannerAds: getBannerAds.data
     }
   }
-  catch (error) {
-    console.log(error);
-
-    return {
-      props: {}
-    }
-  }
-
 }
 

@@ -7,7 +7,7 @@ import Script from "next/script";
 import { getCookie, setCookies } from "cookies-next";
 
 
-export default function Index({ banner}) {
+export default function Index({ banner }) {
   const router = useRouter();
   const [men, setMen] = useState("men");
   const [women, setWomen] = useState("women");
@@ -28,13 +28,17 @@ export default function Index({ banner}) {
       <div className="detil-index-column" >
         <div className="detil-index">
           <div className="img-background">
-            <img
-              className="img-left"
+            <Image
+              width={404}
+              height={1047}
+                className="img-left"
               src="/assets/images/man.png"
               alt="image-gender"
             />
-            <img
-              className="img-right"
+            <Image
+              width={404}
+              height={1047}
+                className="img-right"
               src="/assets/images/woman.png"
               alt="image-gender"
             />
@@ -49,7 +53,7 @@ export default function Index({ banner}) {
               <iframe src="https://www.youtube.com/embed/CUfPYWtydgk" title="YouTube video player" frameBorder={0} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
               <p className="text-vedio">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas tempore dolore id porro quos maxime, fugiat sint minus odit dolores repudiandae! Dolore nostrum dolor libero est? Officiis ratione est vel.</p>
             </div>
-            <Banner banner={banner}/>
+            <Banner banner={banner} />
             <div className="column-text">
               <h2>หมวดหมู่สินค้า</h2>
               <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tristique pharetra, mattis quam volutpat.</p>
@@ -62,7 +66,6 @@ export default function Index({ banner}) {
           </div>
         </div>
       </div>
-      <Script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></Script>
     </Fragment>
   );
 }

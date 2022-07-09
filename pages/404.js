@@ -1,9 +1,7 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 
-export default function PageNotFound() {
-    return (
-        <Fragment>
-            <h1>404 Page with all the custom styleing necessary.</h1>
-        </Fragment>
-    )
+export default function ErrorPageNotfound() {
+  return (
+    <div>404</div>
+  )
 }

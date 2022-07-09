@@ -79,7 +79,6 @@ export default function StoreRegister() {
     formData.append("age", age);
     formData.append("gender", gender)
     formData.append("image", inputImage.current.files[0]);
-    try {
       const fetchRegis = await axios.post(
         `${apiUrl}/api/store/register`, formData
       )
@@ -97,10 +96,6 @@ export default function StoreRegister() {
             })
           }
         })
-    }
-    catch (error) {
-      console.log(error);
-    }
   }
 
   return (

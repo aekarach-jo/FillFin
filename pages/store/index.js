@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { getCookie } from 'cookies-next';
 import Head from 'next/head';
 import React, { Fragment, useState } from 'react'
 import Store_premium from '../../components/member/store/store_premium/store_premium';
@@ -12,7 +11,6 @@ export default function StorePage({ storeObj }) {
   function updateChangeView(bool) {
     setChangeView(bool);
   }
-
   if (changeView) {
     return (
       <Fragment>
@@ -29,15 +27,11 @@ export default function StorePage({ storeObj }) {
       </Fragment>
     )
   }
-
 }
 
-export async function getServerSideProps({ query, res }) {
-
+export async function getServerSideProps({ res }) {
   const apiUrl = nextConfig.apiPath;
   const access_token = res.req.cookies.access_token;
-  const store_code = query.storeId
-  const member_code = res.req.cookies.member_code
   try {
     const onGetStoreData = await axios({
       method: 'GET',
@@ -54,7 +48,9 @@ export async function getServerSideProps({ query, res }) {
     }
   }
   catch (error) {
-    console.log(error);
-    return {}
+    console.log(error)
+    return {
+      props: { storeObj: [] }
+    }
   }
 }

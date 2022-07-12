@@ -43,6 +43,7 @@ export default function Login({ banner }) {
 
 
   async function login(formLogin, pathLogin) {
+    removeCookies("name")
     removeCookies("access_token")
     removeCookies("refresh_token")
     removeCookies("member_code")
@@ -51,16 +52,16 @@ export default function Login({ banner }) {
     const onLogin = await axios.post(
       `${apiUrl}/api/${pathLogin}/signin`, formLogin)
     const data = onLogin.data
-    console.log(data);
+    console.log(data.data);
     if (data.status) {
       state.isLogin.set_login(true)
+      state.memberDetail.set_memberDetail(data.data.userName)
+      setCookies("name", data.data.userName)
       setCookies("access_token", data.data.access_token);
       setCookies("refresh_token", data.data.refresh_token);
       setCookies("member_code", data.data.member_code);
       setCookies("store_code", data.data.store_code);
       setCookies("gender", data.data.gender)
-      setCookies("name", data.data.userName)
-
       Swal.fire({
         title: data.description,
         icon: "success",
@@ -79,7 +80,7 @@ export default function Login({ banner }) {
 
     } else {
       await Swal.fire({
-        title: data.description,
+        title: "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง",
         icon: "error",
         timer: 1000,
         showCancelButton: false,
@@ -211,7 +212,7 @@ export default function Login({ banner }) {
                       type="password"
                       value={password}
                       placeholder="Password"
-                      
+
                     />
                     <a className="text-bottom">ลืมชื่อผู้ใช้ หรือ รหัสผ่าน</a>
                   </div>

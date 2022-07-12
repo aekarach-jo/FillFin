@@ -16,22 +16,41 @@ export default function Nav() {
   const [dropdownActive, setDropdownActive] = useState(false)
   const [dropdownActiveMenu, setDropdownActiveMenu] = useState(false)
   const isLogin = state.isLogin.get_login
+  const [username, setUsername] = useState(getCookie('name'))
+
+
   useEffect(() => {
-    if (isLogin == 0) {
-      getCartList()
-      getUsername()
-    }
+    checkLogin()
   }, [])
 
+  async function checkLogin() {
+    const access_token = getCookie("access_token")
+    if (access_token) {
+      const apiCheck = await axios({
+        method: 'POST',
+        url: `${apiUrl}/api/member/checkToken`,
+        headers: { 'Content-Type': 'application/json' },
+        data: JSON.stringify({
+          token: access_token
+        })
+      })
+      if (apiCheck.data.status) {
+        getUsername()
+      } else {
+        state.isLogin.set_login(false)
+      }
+    }
+  }
+
   function getUsername() {
-    const username = getCookie("name")
     if (username) {
       const slic = username.slice(3, 6)
       const repl = username.replace(slic, "****")
       setUser(repl)
+      getCartList()
       state.isLogin.set_login(true)
     } else {
-      return false;
+      state.isLogin.set_login(true)
     }
   }
 
@@ -85,7 +104,9 @@ export default function Nav() {
                     <p><i className="fa-regular fa-clock" />เวลาสมาชิกคงเหลือ: 365 วัน</p>
                     <button className="btn-apply">เพิ่มระยะเวลา</button>
                   </div>
-                  <button>รายการสั่งซื้อ</button>
+                  <Link href='/member/order'>
+                    <button>รายการสั่งซื้อ</button>
+                  </Link>
                   <button onClick={() => onSignOut()}>ออกจากระบบ</button>
                 </div>
               </div>

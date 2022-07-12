@@ -16,7 +16,7 @@ export default function Store_premium({ stores }) {
                 <div className="premiem-column-left">
                     <div className="column-text-top">
                         <div className="column-text-left">
-                        <Image width={100} height={100} src={`${apiUrl}/${store_detail.profile_img}`} />
+                            <Image width={100} height={100} src={`${apiUrl}/${store_detail.profile_img}`} />
                         </div>
                         <div className="column-text-right">
                             <h2>{store_detail.name}</h2>
@@ -41,14 +41,15 @@ export default function Store_premium({ stores }) {
                         <p>{store_detail.concept}</p>
                     </div>
                     {/* <iframe src={"https://www.youtube.com/embed/CUfPYWtydgk"} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe> */}
-                     <video
-                        style={{ width : '100%'}}
+                    <video
+                        className="video"
+                        style={{ width: '100%' }}
                         controls
                         muted
                         autoPlay
-                        src={`http://192.168.1.51:3000/video/AWAKENING_NEWZEALAND.mp4`}
-                        // poster='/assets/images/sale.png'
-                        
+                        src={`http://192.168.1.51:3000/streaming/video/2022/07/AWAKENING_NEWZEALAND.mp4`}
+                        poster='/assets/images/sale.png'
+
                     />
                     <div className="column-box-product">
                         <Show_post postList={store_post} />

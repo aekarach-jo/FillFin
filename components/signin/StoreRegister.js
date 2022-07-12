@@ -9,7 +9,7 @@ import axios from "axios";
 
 const apiUrl = nextConfig.apiPath;
 
-export default function StoreRegister() {
+export default function StoreRegister({ content }) {
   const router = useRouter();
   let formData = new FormData();
 
@@ -79,23 +79,23 @@ export default function StoreRegister() {
     formData.append("age", age);
     formData.append("gender", gender)
     formData.append("image", inputImage.current.files[0]);
-      const fetchRegis = await axios.post(
-        `${apiUrl}/api/store/register`, formData
-      )
-        .then(res => {
-          if (res.status) {
-            Swal.fire({
-              title: 'สำเร็จ กรุณาติดต่อแอดมิน',
-              icon: 'success',
-              position: 'center',
-              showConfirmButton: true,
-              confirmButtonText: 'ตกลง',
-              showCancelButton: false
-            }).then(() => {
-              router.push('/login')
-            })
-          }
-        })
+    const fetchRegis = await axios.post(
+      `${apiUrl}/api/store/register`, formData
+    )
+      .then(res => {
+        if (res.status) {
+          Swal.fire({
+            title: 'สำเร็จ กรุณาติดต่อแอดมิน',
+            icon: 'success',
+            position: 'center',
+            showConfirmButton: true,
+            confirmButtonText: 'ตกลง',
+            showCancelButton: false
+          }).then(() => {
+            router.push('/login')
+          })
+        }
+      })
   }
 
   return (
@@ -106,15 +106,14 @@ export default function StoreRegister() {
           <div className="column-apply">
             <div className="column-top-apply">
               <div className="column-left">
-                <iframe
-                  width={536}
-                  height={300}
-                  src="https://www.youtube.com/embed/CUfPYWtydgk"
-                  title="YouTube video player"
-                  frameBorder={0}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  loading="lazy"
+                <video
+                  className="video"
+                  width={400}
+                  controls
+                  muted
+                  autoPlay
+                  src={`${apiUrl}/streaming${content.videoLink}`}
+                  poster='/assets/images/sale.png'
                 />
               </div>
               <div className="column-right">

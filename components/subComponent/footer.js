@@ -1,10 +1,7 @@
+import Link from 'next/link'
 import React, { Fragment } from 'react'
-import { useAppContext } from '../../config/state'
 
 export default function Footer() {
-  const state = useAppContext()
-
-
   return (
     <Fragment>
       <footer >
@@ -15,8 +12,12 @@ export default function Footer() {
             © 2022 Fillfin.com All Rights Reserved
           </div>
           <div className="column-right">
-            <p>Terms of Service</p>
-            <p>Privacy Policy</p>
+            <Link href='/content/terms-of-service'>
+              <p style={{ cursor: "pointer" }}>Terms of Service</p>
+            </Link>
+            <Link href='/content/privacy-policy'>
+              <p style={{ cursor: "pointer" }}>Privacy Policy</p>
+            </Link>
           </div>
         </div>
       </footer>

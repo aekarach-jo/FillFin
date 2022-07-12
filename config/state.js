@@ -5,7 +5,8 @@ const AppContext = createContext();
 let initialState = {
     cartQty: 0,
     cartObj: [],
-    isLogin: 0
+    isLogin: false,
+    memberDetail : ""
 }
 
 function reducer(state, action) {
@@ -16,6 +17,8 @@ function reducer(state, action) {
             return { ...state, cartObj: action.data };
         case "isLogin":
             return { ...state, isLogin: action.data }
+        case "memberDetail":
+            return { ...state, memberDetail: action.data}
         default:
             return state;
     }
@@ -40,6 +43,12 @@ export function AppWrapper({ children }) {
             get_login: state.isLogin,
             set_login: (params) => {
                 dispatch({ type: "isLogin", data: params })
+            }
+        },
+        memberDetail: {
+            get_memberDetail : state.memberDetail,
+            set_memberDetail : (params) => {
+                dispatch({ type : "memberDetail", data : params})
             }
         }
     }

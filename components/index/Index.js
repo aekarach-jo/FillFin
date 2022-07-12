@@ -1,13 +1,13 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useState } from "react";
 import Banner from "../subComponent/banner";
 import ContactUs from "../subComponent/contactUs";
 import { useRouter } from "next/router";
 import Image from "next/image";
-import Script from "next/script";
 import { getCookie, setCookies } from "cookies-next";
+import nextConfig from "../../next.config";
 
-
-export default function Index({ banner }) {
+const apiUrl = nextConfig.apiPath
+export default function Index({ banner, content }) {
   const router = useRouter();
   const [men, setMen] = useState("men");
   const [women, setWomen] = useState("women");
@@ -31,14 +31,14 @@ export default function Index({ banner }) {
             <Image
               width={404}
               height={1047}
-                className="img-left"
+              className="img-left"
               src="/assets/images/man.png"
               alt="image-gender"
             />
             <Image
               width={404}
               height={1047}
-                className="img-right"
+              className="img-right"
               src="/assets/images/woman.png"
               alt="image-gender"
             />
@@ -49,9 +49,17 @@ export default function Index({ banner }) {
             <div className="shadow-right" />
           </div>
           <div className="column-detil-index">
-            <div className="column-vedio">
-              <iframe src="https://www.youtube.com/embed/CUfPYWtydgk" title="YouTube video player" frameBorder={0} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
-              <p className="text-vedio">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas tempore dolore id porro quos maxime, fugiat sint minus odit dolores repudiandae! Dolore nostrum dolor libero est? Officiis ratione est vel.</p>
+            <div className="column-vedio" style={{ alignItems: "center" }}>
+              <video
+                className="video"
+                width={400}
+                controls
+                muted
+                autoPlay
+                src={`${apiUrl}/streaming${content.videoLink}`}
+                poster='/assets/images/sale.png'
+              />
+              <p className="text-vedio">{content.content}</p>
             </div>
             <Banner banner={banner} />
             <div className="column-text">

@@ -240,15 +240,17 @@ export default function Payment() {
             </div>
             <div className="column-pay-subscription">
               {statusPackage == "pending"
-                ? <h1 style={{ textAlign : 'center'}}>กรุณารอแอดมินยืนยันการชำระเงิน</h1>
+                ? <h1 style={{ textAlign: 'center' }}>กรุณารอแอดมินยืนยันการชำระเงิน</h1>
                 : <>
                   <h2>ชำระค่าสมัครสมาชิก</h2>
                   <div className="column-pay">
                     <div className="pay-dropdown">
                       <div className="dropdown-toggle" onClick={() => setDropdownActiveBank(prev => !prev)}>
-                        <div className="dropdown-toggle-left">
-                          <Image src={`${apiUrl}/${bank.image}`} width={47} height={25} />
-                          {bank.bank_name} / {bank.bank_number} / {bank.name}
+                        <div className="dropdown-toggle-left"  style={{ display : 'flex'}}>
+                          <img src={`${apiUrl}${bank.image}`} width={35} height={25} style={{ alignItems: "center", marginRight : '1rem' }} />
+                          <span>
+                            {bank.bank_name} / {bank.bank_number} / {bank.name}
+                          </span>
                         </div>
                         <div className="dropdown-toggle-right">
                           <i className="fa-solid fa-angle-down" />

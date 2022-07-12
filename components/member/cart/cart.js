@@ -15,9 +15,7 @@ export default function Cart() {
     const [totalPrice, setTotalPrice] = useState()
     const isLogin = state.isLogin.get_login
     useEffect(() => {
-        if (isLogin) {
-            getCartList()
-        }
+        getCartList()
     }, [])
 
     const Toast = Swal.mixin({
@@ -40,8 +38,11 @@ export default function Cart() {
             position: 'center',
             showCancelButton: true,
             showConfirmButton: true,
+            confirmButtonColor : '#C93A87',
             confirmButtonText: 'ยืนยัน',
-            cancelButtonText: 'ยกเลิก'
+            cancelButtonText: 'ยกเลิก',
+            allowOutsideClick: false,
+            animation: true,
         }).then(res => {
             if (res.isConfirmed) {
                 onDeleteItem(product_code)

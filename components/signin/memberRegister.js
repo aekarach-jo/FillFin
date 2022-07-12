@@ -7,7 +7,7 @@ import { setCookies } from "cookies-next";
 
 const apiUrl = nextConfig.apiPath;
 
-export default function MemberRegister({ packageData }) {
+export default function MemberRegister({ packageData, content }) {
   const [packageGender, setPackageGender] = useState(packageData)
   const router = useRouter();
   const [isRegister, setIsRegister] = useState(false); //checkbox
@@ -83,6 +83,7 @@ export default function MemberRegister({ packageData }) {
 
 
   async function register(formRegis) {
+    console.log(formRegis)
     const fetchRegis = await fetch(`${apiUrl}/api/member/register`, {
       method: "POST",
       headers: {
@@ -137,14 +138,14 @@ export default function MemberRegister({ packageData }) {
           <div className="column-apply">
             <div className="column-top-apply">
               <div className="column-left">
-                <iframe
-                  width={536}
-                  height={300}
-                  src="https://www.youtube.com/embed/CUfPYWtydgk"
-                  title="YouTube video player"
-                  frameBorder={0}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
+                <video
+                  className="video"
+                  width={400}
+                  controls
+                  muted
+                  autoPlay
+                  src={`${apiUrl}/streaming${content.videoLink}`}
+                  poster='/assets/images/sale.png'
                 />
               </div>
               <div className="column-right">
@@ -289,7 +290,7 @@ export default function MemberRegister({ packageData }) {
                 <div className="column">
                   {packages.length > 0 && packages?.map((data, index) => (
                     <div key={index}>
-                      <div className="column-detail">
+                      <div className="column-detail" >
                         <div className="column-img">
                           <Image
                             width={217}
@@ -303,8 +304,7 @@ export default function MemberRegister({ packageData }) {
                             </div>
                             <div className="text">
                               <h2>{data.name}</h2>
-                              <button
-                                onClick={() => setPackageId(data.package_id)}
+                              <button onClick={() => setPackageId(data.package_id)}
                                 style={{ cursor: "pointer" }}
                                 className="column-detail"
                               >เลือก</button>

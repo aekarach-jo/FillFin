@@ -1,24 +1,15 @@
 import React, { Fragment } from 'react'
+import ContactUs from '../subComponent/contactUs'
 
 export default function Content({ content }) {
-    console.log(content)
     return (
         <Fragment>
             <div className="terms-service">
                 <div className="img-background">
-                    <img className="img-left" src="/assets/images/man.png" />
-                    <img className="img-right" src="/assets/images/woman.png" />
+                    <img className="img-left" src="/assets/images/man.png" alt="image-men"/>
+                    <img className="img-right" src="/assets/images/woman.png" alt="image-women"/>
                 </div>
-                <div className="contact-us">
-                    <div className="column-contact-us">
-                        <div className="text-contact-us">
-                            <p>ติดต่อเรา</p>
-                        </div>
-                        <div className="img-contact-us">
-                            <img src="/assets/images/contact.jpg" />
-                        </div>
-                    </div>
-                </div>
+                <ContactUs />
                 <div className="terms-service-column">
                     <div className="text-head">
                         <h2>Fillfin Terms of Service</h2>

@@ -18,6 +18,7 @@ export default function Store({ stores, statusChange }) {
   const [storePost, setStorePost] = useState(store_post)
   const [statusGetDataAll, setStatusGetDataAll] = useState(false);
   const [concept, setConcept] = useState("")
+  const [onPopupModal, setOnPopupModal] = useState(false)
 
   useEffect(() => {
     if (statusGetDataAll) {
@@ -60,6 +61,48 @@ export default function Store({ stores, statusChange }) {
   function handleStatusChange() {
     setStatusGetDataAll(true);
   }
+
+
+  function ModalEdit() {
+    return (
+      <Fragment>
+        <div className="popup-edit" style={{ display: 'block', transition: 'all 1s' }}>
+          <div className="column-popup-edit">
+            <div className="column-header">
+              <h3>แก้ไขข้อมูลร้านค้า</h3>
+              <button className="close" onClick={(e) => setOnPopupModal(!onPopupModal)}>
+                <i className="fa-solid fa-x" />
+              </button>
+            </div>
+            <div className="edit-text">
+              <div className="column-edit-text">
+                <p>แก้ไขชื่อร้าน</p>
+                <input type="text" />
+              </div>
+              <div className="column-edit-text">
+                <p>แก้ไขอายุ</p>
+                <input type="text" />
+              </div>
+              <div className="column-edit-text">
+                <p>แก้ไขน้ำหนัก</p>
+                <input type="text" />
+              </div>
+              <div className="column-edit-text">
+                <p>แก้ไขสัดส่วน</p>
+                <input type="text" />
+              </div>
+              <div className="column-edit-text">
+                <p>แก้ไขส่วนสูง</p>
+                <input type="text" />
+              </div>
+              <button className="btn-save">บันทึก</button>
+            </div>
+          </div>
+        </div>
+      </Fragment>
+    )
+  }
+
   return (
     <Fragment>
       <div className="sell-product">
@@ -68,15 +111,15 @@ export default function Store({ stores, statusChange }) {
             <div className="column-text-top">
               <div className="text-top-left">
                 <div className="column-img">
-                  <img src={`${apiUrl}/${store_detail.profile_img}`} />
-                  <button>
-                    <i className="fa-solid fa-camera" />
+                  <img src={`${apiUrl}/${store_detail.profile_img}`} alt="image-profile" />
+                  <button >
+                    <i onClick={() => setOnPopupModal(!onPopupModal)} className="fa-solid fa-camera" />
                   </button>
                 </div>
               </div>
               <div className="text-top-right">
                 <button>
-                  <i className="fa-solid fa-pen-to-square" />
+                  <i onClick={() => setOnPopupModal(!onPopupModal)} className="fa-solid fa-pen-to-square" />
                 </button>
                 <h2>{store_detail.name}</h2>
                 <div className="column-text-botttom">
@@ -147,6 +190,10 @@ export default function Store({ stores, statusChange }) {
           </div>
         </div>
       </div>
+      {onPopupModal
+        ? <ModalEdit />
+        : false
+      }
     </Fragment>
   );
 }

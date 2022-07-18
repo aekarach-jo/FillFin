@@ -46,7 +46,7 @@ export async function getServerSideProps({ query, res }) {
 
   return {
     props: {
-      storeObj: getAllStore.data.data,
+      storeObj: getAllStore.data,
       bannerCover: getBannerCover.data
     }
   };

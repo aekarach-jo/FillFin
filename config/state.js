@@ -4,21 +4,24 @@ const AppContext = createContext();
 
 let initialState = {
     cartQty: 0,
-    cartObj: [],
     isLogin: false,
-    memberDetail : ""
+    isStore: false,
+    emptyPackage: false,
+    memberDetail: ""
 }
 
 function reducer(state, action) {
     switch (action.type) {
         case "cartQty":
             return { ...state, cartQty: action.data };
-        case "cartObj":
-            return { ...state, cartObj: action.data };
         case "isLogin":
-            return { ...state, isLogin: action.data }
+            return { ...state, isLogin: action.data };
+        case "isStore":
+            return { ...state, isStore: action.data };
         case "memberDetail":
-            return { ...state, memberDetail: action.data}
+            return { ...state, memberDetail: action.data };
+        case "emptyPackage":
+            return { ...state, emptyPackage: action.data };
         default:
             return state;
     }
@@ -33,27 +36,31 @@ export function AppWrapper({ children }) {
                 dispatch({ type: "cartQty", data: params })
             }
         },
-        cartObj: {
-            get_value: state.cartObj,
-            set_value: (params) => {
-                dispatch({ type: "cartObj", data: params })
-            }
-        },
         isLogin: {
             get_login: state.isLogin,
             set_login: (params) => {
                 dispatch({ type: "isLogin", data: params })
             }
         },
+        isStore: {
+            get_isStore: state.isStore,
+            set_isStore: (params) => {
+                dispatch({ type: 'isStore', data: params })
+            }
+        },
         memberDetail: {
-            get_memberDetail : state.memberDetail,
-            set_memberDetail : (params) => {
-                dispatch({ type : "memberDetail", data : params})
+            get_memberDetail: state.memberDetail,
+            set_memberDetail: (params) => {
+                dispatch({ type: "memberDetail", data: params })
+            }
+        },
+        emptyPackage: {
+            get_emptyPackage: state.emptyPackage,
+            set_emptyPackage: (params) => {
+                dispatch({ type: "emptyPackage", data: params })
             }
         }
     }
-
-    // console.log(state);
     return <AppContext.Provider value={value}>{children}</AppContext.Provider>
 }
 

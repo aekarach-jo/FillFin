@@ -7,7 +7,6 @@ import Store_member from '../../../components/member/store/store_member/store_me
 import Store_premium from '../../../components/member/store/store_premium/store_premium';
 
 export default function StoreId({ store, bannerCover, bannerAds }) {
-  console.log(bannerAds);
   const standard = store.standard
   if (standard) { // package guest and member
     return (

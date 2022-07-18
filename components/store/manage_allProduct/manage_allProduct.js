@@ -55,7 +55,7 @@ export default function Manage_allProduct({ productList }) {
                             {data.clip != "no"
                                     ?
                                     <>
-                                        <img src="/assets/icons/icon-gift.png" />
+                                        <img src="/assets/icons/icon-gift.png" alt="image-gift"/>
                                         <span>มีคลิป</span>
                                     </>
                                     : null

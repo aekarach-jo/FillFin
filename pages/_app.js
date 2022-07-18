@@ -1,14 +1,11 @@
-import { useState } from "react";
 import "../styles/globals.scss";
 import Head from "next/head";
 import Nav from "../components/subComponent/nav";
 import Footer from "../components/subComponent/footer";
-import { useRouter } from "next/router";
 import { AppWrapper } from "../config/state";
 
+import 'tailwindcss/tailwind.css'
 function MyApp({ Component, pageProps }) {
-  const router = useRouter()
-  const [isFooter, setFooter] = useState(router.pathname)
 
   return (
     <AppWrapper>
@@ -19,10 +16,7 @@ function MyApp({ Component, pageProps }) {
       </Head>
       <Nav />
       <Component {...pageProps} />
-      {isFooter != '/member/store/product/[id]'
-        ? <Footer />
-        : null
-      }
+      <Footer />
     </AppWrapper>
   );
 }

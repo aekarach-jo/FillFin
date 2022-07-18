@@ -30,6 +30,7 @@ export default function Document() {
 
         {/* หน้า Store */}
         <link rel="stylesheet" href="/assets/css/sell-product.min.css" />
+        <link rel="stylesheet" href="/assets/css/popup-edit.min.css" />
 
         {/* หน้า Cart */}
         <link rel="stylesheet" href="/assets/css/shopping-cart.min.css" />

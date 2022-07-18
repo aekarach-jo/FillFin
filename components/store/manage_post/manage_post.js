@@ -104,7 +104,7 @@ export default function Manage_post({ status }) {
             <div className="column-product-recommend">
                 <div className="recommend-column">
                     <div className="column-calendar">
-                        <img src="/assets/icons/icon-calendar.png" />
+                        <img src="/assets/icons/icon-calendar.png" alt="image-calender"/>
                         <FormetDate dateTime={dateToday} />
                     </div>
                     <div className="detail-text">
@@ -120,6 +120,7 @@ export default function Manage_post({ status }) {
                                         objectFit: "cover",
                                         cursor: "pointer"
                                     }}
+                                    alt="image-first"
                                     src={imageObj.first}
                                     onClick={() => inputFirstImage.current.click()}
                                 />
@@ -139,6 +140,7 @@ export default function Manage_post({ status }) {
                             ? (
                                 <img
                                     src={imageObj.second}
+                                    alt="image-second"
                                     style={{
                                         borderRadius: "10px",
                                         width: "100%",
@@ -164,6 +166,7 @@ export default function Manage_post({ status }) {
                             ? (
                                 <img
                                     src={imageObj.third}
+                                    alt="image-third"
                                     style={{
                                         borderRadius: "10px",
                                         width: "100%",
@@ -189,6 +192,7 @@ export default function Manage_post({ status }) {
                             ? (
                                 <img
                                     src={imageObj.fourth}
+                                    alt="image-fourth"
                                     style={{
                                         borderRadius: "10px",
                                         width: "100%",

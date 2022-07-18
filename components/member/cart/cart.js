@@ -6,6 +6,7 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import nextConfig from '../../../next.config';
 import ContactUs from '../../subComponent/contactUs';
+import Styles from '../../../styles/cart.module.scss'
 
 const apiUrl = nextConfig.apiPath
 export default function Cart() {
@@ -31,7 +32,6 @@ export default function Cart() {
     })
 
     function handleDeleteItem(product_code) {
-        console.log(product_code)
         Swal.fire({
             title: 'ยืนยันการลบสินค้า',
             icon: 'warning',
@@ -91,7 +91,6 @@ export default function Cart() {
                 Authorization: `Bearer ${access_token}`
             }
         }).then((res) => {
-            console.log(res.data);
             if (res.data.status) {
                 router.push('/member/cart/payment');
             } else {
@@ -109,9 +108,9 @@ export default function Cart() {
 
     return (
         <Fragment>
-            <div className="shopping-cart">
+            <div className={`shopping-cart ${Styles.minHeight}`} >
                 <h2>ตระกร้าสินค้า</h2>
-                <div className="shopping-cart-column" style={{ height: '100vh' }}>
+                <div className="shopping-cart-column" >
                     <div className="column-list-left">
                         <table>
                             <thead>
@@ -127,7 +126,11 @@ export default function Cart() {
                                             <tr key={index}>
                                                 <td>
                                                     <div className="column-left">
-                                                        <img src={`${apiUrl}${data.productImg}`} />
+                                                        <img 
+                                                        src={`${apiUrl}${data.productImg}`} 
+                                                        alt="image-product"
+                                                       
+                                                        />
                                                         <div className="column-text">
                                                             <h4>{data.productName}</h4>
                                                             <p>{data.productContent}</p>
@@ -135,8 +138,8 @@ export default function Cart() {
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <div className="column-right">
-                                                        <p>{data.productPrice}</p>
+                                                    <div className="column-right" >
+                                                        <p style={{ marginRight : '0px'}}>{data.productPrice}</p>
                                                         <button onClick={() => handleDeleteItem(data.productCode)}><i className="fa-regular fa-trash-can" /></button>
                                                     </div>
                                                 </td>

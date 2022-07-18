@@ -8,10 +8,11 @@ import nextConfig from "../../next.config";
 import { getCookie, removeCookies, setCookies } from "cookies-next";
 import axios from "axios";
 import { useAppContext } from "../../config/state";
+import Styles from '../../styles/login.module.scss'
 
 export default function Login({ banner }) {
-  const state = useAppContext()
-  const apiUrl = nextConfig.apiPath
+  const state = useAppContext();
+  const apiUrl = nextConfig.apiPath;
   const router = useRouter();
   const [pathLogin, setPathLogin] = useState("");
   const [showForm, setShowForm] = useState("member");
@@ -41,76 +42,114 @@ export default function Login({ banner }) {
     login(formLogin, pathLogin);
   }
 
-
   async function login(formLogin, pathLogin) {
-    removeCookies("name")
-    removeCookies("access_token")
-    removeCookies("refresh_token")
-    removeCookies("member_code")
-    removeCookies("store_code")
-    removeCookies("gender")
-    const onLogin = await axios.post(
-      `${apiUrl}/api/${pathLogin}/signin`, formLogin)
-    const data = onLogin.data
-    console.log(data.data);
-    if (data.status) {
-      state.isLogin.set_login(true)
-      state.memberDetail.set_memberDetail(data.data.userName)
-      setCookies("name", data.data.userName)
-      setCookies("access_token", data.data.access_token);
-      setCookies("refresh_token", data.data.refresh_token);
-      setCookies("member_code", data.data.member_code);
-      setCookies("store_code", data.data.store_code);
-      setCookies("gender", data.data.gender)
+    removeCookies("name");
+    removeCookies("access_token");
+    removeCookies("refresh_token");
+    removeCookies("member_code");
+    removeCookies("storeName");
+    removeCookies("gender");
+    removeCookies("emptyPackage")
+
+    try {
+      const onLogin = await axios.post(
+        `${apiUrl}/api/${pathLogin}/signin`,
+        formLogin
+      );
+      const data = onLogin.data;
+      console.log(onLogin);
+      if (data.status) {
+        {
+          console.log(555)
+          pathLogin == "member"
+            ? (
+              state.isLogin.set_login(true),
+              state.memberDetail.set_memberDetail(data.data.userName),
+              setCookies("name", data.data.userName),
+              setCookies("access_token", data.data.access_token),
+              setCookies("refresh_token", data.data.refresh_token),
+              setCookies("member_code", data.data.member_code),
+              setCookies("gender", data.data.gender),
+              setCookies("package", data.data.packageId)
+            )
+            : (
+              state.memberDetail.set_memberDetail(data.data.storeName),
+              state.isStore.set_isStore(true),
+              state.isLogin.set_login(true),
+              setCookies("name", data.data.storeName),
+              setCookies("access_token", data.data.access_token),
+              setCookies("refresh_token", data.data.refresh_token),
+              setCookies("storeName", data.data.storeName),
+              setCookies("gender", data.data.gender)
+            )
+        }
+
+        Swal.fire({
+          title: data.description,
+          icon: "success",
+          timer: 1000,
+          showCancelButton: false,
+          showConfirmButton: false,
+        }).then(() => {
+          if (pathLogin == "member") {
+            apiGetStatusPackage();
+          } else if (pathLogin == "store") {
+            state.isStore.set_isStore(true)
+            router.push("/store");
+          }
+        });
+      } else {
+        await Swal.fire({
+          title: "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง",
+          icon: "error",
+          timer: 1000,
+          showCancelButton: false,
+          showConfirmButton: false,
+        });
+      }
+    } catch (err) {
+      console.log(err);
       Swal.fire({
-        title: data.description,
-        icon: "success",
-        timer: 1000,
-        showCancelButton: false,
-        showConfirmButton: false,
-
-      }).then(() => {
-        if (pathLogin == 'member') {
-          apiGetStatusPackage()
-        }
-        else if (pathLogin == 'store') {
-          router.push('/store')
-        }
-      })
-
-    } else {
-      await Swal.fire({
-        title: "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง",
         icon: "error",
-        timer: 1000,
-        showCancelButton: false,
-        showConfirmButton: false,
+        position: "center",
+        title: "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง",
       });
     }
   }
 
   async function apiGetStatusPackage() {
-    const mcode = getCookie("member_code")
-    const access_token = getCookie("access_token")
-    const sPackage = await fetch(`${apiUrl}/api/package/statusPayment/${mcode}`, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${access_token}`
+    const mcode = getCookie("member_code");
+    try {
+      const sPackage = await axios({
+        method: "GET",
+        url: `${apiUrl}/api/package/checkPackage/${mcode}`,
+      });
+      const statusPack = sPackage.data;
+      console.log(statusPack);
+      if (!statusPack.status) {
+        setCookies("emptyPackage", true);
+        state.emptyPackage.set_emptyPackage(true)
+        router.push(`/member/package`);
+      } else {
+        setCookies("emptyPackage", false);
+        state.emptyPackage.set_emptyPackage(false)
+        router.push(`/member`);
       }
-    })
-    const statusJson = await sPackage.json()
-    if (statusJson.data == 'notpay' || statusJson.data == 'pending') {
-      router.push(`/member/payment`)
-    } else {
-      router.push(`/member`)
+    } catch (err) {
+      console.log(err);
+      Swal.fire({
+        icon: "error",
+        position: "center",
+        title: err.response.data.description,
+      });
     }
-
   }
+
 
   return (
     <Fragment>
       <div>
-        <div className="detil-login">
+        <div className={`detil-login ${Styles.minHeight}`}>
           <div className="img-background">
             <Image
               width={404}
@@ -130,13 +169,18 @@ export default function Login({ banner }) {
             />
           </div>
           <ContactUs />
-          <div className="column-shadow" style={{ zIndex: '-1' }}>
+          <div className="column-shadow" style={{ zIndex: "-1" }}>
             <div className="shadow-left" />
             <div className="shadow-right" />
           </div>
           <div className="column-login">
             <div className="column-img-top">
-              <Image width={1096} height={300} src={`${apiUrl}/${banner[0].image}`} alt="image-banner" />
+              <Image
+                width={1096}
+                height={300}
+                src={`${apiUrl}/${banner[0].image}`}
+                alt="image-banner"
+              />
             </div>
             <div className="column-text-login">
               <h2>เข้าสู่ระบบ</h2>
@@ -195,7 +239,7 @@ export default function Login({ banner }) {
                         //     e.target.value.trim()
                         //   ) || e.target.value == ""
                         // ) {
-                        setUsername(e.target.value.trim());
+                          setUsername(e.target.value.trim());
                         // }
                       }}
                     />
@@ -212,7 +256,6 @@ export default function Login({ banner }) {
                       type="password"
                       value={password}
                       placeholder="Password"
-
                     />
                     <a className="text-bottom">ลืมชื่อผู้ใช้ หรือ รหัสผ่าน</a>
                   </div>
@@ -224,7 +267,9 @@ export default function Login({ banner }) {
             </div>
             <div className="column-text-detail">
               <h2>หรือ</h2>
-              <p>หากคุณยังไม่มีบัญชีผู้ใช้ สามารถเข้าไปสมัครได้ที่ด้านล่างนี้เลย</p>
+              <p>
+                หากคุณยังไม่มีบัญชีผู้ใช้ สามารถเข้าไปสมัครได้ที่ด้านล่างนี้เลย
+              </p>
             </div>
             {showForm == "member" ? (
               <Link href="/member/register">

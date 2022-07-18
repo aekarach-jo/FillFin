@@ -11,7 +11,6 @@ import ShowImage from '../../../subComponent/manage-image/showImage';
 
 const apiUrl = nextConfig.apiPath
 export default function Store_member({ stores, bannerAds }) {
-    console.log(bannerAds);
     const { all_product, pre_order, review, store_detail, store_post } = stores;
     const state = useAppContext()
 
@@ -55,7 +54,6 @@ export default function Store_member({ stores, bannerAds }) {
         })
         const cartQty = getCart.data.cart.length
         if (cartQty > 0) {
-            state.cartObj.set_value(getCart.data.cart)
             state.cartQty.set_cart_qty(cartQty)
         }
     }
@@ -91,7 +89,7 @@ export default function Store_member({ stores, bannerAds }) {
                                         <ShowImage image={data.product_img} />
                                     </div>
                                 </Link>
-                                <div className="column-img-bottom">
+                                <div className="column-img-bottom" style={{ display : 'flex'}}>
                                     <ChooseImage image={data.product_img} />
                                 </div>
                                 <div className="column-list-bottom">

@@ -15,7 +15,7 @@ export default function Show_post({ postList }) {
                 {postList?.map((data, index) => (
                     <div key={index} className="recommend-column">
                         <div className="column-calendar">
-                            <img src="/assets/icons/icon-calendar.png" />
+                            <img src="/assets/icons/icon-calendar.png" alt="image-icon-calender"/>
                             <FormatDate dateTime={data.date}/>
                         </div>
                         <div className="detail-text">
@@ -40,7 +40,7 @@ function FormatDate({dateTime}){
 
 function ShowImagePost({ image }) {
     if (!image) {
-        return <img src="/assets/images/empty.png" />
+        return <img src="/assets/images/empty.png" alt="image-empty"/>
     }
     const apiUrl = nextConfig.apiPath
     let image_split = image.split(",");
@@ -48,6 +48,7 @@ function ShowImagePost({ image }) {
         return (
             <img
                 src={`${apiUrl}/${data}`}
+                alt="image-post"
                 key={index}
                 onError={e => {
                     e.target.setAttribute('src', '/assets/images/empty.png');

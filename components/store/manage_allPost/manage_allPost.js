@@ -44,7 +44,7 @@ export default function Manage_allPost({ postList }) {
         {postList?.map((data, index) => (
           <div key={index} className="recommend-column">
             <div className="column-calendar">
-              <img src="/assets/icons/icon-calendar.png" />
+              <img src="/assets/icons/icon-calendar.png" alt="image-calender" />
               <FormetDate dateTime={data.date} />
             </div>
             <div className="detail-text">
@@ -67,21 +67,22 @@ function FormetDate({ dateTime }) {
 
 function ShowImagePost({ image }) {
   if (!image) {
-    return <img src="/assets/images/empty.png" />
+    return <img src="/assets/images/empty.png" alt="image-empty" />
   }
   const apiUrl = nextConfig.apiPath
   let image_split = image.split(",");
   const response = image_split.map((data, index) => {
     return (
-      <img  
+      <img
         src={`${apiUrl}/${data}`}
+        alt="image-product"
         style={{
           borderRadius: "10px",
           width: "100%",
           height: "100%",
           objectFit: "cover",
           cursor: "pointer"
-      }}
+        }}
         key={index}
         onError={e => {
           e.target.setAttribute('src', '/assets/images/empty.png');

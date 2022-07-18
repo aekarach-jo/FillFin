@@ -15,6 +15,7 @@ export default function HoverImage({ image }) {
             onMouseLeave={(e) => {
                 e.target.setAttribute("src", e.target.getAttribute("data-src1"));
             }}
+            alt="image-hover"
         />
     )
 }

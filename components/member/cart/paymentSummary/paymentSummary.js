@@ -56,19 +56,18 @@ export default function PaymentSummary() {
     }
 
     async function getCartList() {
-            const access_token = getCookie("access_token")
-            const getCart = await axios({
-                method: 'GET',
-                url: `${apiUrl}/api/member/cart/get`,
-                headers: {
-                    Authorization: `Bearer ${access_token}`
-                }
-            })
-            const dataCart = getCart.data.cart
-            setTotalPrice(getCart.data.totalprice)
-            setNetPrice(getCart.data.netprice)
-            setCartList(dataCart)
-            console.log(getCart.data)
+        const access_token = getCookie("access_token")
+        const getCart = await axios({
+            method: 'GET',
+            url: `${apiUrl}/api/member/cart/get`,
+            headers: {
+                Authorization: `Bearer ${access_token}`
+            }
+        })
+        const dataCart = getCart.data.cart
+        setTotalPrice(getCart.data.totalprice)
+        setNetPrice(getCart.data.netprice)
+        setCartList(dataCart)
     }
     async function getBank() {
         const bankData = await fetch(`${apiUrl}/api/bank/get`, {
@@ -99,10 +98,11 @@ export default function PaymentSummary() {
         }
         Swal.fire({
             position: 'center',
-            icon: 'warning',
+            icon: 'question',
             title: 'ยืนยันการชำระหรือไม่',
             showCancelButton: true,
             showConfirmButton: true,
+            confirmButtonColor: '#C93A87',
             confirmButtonText: 'ยืนยัน',
             cancelButtonText: 'ยกเลิก',
             allowOutsideClick: false
@@ -194,6 +194,7 @@ export default function PaymentSummary() {
                         </tbody></table>
                     <div className="column-informatin">
                         <div className="column-left">
+                            <h2>ข้อมูลจัดส่ง</h2>
                             <form >
                                 <div className="column-input">
                                     <label >*ชื่อ</label>
@@ -255,6 +256,7 @@ export default function PaymentSummary() {
                             </form>
                         </div>
                         <div className="column-right">
+                            <h2>ชำระค่าสินค้าและบริการ</h2>
                             <form>
                                 <div className="pay-dropdown">
                                     <div className="dropdown-toggle" onClick={() => setDropdownActiveBank(prev => !prev)}>
@@ -276,7 +278,7 @@ export default function PaymentSummary() {
                                                         setBank(data)
                                                     }
                                                     }>
-                                                        <img src={`${apiUrl}/${data.image}`} />
+                                                        <img src={`${apiUrl}/${data.image}`} alt="image-bankList"/>
                                                         {data.bank_name} / {data.bank_number} / {data.name}
                                                     </div>
                                                 ))}
@@ -293,6 +295,7 @@ export default function PaymentSummary() {
                                         {image ? (
                                             <img
                                                 src={image}
+                                                alt="image-slip"
                                                 style={{
                                                     width: "100%",
                                                     height: "100%",

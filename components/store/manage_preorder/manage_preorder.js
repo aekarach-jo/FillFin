@@ -120,6 +120,7 @@ export default function Manage_preorder({ status }) {
                                 ? (
                                     <img
                                         src={imageObj.first}
+                                        alt="image-first"
                                         style={{
                                             border: '1px solid #e7e7e7',
                                             borderRadius: "20px",
@@ -146,6 +147,7 @@ export default function Manage_preorder({ status }) {
                                 ? (
                                     <img
                                         src={imageObj.second}
+                                        alt="iamge-second"
                                         style={{
                                             border: '1px solid #e7e7e7',
                                             borderRadius: "20px",

@@ -56,7 +56,7 @@ export default function Manage_allPreorder({ preOrderList }) {
                                 {data.clip != "no"
                                     ?
                                     <>
-                                        <img src="/assets/icons/icon-gift.png" />
+                                        <img src="/assets/icons/icon-gift.png" alt="image-gift" />
                                         <span>มีคลิป</span>
                                     </>
                                     : null

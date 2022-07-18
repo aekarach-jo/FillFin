@@ -41,6 +41,7 @@ function ShowImage({ image }) {
   let image_split = image.split(",");
   return <img
     src={`${apiUrl}${image_split[0]}`}
+    alt="image-preview"
     style={{ cursor: "pointer" }}
     className="image-main"
     onError={e => {
@@ -51,7 +52,7 @@ function ShowImage({ image }) {
 
 function ChooseImage({ image }) {
   if (!image) {
-    return <img src="/assets/images/product.png" />
+    return <img src="/assets/images/product.png" alt="image-product" />
   }
 
   const apiUrl = nextConfig.apiPath
@@ -60,6 +61,7 @@ function ChooseImage({ image }) {
     return (
       <img
         key={index}
+        alt="image-product"
         src={`${apiUrl}/${data}`}
         onClick={(e) => {
           e.target

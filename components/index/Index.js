@@ -25,8 +25,8 @@ export default function Index({ banner, content }) {
 
   return (
     <Fragment>
-      <div className="detil-index-column" >
-        <div className="detil-index">
+      <div className="detil-index-column">
+        <div className="detil-index" style={{ minHeight : 'calc(100vh - 100px)'}}>
           <div className="img-background">
             <Image
               width={404}
@@ -48,18 +48,19 @@ export default function Index({ banner, content }) {
             <div className="shadow-left" />
             <div className="shadow-right" />
           </div>
-          <div className="column-detil-index">
-            <div className="column-vedio" style={{ alignItems: "center" }}>
+          <div className="column-detil-index" >
+            <div className="column-vedio" style={{ alignItems: "center" , marginTop : "1rem" }}>
               <video
                 className="video"
                 width={400}
                 controls
                 muted
                 autoPlay
+                loop
                 src={`${apiUrl}/streaming${content.videoLink}`}
-                poster='/assets/images/sale.png'
+                // poster='/assets/images/sale.png'
               />
-              <p className="text-vedio">{content.content}</p>
+              <p className="text-vedio" style={{ margin : '15px 0 28px 0'}}>{content.content}</p>
             </div>
             <Banner banner={banner} />
             <div className="column-text">

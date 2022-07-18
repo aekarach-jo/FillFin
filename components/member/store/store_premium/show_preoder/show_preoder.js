@@ -22,7 +22,7 @@ export default function Show_preoder({ preOrderList }) {
                                 {data.show_gift != "no"
                                     ?
                                     <>
-                                        <img src="/assets/icons/icon-gift.png" />
+                                        <img src="/assets/icons/icon-gift.png" alt="image-gift"/>
                                         <span>มีคลิป</span>
                                     </>
                                     : null

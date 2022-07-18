@@ -113,6 +113,7 @@ export default function Manage_product({ status }) {
                                 ? (
                                     <img
                                         src={imageObj.first}
+                                        alt="image-first"
                                         style={{
                                             border: '1px solid #e7e7e7',
                                             borderRadius: "20px",
@@ -139,6 +140,7 @@ export default function Manage_product({ status }) {
                                 ? (
                                     <img
                                         src={imageObj.second}
+                                        alt="image-second"
                                         style={{
                                             border: '1px solid #e7e7e7',
                                             borderRadius: "20px",
@@ -187,6 +189,7 @@ export default function Manage_product({ status }) {
                         <div className="column-input">
                             <label >รายละเอียดสินค้า</label>
                             <textarea
+                                maxLength={100}
                                 value={contentMember}
                                 onChange={(e) => setContentMember(e.target.value)} />
                         </div>
@@ -203,6 +206,7 @@ export default function Manage_product({ status }) {
                                 ? (
                                     <img
                                         src={imageObj.third}
+                                        alt="image-third"
                                         style={{
                                             border: '1px solid #e7e7e7',
                                             borderRadius: "20px",
@@ -229,6 +233,7 @@ export default function Manage_product({ status }) {
                                 ? (
                                     <img
                                         src={imageObj.fourth}
+                                        alt="image-fourth"
                                         style={{
                                             border: '1px solid #e7e7e7',
                                             borderRadius: "20px",

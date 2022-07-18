@@ -5,6 +5,7 @@ import React, { Fragment } from 'react'
 import Swal from 'sweetalert2';
 import { useAppContext } from '../../../../../config/state';
 import nextConfig from '../../../../../next.config';
+import ContactUs from '../../../../subComponent/contactUs';
 import ChooseImage from '../../../../subComponent/manage-image/chooseImage'
 import ShowImage from '../../../../subComponent/manage-image/showImage'
 
@@ -34,7 +35,6 @@ export default function Show_product({ productList }) {
                 Authorization: `Bearer ${access_token}`
             }
         }).then((res) => {
-            console.log(res.data);
             if (res.data.description == 'product was add to cart.') {
                 Toast.fire({
                     icon: 'success',
@@ -64,7 +64,6 @@ export default function Show_product({ productList }) {
         })
         const cartQty = getCart.data.cart.length
         if (cartQty > 0) {
-            state.cartObj.set_value(getCart.data.cart)
             state.cartQty.set_cart_qty(cartQty)
         }
     }
@@ -84,7 +83,7 @@ export default function Show_product({ productList }) {
                                     <ShowImage image={data.product_img} />
                                 </div>
                             </Link>
-                            <div className="column-img-bottom">
+                            <div className="column-img-bottom" style={{ display : 'flex'}}>
                                 <ChooseImage image={data.product_img} />
                             </div>
                             <div className="column-text-bottom">
@@ -93,7 +92,7 @@ export default function Show_product({ productList }) {
                                     {data.show_gift != "no"
                                         ?
                                         <>
-                                            <img src="/assets/icons/icon-gift.png" />
+                                            <img src="/assets/icons/icon-gift.png" alt="iamge-gift"/>
                                             <span>มีคลิป</span>
                                         </>
                                         : null
@@ -111,6 +110,7 @@ export default function Show_product({ productList }) {
                     : <p>ไม่มีสินค้า</p>
                 }
             </div>
+            <ContactUs />
         </Fragment>
     )
 }

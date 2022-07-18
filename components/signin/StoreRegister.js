@@ -39,6 +39,7 @@ export default function StoreRegister({ content }) {
       position: "center",
       showCancelButton: true,
       cancelButtonText: "ยกเลิก",
+      confirmButtonColor: '#C93A87',
       showConfirmButton: true,
       confirmButtonText: "ยืนยัน",
     }).then(() => {
@@ -119,41 +120,8 @@ export default function StoreRegister({ content }) {
               <div className="column-right">
                 <h2>ข้อกำหนดการสมัครสมาชิก</h2>
                 <h3>(ดู VDO ประกอบ)</h3>
-                <p>
-                  Lorem ipsum dolor sit, amet consectetur adipisicing elit. Unde
-                  fuga nulla accusantium eum quis facilis commodi maxime rerum
-                  iste itaque repellendus consequatur, error assumenda quo nisi
-                  ipsa suscipit consectetur quia. Lorem ipsum dolor sit, amet
-                  consectetur adipisicing elit. Unde fuga nulla accusantium eum
-                  quis facilis commodi maxime rerum iste itaque repellendus
-                  consequatur, error assumenda quo nisi ipsa suscipit
-                  consectetur quia. Lorem ipsum dolor sit, amet consectetur
-                  adipisicing elit. Unde fuga nulla accusantium eum quis facilis
-                  commodi maxime rerum iste itaque repellendus consequatur,
-                  error assumenda quo nisi ipsa suscipit consectetur quia.
-                </p>
-                <p>
-                  Lorem ipsum dolor sit, amet consectetur adipisicing elit. Unde
-                  fuga nulla accusantium eum quis facilis commodi maxime rerum
-                  iste itaque repellendus consequatur, error assumenda quo nisi
-                  ipsa suscipit consectetur quia.
-                </p>
-                <p>
-                  Lorem ipsum dolor sit, amet consectetur adipisicing elit. Unde
-                  fuga nulla accusantium eum quis facilis commodi maxime rerum
-                  iste itaque repellendus consequatur, error assumenda quo nisi
-                  ipsa suscipit consectetur quia.
-                </p>
-                <p>
-                  Lorem ipsum dolor sit, amet consectetur adipisicing elit. Unde
-                  fuga nulla accusantium eum quis facilis commodi maxime rerum
-                  iste itaque repellendus consequatur, error assumenda quo nisi
-                  ipsa suscipit consectetur quia. Lorem ipsum dolor sit, amet
-                  consectetur adipisicing elit. Unde fuga nulla accusantium eum
-                  quis facilis commodi maxime rerum iste itaque repellendus
-                  consequatur, error assumenda quo nisi ipsa suscipit
-                  consectetur quia.
-                </p>
+                <p>{content.content}</p>
+
               </div>
             </div>
             <div className="column-center-apply">
@@ -179,7 +147,7 @@ export default function StoreRegister({ content }) {
                               //   /^[a-zA-Z0-9]+$/.test(e.target.value.trim()) ||
                               //   e.target.value == ""
                               // ) {
-                              setStorename(e.target.value.trim());
+                                setStorename(e.target.value.trim());
                               // }
                             }}
                           />
@@ -225,7 +193,16 @@ export default function StoreRegister({ content }) {
                         </div>
                         <div className="text-right"></div>
                       </div>
-                      <select onChange={(e) => setGender(e.target.value)} defaultValue={'none'} className="form-select form-select">
+                      <select onChange={(e) => setGender(e.target.value)} defaultValue={'none'} className="form-select form-select"
+                        style={{
+                          width: "100%",
+                          height: "39px",
+                          background: "#FFFFFF",
+                          border: "1px solid #747474",
+                          borderRadius: "5px",
+                          outlineStyle: "none",
+                          padding: "0 1rem"
+                        }}>
                         <option disabled value={'none'}>กรุณาเลือกประเภทสินค้า</option>
                         <option value={"men"}>ผู้ชาย</option>
                         <option value={"women"}>ผู้หญิง</option>
@@ -233,7 +210,7 @@ export default function StoreRegister({ content }) {
                     </div>
                     <div className="form-check mt-3">
                       <input
-                        onClick={() => setIsRegister(true)}
+                        onClick={() => setIsRegister(!isRegister)}
                         className="form-check-input"
                         type="checkbox"
                         id="flexCheckChecked"
@@ -241,9 +218,10 @@ export default function StoreRegister({ content }) {
                       <label
                         className="form-check-label"
                         htmlFor="flexCheckChecked"
+                        style={{ marginLeft: '10px' }}
                       >
                         ยอมรับเงื่อนไขและข้อตกลงในการใช้บริการ
-                        <a href="">{" "}อ่านเงื่อนไข</a>
+                        {/* <a href="">{" "}อ่านเงื่อนไข</a> */}
                       </label>
                     </div>
                   </div>
@@ -260,7 +238,7 @@ export default function StoreRegister({ content }) {
                             </div>
                           </div>
                           <input
-                            // maxLength={10}
+                            maxLength={10}
                             type="text"
                             value={username}
                             placeholder="Lorem ipsum dolor sit amet, consectetur"
@@ -270,7 +248,7 @@ export default function StoreRegister({ content }) {
                               //     e.target.value.trim()
                               //   ) || e.target.value == ""
                               // ) {
-                              setUsername(e.target.value.trim());
+                                setUsername(e.target.value.trim());
                               // }
                             }}
                           />
@@ -289,7 +267,7 @@ export default function StoreRegister({ content }) {
                               //     e.target.value.trim()
                               //   ) || e.target.value == ""
                               // ) {
-                              setAge(e.target.value.trim());
+                                setAge(e.target.value.trim());
                               // }
                             }}
                           />

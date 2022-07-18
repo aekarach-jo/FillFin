@@ -4,6 +4,8 @@ import nextConfig from "../../next.config";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import { setCookies } from "cookies-next";
+import Packages from "../subComponent/packages";
+import axios from "axios";
 
 const apiUrl = nextConfig.apiPath;
 
@@ -83,26 +85,27 @@ export default function MemberRegister({ packageData, content }) {
 
 
   async function register(formRegis) {
-    console.log(formRegis)
-    const fetchRegis = await fetch(`${apiUrl}/api/member/register`, {
+    const apiRegis = await axios({
       method: "POST",
+      url: `${apiUrl}/api/member/register`,
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(formRegis),
+      data: JSON.stringify(formRegis),
     })
-    const resJson = await fetchRegis.json();
-    if (resJson.status == true) {
+    const data = apiRegis.data
+    if (data.status == true) {
       await Swal.fire({
         icon: "success",
-        title: resJson.description,
+        title: data.description,
         position: "center",
         showConfirmButton: false,
         timer: 1000,
       }).then(() => {
-        console.log(resJson.data);
-        setCookies("member_code", resJson.data); // เก็บ user-code ไว้ดึงข้อมูลในหน้า payment
-        router.push(`/member/payment`)
+        setCookies('gender', formRegis.gender) // เก็บ gender ไว้ดึงข้อมูลในหน้า package ว่าก่อนหน้านี้เลือกอะไรไป
+        setCookies('package', formRegis.package_id) // เก็บ package_id ไว้ดึงข้อมูลในหน้า package ว่าก่อนหน้านี้เลือกอะไรไป
+        setCookies("member_code", data.memberCode); // เก็บ user-code ไว้ดึงข้อมูลในหน้า payment
+        router.push(`/member/package`)
       });
     } else {
       await Swal.fire({
@@ -124,6 +127,7 @@ export default function MemberRegister({ packageData, content }) {
       cancelButtonText: "ยกเลิก",
       showConfirmButton: true,
       confirmButtonText: "ยืนยัน",
+      confirmButtonColor: '#C93A87',
     }).then((res) => {
       if (res.isConfirmed) {
         router.push("/login");
@@ -143,49 +147,16 @@ export default function MemberRegister({ packageData, content }) {
                   width={400}
                   controls
                   muted
+                  loop
                   autoPlay
                   src={`${apiUrl}/streaming${content.videoLink}`}
-                  poster='/assets/images/sale.png'
+                // poster='/assets/images/sale.png'
                 />
               </div>
               <div className="column-right">
-                <h2>ข้อกำหนดการสมัครสมาชิก</h2>
+                <h2>{content.title}</h2>
                 <h3>(ดู VDO ประกอบ)</h3>
-                <p>
-                  Lorem ipsum dolor sit, amet consectetur adipisicing elit. Unde
-                  fuga nulla accusantium eum quis facilis commodi maxime rerum
-                  iste itaque repellendus consequatur, error assumenda quo nisi
-                  ipsa suscipit consectetur quia. Lorem ipsum dolor sit, amet
-                  consectetur adipisicing elit. Unde fuga nulla accusantium eum
-                  quis facilis commodi maxime rerum iste itaque repellendus
-                  consequatur, error assumenda quo nisi ipsa suscipit
-                  consectetur quia. Lorem ipsum dolor sit, amet consectetur
-                  adipisicing elit. Unde fuga nulla accusantium eum quis facilis
-                  commodi maxime rerum iste itaque repellendus consequatur,
-                  error assumenda quo nisi ipsa suscipit consectetur quia.
-                </p>
-                <p>
-                  Lorem ipsum dolor sit, amet consectetur adipisicing elit. Unde
-                  fuga nulla accusantium eum quis facilis commodi maxime rerum
-                  iste itaque repellendus consequatur, error assumenda quo nisi
-                  ipsa suscipit consectetur quia.
-                </p>
-                <p>
-                  Lorem ipsum dolor sit, amet consectetur adipisicing elit. Unde
-                  fuga nulla accusantium eum quis facilis commodi maxime rerum
-                  iste itaque repellendus consequatur, error assumenda quo nisi
-                  ipsa suscipit consectetur quia.
-                </p>
-                <p>
-                  Lorem ipsum dolor sit, amet consectetur adipisicing elit. Unde
-                  fuga nulla accusantium eum quis facilis commodi maxime rerum
-                  iste itaque repellendus consequatur, error assumenda quo nisi
-                  ipsa suscipit consectetur quia. Lorem ipsum dolor sit, amet
-                  consectetur adipisicing elit. Unde fuga nulla accusantium eum
-                  quis facilis commodi maxime rerum iste itaque repellendus
-                  consequatur, error assumenda quo nisi ipsa suscipit
-                  consectetur quia.
-                </p>
+                <p>{content.content}</p>
               </div>
             </div>
             <div className="column-center-apply">
@@ -210,13 +181,13 @@ export default function MemberRegister({ packageData, content }) {
                             //     e.target.value.trim()
                             //   ) || e.target.value == ""
                             // ) {
-                            setUsername(e.target.value.trim());
+                              setUsername(e.target.value.trim());
                             // }
                           }}
                           type="text"
                           value={username}
                           placeholder="Username"
-                        // maxLength={10}
+                          // maxLength={10}
                         />
                       </div>
                       <div className="form">
@@ -260,7 +231,16 @@ export default function MemberRegister({ packageData, content }) {
                           </div>
                           <div className="text-right"></div>
                         </div>
-                        <select onChange={(e) => setGender(e.target.value)} defaultValue={'none'} className="form-select form-select">
+                        <select onChange={(e) => setGender(e.target.value)} defaultValue={'none'}
+                          style={{
+                            width: "100%",
+                            height: "39px",
+                            background: "#FFFFFF",
+                            border: "1px solid #747474",
+                            borderRadius: "5px",
+                            outlineStyle: "none",
+                            padding: "0 1rem"
+                          }}>
                           <option disabled value={'none'}>กรุณาเลือกประเภทสินค้า</option>
                           <option value={"men"}>ผู้ชาย</option>
                           <option value={"women"}>ผู้หญิง</option>
@@ -269,9 +249,9 @@ export default function MemberRegister({ packageData, content }) {
                     </div>
                   </div>
                 </div>
-                <div className="form-check" style={{ display: 'block' }}>
+                <div className="form-check" style={{ display: 'flex' }}>
                   <input
-                    onClick={() => setIsRegister(true)}
+                    onClick={() => setIsRegister(!isRegister)}
                     className="form-check-input"
                     type="checkbox"
                     id="flexCheckChecked"
@@ -279,45 +259,16 @@ export default function MemberRegister({ packageData, content }) {
                   <label
                     className="form-check-label"
                     htmlFor="flexCheckChecked"
+                    style={{ marginLeft: '10px' }}
                   >
                     ยอมรับเงื่อนไขและข้อตกลงในการใช้บริการ
-                    <a href="">{" "}อ่านเงื่อนไข</a>
+                    {/* <a >อ่านเงื่อนไข</a> */}
                   </label>
                 </div>
               </div>
               <div className="column-right">
-                <h2>เลือกแพ็กเก็จ</h2>
-                <div className="column">
-                  {packages.length > 0 && packages?.map((data, index) => (
-                    <div key={index}>
-                      <div className="column-detail" >
-                        <div className="column-img">
-                          <Image
-                            width={217}
-                            height={223}
-                            src={`${apiUrl}${data.image}`}
-                            style={{ cursor: "pointer" }}
-                            alt="image-package"
-                            quality={20}
-                          />                      <div className="bg-img">
-                            <div className="bg-color">
-                            </div>
-                            <div className="text">
-                              <h2>{data.name}</h2>
-                              <button onClick={() => setPackageId(data.package_id)}
-                                style={{ cursor: "pointer" }}
-                                className="column-detail"
-                              >เลือก</button>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="text-line">
-                          <p>{data.content}</p>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                <h2>เลือกแพ็กเกจ</h2>
+                <Packages packages={packages} setPackageId={setPackageId} />
               </div>
             </div>
             <div className="line"></div>

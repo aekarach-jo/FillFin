@@ -1,0 +1,9 @@
+.minHeight {
+    min-height: calc(100vh - 148px);
+}
+
+@media screen and(max-width : '680px') {
+    .minHeight {
+        min-height: calc(100vh - 104px);
+    }
+}

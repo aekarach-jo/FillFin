@@ -1,9 +1,10 @@
 import moment from 'moment'
 import React, { Fragment } from 'react'
+import Swal from 'sweetalert2'
 import nextConfig from '../../../next.config'
 
 const apiUrl = nextConfig.apiPath
-export default function Manage_allPost({ postList }) {
+export default function Manage_allPost({ postList ,status}) {
 
   function handleConfirmDelete(product_code) {
     Swal.fire({
@@ -30,6 +31,7 @@ export default function Manage_allPost({ postList }) {
         Authorization: `Bearer ${access_token}`
       }
     }).then(() => {
+      status()
       Swal.fire('ลบแล้ว', '', 'success')
     })
   }
@@ -37,25 +39,30 @@ export default function Manage_allPost({ postList }) {
   return (
     <Fragment>
       <div className="text-box-top">
-        <h2>สินค้าทั้งหมด</h2>
-        <p>รายการสินค้าทั้งหมด {postList.length} รายการ</p>
+        <h2>โปรไฟล์โพตต์</h2>
+        <p>โพสต์ทั้งหมด {postList.length} รายการ</p>
       </div>
-      <div className="column-product-recommend">
-        {postList?.map((data, index) => (
-          <div key={index} className="recommend-column">
-            <div className="column-calendar">
-              <img src="/assets/icons/icon-calendar.png" alt="image-calender" />
-              <FormetDate dateTime={data.date} />
-            </div>
-            <div className="detail-text">
-              <p>{data.caption}</p>
-            </div>
-            <div className="column-img">
-              <ShowImagePost image={data.post_img} />
-            </div>
+      {postList.length > 0
+        ? <>
+          <div className="column-product-recommend">
+            {postList?.map((data, index) => (
+              <div key={index} className="recommend-column">
+                <div className="column-calendar">
+                  <img src="/assets/icons/icon-calendar.png" alt="image-calender" />
+                  <FormetDate dateTime={data.date} />
+                </div>
+                <div className="detail-text">
+                  <p>{data.caption}</p>
+                </div>
+                <div className="column-img">
+                  <ShowImagePost image={data.post_img} />
+                </div>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+        </>
+        : <div className="column-product-recommend" style={{ height: '4rem', overflow: "hidden" }}>ไม่มีสินค้า</div>
+      }
     </Fragment>
   )
 }

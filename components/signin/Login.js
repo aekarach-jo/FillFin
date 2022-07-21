@@ -72,7 +72,7 @@ export default function Login({ banner }) {
               setCookies("gender", data.data.gender),
               setCookies("package", data.data.packageId)
             )
-            : (
+            : ( // pathLogin == "Store"
               state.memberDetail.set_memberDetail(data.data.storeName),
               state.isStore.set_isStore(true),
               state.isLogin.set_login(true),
@@ -80,7 +80,8 @@ export default function Login({ banner }) {
               setCookies("access_token", data.data.access_token),
               setCookies("refresh_token", data.data.refresh_token),
               setCookies("storeName", data.data.storeName),
-              setCookies("gender", data.data.gender)
+              setCookies("gender", data.data.gender),
+              setCookies("storeCode", data.data.storeCode)
             )
         }
 

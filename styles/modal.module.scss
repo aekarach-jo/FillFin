@@ -1,0 +1,69 @@
+.st_dialog {
+    @apply fixed inset-0 bg-black bg-opacity-25 ;
+}
+
+.st_content {
+    @apply fixed inset-0 overflow-y-auto ;
+
+    .st_content_layout {
+        @apply flex min-h-full items-center justify-center p-4 text-center;
+
+        .st_panel {
+            @apply w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all;
+        
+            .st_title{
+                @apply mb-5 text-lg font-medium leading-6 text-gray-900 text-center ;
+            }
+
+            .st_body{
+                // @apply relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left shadow-md pl-4 p-2   focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-pink-500 sm:text-sm ;
+            
+            }
+            
+            .st_input{
+                @apply rounded-md ml-4 py-2 pl-3 pr-10 text-sm leading-5 text-pink-900 border border-slate-300 hover:border-pink-300 focus-visible:border-pink-400 ;
+            }
+            .btn_group{
+                @apply mt-4 flex justify-end ;
+            }
+            .st_confirm_button{
+                @apply inline-flex m-1 justify-center rounded-md border border-transparent bg-pink-100 px-4 py-2 text-sm font-medium text-pink-900 hover:bg-pink-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-2 ;
+            }
+            .st_cancel_button{
+                @apply inline-flex m-1 justify-center rounded-md border border-transparent bg-gray-100 px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-500 focus-visible:ring-offset-2 ;
+            }
+        }
+    }
+}
+
+.st_colInput {
+    @apply grid grid-cols-1 gap-2 mx-8  ;
+
+    .st_inputGroup{
+        @apply flex justify-between pl-5 ; 
+
+        .st_label{
+            @apply align-middle justify-center my-2; 
+        }
+    }
+}
+.st_image{
+    @apply rounded-full mx-auto m-5 grid place-items-center ;
+    object-fit: contain;
+    width: 15rem;
+    height: 15rem;
+}
+
+@media screen and(max-width : 680px) {
+  .st_colInput {
+    @apply grid grid-cols-1 gap-2 mx-0  ;
+
+    .st_inputGroup{
+        @apply flex justify-between pl-5 ; 
+
+        .st_label{
+            @apply align-middle justify-center my-2; 
+        }
+    }
+}
+}

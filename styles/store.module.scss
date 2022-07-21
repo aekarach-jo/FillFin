@@ -1,0 +1,39 @@
+@media screen and(max-width : 680px) {
+    .textGroup {
+        text-align: start;
+    }
+
+    .profile_image {
+        margin: auto 0;
+    }
+
+    .profile_group {}
+}
+
+
+
+@media screen and(max-width : 680px) {
+    .iconEmpty {
+        border: 1px solid #929292;
+        border-radius: "20px";
+        min-width: 165px;
+        min-height: 165px;
+        object-fit: cover;
+        cursor: pointer;
+    }
+}
+
+.manage_image {
+    box-shadow: 0px 0px 5px 1px rgba($color: #b6b5b5, $alpha: 0.5);
+    border-radius: "20px";
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+    cursor: pointer;
+}
+
+.manage_image:hover {
+    transition: all .4s;
+    border-radius: "20px";
+    box-shadow: 0px 0px 5px 5px rgba($color: #ff5dd7, $alpha: 0.3);
+}

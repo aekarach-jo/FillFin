@@ -9,6 +9,8 @@ import Manage_allProduct from "./manage_allProduct/manage_allProduct";
 import Manage_post from "./manage_post/manage_post";
 import Manage_preorder from "./manage_preorder/manage_preorder";
 import Manage_product from "./manage_product/manage_product";
+import st from '../../styles/store.module.scss'
+import ModalEdit from "./modal/modalEdit";
 
 const apiUrl = nextConfig.apiPath;
 export default function Store({ stores, statusChange }) {
@@ -16,14 +18,17 @@ export default function Store({ stores, statusChange }) {
   const [allProduct, setAllProduct] = useState(all_product)
   const [preAllOder, setPreAllOder] = useState(pre_order)
   const [storePost, setStorePost] = useState(store_post)
+  const [storeDetail, setStoreDetail] = useState(store_detail)
   const [statusGetDataAll, setStatusGetDataAll] = useState(false);
   const [concept, setConcept] = useState("")
   const [onPopupModal, setOnPopupModal] = useState(false)
 
   useEffect(() => {
     if (statusGetDataAll) {
+
       getDataAll();
     }
+    console.log(all_product);
   }, [statusGetDataAll]);
 
   async function updateConcept() {
@@ -52,9 +57,11 @@ export default function Store({ stores, statusChange }) {
         Authorization: `Bearer ${access_token}`,
       },
     });
+    console.log(response.data.data);
     setAllProduct(response.data.data.all_product)
     setStorePost(response.data.data.store_post)
     setPreAllOder(response.data.data.pre_order)
+    setStoreDetail(response.data.data.store_detail)
     setStatusGetDataAll(false);
   }
 
@@ -62,74 +69,32 @@ export default function Store({ stores, statusChange }) {
     setStatusGetDataAll(true);
   }
 
-
-  function ModalEdit() {
-    return (
-      <Fragment>
-        <div className="popup-edit" style={{ display: 'block', transition: 'all 1s' }}>
-          <div className="column-popup-edit">
-            <div className="column-header">
-              <h3>แก้ไขข้อมูลร้านค้า</h3>
-              <button className="close" onClick={(e) => setOnPopupModal(!onPopupModal)}>
-                <i className="fa-solid fa-x" />
-              </button>
-            </div>
-            <div className="edit-text">
-              <div className="column-edit-text">
-                <p>แก้ไขชื่อร้าน</p>
-                <input type="text" />
-              </div>
-              <div className="column-edit-text">
-                <p>แก้ไขอายุ</p>
-                <input type="text" />
-              </div>
-              <div className="column-edit-text">
-                <p>แก้ไขน้ำหนัก</p>
-                <input type="text" />
-              </div>
-              <div className="column-edit-text">
-                <p>แก้ไขสัดส่วน</p>
-                <input type="text" />
-              </div>
-              <div className="column-edit-text">
-                <p>แก้ไขส่วนสูง</p>
-                <input type="text" />
-              </div>
-              <button className="btn-save">บันทึก</button>
-            </div>
-          </div>
-        </div>
-      </Fragment>
-    )
-  }
-
   return (
     <Fragment>
       <div className="sell-product">
         <div className="sell-product-column">
           <div className="product-column-left">
-            <div className="column-text-top">
-              <div className="text-top-left">
+            <div className={`column-text-top ${st.profile_group}`}>
+              <div className={`text-top-left ${st.profile_image}`}>
                 <div className="column-img">
-                  <img src={`${apiUrl}/${store_detail.profile_img}`} alt="image-profile" />
+                  <img src={`${apiUrl}${storeDetail.profile_img}`} alt="image-profile" />
                   <button >
-                    <i onClick={() => setOnPopupModal(!onPopupModal)} className="fa-solid fa-camera" />
+                    <i onClick={() => setOnPopupModal(!onPopupModal)}
+                      className="fa-solid fa-camera" />
                   </button>
                 </div>
               </div>
               <div className="text-top-right">
-                <button>
-                  <i onClick={() => setOnPopupModal(!onPopupModal)} className="fa-solid fa-pen-to-square" />
-                </button>
-                <h2>{store_detail.name}</h2>
+                <ModalEdit storeDetail={storeDetail} status={handleStatusChange} />
+                <h2>{storeDetail.name}</h2>
                 <div className="column-text-botttom">
                   <div className="text-left">
-                    <p>อายุ : {store_detail.age} ปี</p>
-                    <p>สัดส่วน BWH : {store_detail.bwh}35-18-36</p>
+                    <p>อายุ : {storeDetail.age} ปี</p>
+                    <p>สัดส่วน BWH : {storeDetail.bwh}</p>
                   </div>
-                  <div className="text-center">
-                    <p>น้ำหนัก : {store_detail.weight}43 กก.</p>
-                    <p>ส่วนสูง : {store_detail.height}167 ชม.</p>
+                  <div className={`text-center ${st.textGroup}`}>
+                    <p>น้ำหนัก : {storeDetail.weight} กก.</p>
+                    <p>ส่วนสูง : {storeDetail.height} ชม.</p>
                   </div>
                   <div className="text-right">
                     <button onClick={() => statusChange(false)}>
@@ -170,7 +135,7 @@ export default function Store({ stores, statusChange }) {
               <Manage_post status={handleStatusChange} />
             </div>
             <div className="column-box-product">
-              <Manage_profilePost postList={storePost} />
+              <Manage_profilePost postList={storePost}  status={handleStatusChange}/>
             </div>
           </div>
           <div className="product-column-right">
@@ -182,18 +147,16 @@ export default function Store({ stores, statusChange }) {
             </div>
 
             <div className="column-box-product">
-              <Manage_allProduct productList={allProduct} />
+              <Manage_allProduct productList={allProduct}  status={handleStatusChange}/>
             </div>
             <div className="column-box-product">
-              <Manage_allPreorder preOrderList={preAllOder} />
+              <Manage_allPreorder preOrderList={preAllOder}  status={handleStatusChange}/>
             </div>
           </div>
         </div>
       </div>
-      {onPopupModal
-        ? <ModalEdit />
-        : false
-      }
     </Fragment>
   );
 }
+
+

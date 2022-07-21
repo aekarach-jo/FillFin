@@ -23,6 +23,7 @@ export default function ShowProduct({ stores }) {
   const current_page = stores.data.current_page
 
   useEffect(() => {
+    console.log(stores);
     search()
   }, [value])
 
@@ -118,7 +119,7 @@ export default function ShowProduct({ stores }) {
                       {data.canbuy
                         ? <>
                           {data.preOrder
-                            ? <Link href={`/member/store/${data.store_code}`}><button style={{ position: 'absolute', bottom: 0 }}><i classNamer="fa-regular fa-clock"></i>สั่งจองเท่านั้น ... รายการ</button></Link>
+                            ? <Link href={`/member/store/${data.store_code}`}><button style={{ position: 'absolute', bottom: 0 }}><i className="fa-regular fa-clock"></i>สั่งจองเท่านั้น ... รายการ</button></Link>
                             : <Link href={`/member/store/${data.store_code}`}><button style={{ position: 'absolute', bottom: 0 }}>สินค้าในร้านทั้งหมด ... รายการ</button></Link>
                           }
                         </>

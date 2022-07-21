@@ -55,6 +55,18 @@ export default function PaymentSummary() {
         }
     }
 
+    function popupShowImage(image){
+        Swal.fire({
+            imageUrl: image,
+            imageWidth: 400,
+            imageHeight: 520,
+            imageAlt: 'Custom image',
+            showConfirmButton : false,
+            background : 'rgba(0,0,0,0)',
+
+          })
+    }
+
     async function getCartList() {
         const access_token = getCookie("access_token")
         const getCart = await axios({
@@ -290,7 +302,7 @@ export default function PaymentSummary() {
                                 <div className="column-upload-slip">
                                     <div
                                         className="left"
-                                        style={{ height: "300px", width: "230px" }}
+                                        style={{ height: "auto", width: "200px" }}
                                     >
                                         {image ? (
                                             <img
@@ -300,7 +312,9 @@ export default function PaymentSummary() {
                                                     width: "100%",
                                                     height: "100%",
                                                     objectFit: "contain",
+                                                    cursor : 'pointer'
                                                 }}
+                                                onClick={() => popupShowImage(image)}
                                             />
                                         ) : (
                                             <i className="fa-solid fa-image" />

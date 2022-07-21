@@ -3,8 +3,8 @@ import Head from "next/head";
 import Nav from "../components/subComponent/nav";
 import Footer from "../components/subComponent/footer";
 import { AppWrapper } from "../config/state";
-
 import 'tailwindcss/tailwind.css'
+
 function MyApp({ Component, pageProps }) {
 
   return (

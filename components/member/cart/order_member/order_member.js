@@ -26,7 +26,7 @@ export default function Order_member() {
     }
 
     function FormatDate({ dateTime }) {
-        dateTime = moment().format("DD MMM YYYY");
+        dateTime = moment(dateTime).format("DD MMM YYYY");
         return <p>วันที่สั่งซื้อ<span>{dateTime}</span></p>
     }
 
@@ -34,27 +34,27 @@ export default function Order_member() {
     return (
         <Fragment>
             <div className="order-list" style={{ minHeight: "calc(100vh - 100px)" }}>
-                <div class="img-background-column">
-                    <div class="img-background">
+                <div className="img-background-column">
+                    <div className="img-background">
 
                     </div>
-                    <div class="column-shadow">
-                        <div class="shadow-left"></div>
-                        <div class="shadow-right"></div>
+                    <div className="column-shadow">
+                        <div className="shadow-left"></div>
+                        <div className="shadow-right"></div>
                     </div>
-                    <div class="column-shadow-white">
+                    <div className="column-shadow-white">
 
                     </div>
                 </div>
                 <ContactUs />
                 <div className="column-order-list">
-                    <div class="head-text-top">
-                        <h2>รายการออเดอร์</h2>
+                    <div className="head-text-top">
+                        <p style={{ fontSize : '24px'}}>รายการออเดอร์</p>
                     </div>
 
-                    <div className="column-list">
+                    <div className="column-list" style={{ marginBottom : "5rem"}}>
                         <div className="text-head">
-                            <p class="text-head-left">รายการสินค้า</p>
+                            <p className="text-head-left">รายการสินค้า</p>
                             <p>ราคา</p>
                             <p>การจัดส่ง</p>
                         </div>

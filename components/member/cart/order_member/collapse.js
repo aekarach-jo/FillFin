@@ -43,11 +43,11 @@ export default function ProductList({ productList, orderDetail, qty }) {
                             ? <button onClick={onCollapse}>
                                 {isCollapse
                                     ? <>
-                                        <i class="fa-solid fa-angle-down" style={{ marginRight: '0.5rem' }}> </i>
+                                        <i className="fa-solid fa-angle-down" style={{ marginRight: '0.5rem' }}> </i>
                                         แสดงรายการ
                                     </>
                                     : <>
-                                        <i class="fa-solid fa-angle-up" style={{ marginRight: '0.5rem' }}> </i>
+                                        <i className="fa-solid fa-angle-up" style={{ marginRight: '0.5rem' }}> </i>
                                         ซ่อนรายการ
                                     </>
                                 }

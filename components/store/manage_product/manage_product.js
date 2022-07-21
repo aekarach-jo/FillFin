@@ -5,6 +5,7 @@ import FormData from "form-data";
 import Swal from 'sweetalert2'
 import Image from 'next/image'
 import nextConfig from '../../../next.config';
+import st from '../../../styles/store.module.scss'
 
 const apiUrl = nextConfig.apiPath
 
@@ -112,22 +113,15 @@ export default function Manage_product({ status }) {
                             {imageObj.first
                                 ? (
                                     <img
-                                        src={imageObj.first}
+                                        className={st.manage_image}
                                         alt="image-first"
-                                        style={{
-                                            border: '1px solid #e7e7e7',
-                                            borderRadius: "20px",
-                                            width: "250px",
-                                            height: "250px",
-                                            objectFit: "cover",
-                                            cursor: "pointer"
-                                        }}
+                                        src={imageObj.first}
                                         onClick={() => inputFirstImage.current.click()}
                                     />
                                 ) : (
-                                    <i className="fa-solid fa-image"
-                                        style={{ cursor: "pointer" }}
-                                        onClick={() => inputFirstImage.current.click()} />
+                                    <div onClick={() => inputFirstImage.current.click()}>
+                                        <i className={`fa-regular fa-image ${st.iconEmpty}`} ></i>
+                                    </div>
                                 )}
                             <input
                                 type="file"
@@ -141,20 +135,13 @@ export default function Manage_product({ status }) {
                                     <img
                                         src={imageObj.second}
                                         alt="image-second"
-                                        style={{
-                                            border: '1px solid #e7e7e7',
-                                            borderRadius: "20px",
-                                            width: "250px",
-                                            height: "250px",
-                                            objectFit: "cover",
-                                            cursor: "pointer"
-                                        }}
+                                        className={st.manage_image}
                                         onClick={() => inputSecondImage.current.click()}
                                     />
                                 ) : (
-                                    <i className="fa-solid fa-image"
-                                        style={{ cursor: "pointer" }}
-                                        onClick={() => inputSecondImage.current.click()} />
+                                    <div onClick={() => inputSecondImage.current.click()}>
+                                        <i className={`fa-regular fa-image ${st.iconEmpty}`} ></i>
+                                    </div>
                                 )}
                             <input
                                 type="file"
@@ -207,20 +194,13 @@ export default function Manage_product({ status }) {
                                     <img
                                         src={imageObj.third}
                                         alt="image-third"
-                                        style={{
-                                            border: '1px solid #e7e7e7',
-                                            borderRadius: "20px",
-                                            width: "250px",
-                                            height: "250px",
-                                            objectFit: "cover",
-                                            cursor: "pointer"
-                                        }}
+                                        className={st.manage_image}
                                         onClick={() => inputThirdImage.current.click()}
                                     />
                                 ) : (
-                                    <i className="fa-solid fa-image"
-                                        style={{ cursor: "pointer" }}
-                                        onClick={() => inputThirdImage.current.click()} />
+                                    <div onClick={() => inputThirdImage.current.click()}>
+                                        <i className={`fa-regular fa-image ${st.iconEmpty}`} ></i>
+                                    </div>
                                 )}
                             <input
                                 type="file"
@@ -234,20 +214,13 @@ export default function Manage_product({ status }) {
                                     <img
                                         src={imageObj.fourth}
                                         alt="image-fourth"
-                                        style={{
-                                            border: '1px solid #e7e7e7',
-                                            borderRadius: "20px",
-                                            width: "250px",
-                                            height: "250px",
-                                            objectFit: "cover",
-                                            cursor: "pointer"
-                                        }}
+                                        className={st.manage_image}
                                         onClick={() => inputFourthImage.current.click()}
                                     />
                                 ) : (
-                                    <i className="fa-solid fa-image"
-                                        style={{ cursor: "pointer" }}
-                                        onClick={() => inputFourthImage.current.click()} />
+                                    <div onClick={() => inputFourthImage.current.click()}>
+                                        <i className={`fa-regular fa-image ${st.iconEmpty}`} ></i>
+                                    </div>
                                 )}
                             <input
                                 type="file"

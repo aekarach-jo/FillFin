@@ -12,7 +12,7 @@ export default function showProduct({ storeObj, bannerCover }) {
         <title>FillFin</title>
       </Head>
       <Cover banner={bannerCover.banner} />
-      <ShowProduct stores={storeObj} />
+      <ShowProduct stores={storeObj} banner={bannerCover.banner}/>
     </Fragment>
   );
 }

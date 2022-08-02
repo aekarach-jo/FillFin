@@ -9,7 +9,7 @@ import axios from "axios";
 
 const apiUrl = nextConfig.apiPath;
 
-export default function StoreRegister({ content }) {
+export default function StoreRegister({ content,qrCode }) {
   const router = useRouter();
   let formData = new FormData();
 
@@ -142,13 +142,14 @@ export default function StoreRegister({ content }) {
                             type="text"
                             placeholder="User Name"
                             value={storeName}
+                            maxLength={30}
                             onChange={(e) => {
-                              // if (
-                              //   /^[a-zA-Z0-9]+$/.test(e.target.value.trim()) ||
-                              //   e.target.value == ""
-                              // ) {
-                                setStorename(e.target.value.trim());
-                              // }
+                              if (
+                                /^[a-zA-Z0-9 ]+$/.test(e.target.value) ||
+                                e.target.value == ""
+                              ) {
+                                setStorename(e.target.value);
+                              }
                             }}
                           />
                         </div>
@@ -165,6 +166,7 @@ export default function StoreRegister({ content }) {
                             onChange={(e) => setPassword(e.target.value)}
                             type="password"
                             value={password}
+                            maxLength={20}
                             placeholder="************"
                           />
                         </div>
@@ -182,6 +184,7 @@ export default function StoreRegister({ content }) {
                             type="password"
                             value={confirmPassword}
                             placeholder="************"
+                            maxLength={20}
                           />
                         </div>
                       </div>
@@ -201,7 +204,8 @@ export default function StoreRegister({ content }) {
                           border: "1px solid #747474",
                           borderRadius: "5px",
                           outlineStyle: "none",
-                          padding: "0 1rem"
+                          padding: "0 1rem",
+                          marginBottom: '1rem'
                         }}>
                         <option disabled value={'none'}>กรุณาเลือกประเภทสินค้า</option>
                         <option value={"men"}>ผู้ชาย</option>
@@ -243,13 +247,13 @@ export default function StoreRegister({ content }) {
                             value={username}
                             placeholder="Lorem ipsum dolor sit amet, consectetur"
                             onChange={(e) => {
-                              // if (
-                              //   /^[\d]+$/.test(
-                              //     e.target.value.trim()
-                              //   ) || e.target.value == ""
-                              // ) {
+                              if (
+                                /^[\d]+$/.test(
+                                  e.target.value.trim()
+                                ) || e.target.value == ""
+                              ) {
                                 setUsername(e.target.value.trim());
-                              // }
+                              }
                             }}
                           />
                         </div>
@@ -260,15 +264,16 @@ export default function StoreRegister({ content }) {
                           <input
                             type="text"
                             value={age}
+                            maxLength={3}
                             placeholder="Lorem ipsum dolor sit amet, consectetur"
                             onChange={(e) => {
-                              // if (
-                              //   /^[\d]+$/.test(
-                              //     e.target.value.trim()
-                              //   ) || e.target.value == ""
-                              // ) {
+                              if (
+                                /^[\d]+$/.test(
+                                  e.target.value.trim()
+                                ) || e.target.value == ""
+                              ) {
                                 setAge(e.target.value.trim());
-                              // }
+                              }
                             }}
                           />
                         </div>
@@ -298,13 +303,13 @@ export default function StoreRegister({ content }) {
                             />
                           </div>
                           <div className="column-right">
-                            <h3>อัฟโหลดภาพโปรไฟล์ร้าน</h3>
-                            <p>ขนาดอัฟโหลดไฟล์ภาพ ไม่เกิน 5 Mb</p>
+                            <h3>อัปโหลดภาพโปรไฟล์ร้าน</h3>
+                            <p>ขนาดอัปโหลดไฟล์ภาพ ไม่เกิน 5 Mb</p>
                             <button
                               className="btn-upload"
                               onClick={(e) => inputImage.current.click()}
                             >
-                              อัฟโหลด
+                              อัปโหลด
                             </button>
                           </div>
                         </div>
@@ -315,35 +320,51 @@ export default function StoreRegister({ content }) {
               </div>
               <div className="column-qr-right">
                 <div className="left">
-                  <h3>ติดต่อ Admin เพื่ออัฟโหลด Clip VDO</h3>
-                  <p>Line ID : line 1</p>
+                  <h3>ติดต่อ Admin เพื่ออัปโหลด Clip VDO</h3>
+                  <p>{qrCode.title} : {qrCode.content}</p>
                 </div>
                 <div className="right">
-                  <Image width={143} height={143} src="/assets/images/qr.png" alt="image-qrCode" />
+                  <Image width={143} height={143} src={`${apiUrl}${qrCode.imageLink}`} alt="image-qrCode" />
                 </div>
               </div>
-            </div>
-            <div className="line"></div>
-            <div className="btn-column">
-              {isRegister ? (
-                <button onClick={() => handleRegis()} className="btn-left">
-                  สมัครสมาชิก
-                </button>
-              ) : (
-                <button
-                  className="btn-left"
-                  style={{ backgroundColor: "#e3e3e3", cursor: "not-allowed" }}
+              <div className="form-check mt-3">
+                <input
+                  onClick={() => setIsRegister(!isRegister)}
+                  className="form-check-input"
+                  type="checkbox"
+                  id="flexCheckChecked"
+                />
+                <label
+                  className="form-check-label"
+                  htmlFor="flexCheckChecked"
+                  style={{ marginLeft: '10px' }}
                 >
-                  สมัครสมาชิก
+                  ยอมรับเงื่อนไขและข้อตกลงในการใช้บริการ
+                  {/* <a href="">{" "}อ่านเงื่อนไข</a> */}
+                </label>
+              </div>
+              </div>
+              <div className="line"></div>
+              <div className="btn-column">
+                {isRegister ? (
+                  <button onClick={() => handleRegis()} className="btn-left">
+                    สมัครสมาชิก
+                  </button>
+                ) : (
+                  <button
+                    className="btn-left"
+                    style={{ backgroundColor: "#e3e3e3", cursor: "not-allowed" }}
+                  >
+                    สมัครสมาชิก
+                  </button>
+                )}
+                <button onClick={() => onClickCancel()} className="btn-right">
+                  ยกเลิก
                 </button>
-              )}
-              <button onClick={() => onClickCancel()} className="btn-right">
-                ยกเลิก
-              </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
     </Fragment>
   );
 }

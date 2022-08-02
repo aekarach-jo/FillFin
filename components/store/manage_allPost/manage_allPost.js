@@ -2,7 +2,7 @@ import moment from 'moment'
 import React, { Fragment } from 'react'
 import Swal from 'sweetalert2'
 import nextConfig from '../../../next.config'
-
+import st from '../../../styles/store/storePost.module.scss'
 const apiUrl = nextConfig.apiPath
 export default function Manage_allPost({ postList ,status}) {
 
@@ -44,7 +44,7 @@ export default function Manage_allPost({ postList ,status}) {
       </div>
       {postList.length > 0
         ? <>
-          <div className="column-product-recommend">
+          <div className={`column-product-recommend ${st.box_post}`}>
             {postList?.map((data, index) => (
               <div key={index} className="recommend-column">
                 <div className="column-calendar">

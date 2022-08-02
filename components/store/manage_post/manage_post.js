@@ -15,7 +15,7 @@ export default function Manage_post({ status }) {
     const inputFourthImage = useRef([])
 
     const [imageObj, setImageobj] = useState({})
-    const [caption, setCaption] = useState()
+    const [caption, setCaption] = useState("")
     const dateToday = useRef(new Date)
 
     function FormetDate({ dateTime }) {
@@ -28,7 +28,7 @@ export default function Manage_post({ status }) {
             return false;
         }
         if (
-            ["image/jpeg", "iamge/jpg", "image/png"].includes(e.target.files[0].type)
+            ["image/jpeg", "iamge/jpg", "image/png", "image/webp"].includes(e.target.files[0].type)
         ) {
             const URLs = URL.createObjectURL(e.target.files[0]);
             setImageobj(prev => ({
@@ -47,19 +47,19 @@ export default function Manage_post({ status }) {
     }
 
     function handleClickCreateProduct() {
-        if (inputFirstImage.current.value == "" ||
-            inputSecondImage.current.value == "" ||
-            inputThirdImage.current.value == "" ||
-            inputFourthImage.current.value == "") {
-            Swal.fire({
-                title: "กรุณาเพิ่มรูปภาพให้ครบ",
-                icon: "warning",
-                position: "center",
-                timer: 1000,
-                showConfirmButton: false
-            });
-            return false;
-        }
+        // if (inputFirstImage.current.value == "" ||
+        //     inputSecondImage.current.value == "" ||
+        //     inputThirdImage.current.value == "" ||
+        //     inputFourthImage.current.value == "") {
+        //     Swal.fire({
+        //         title: "กรุณาเพิ่มรูปภาพให้ครบ",
+        //         icon: "warning",
+        //         position: "center",
+        //         timer: 1000,
+        //         showConfirmButton: false
+        //     });
+        //     return false;
+        // }
 
         const formData = new FormData()
         formData.append("image", inputFirstImage.current.files[0])
@@ -87,15 +87,11 @@ export default function Manage_post({ status }) {
             icon: "success",
             position: "center",
         }).then(() => {
-            emptyForm()
+            setCaption("")
+            setImageobj("")
         })
     }
 
-
-    function emptyForm() {
-        setImageobj("")
-        setCaption("")
-    }
     return (
         <Fragment>
             <div className="head-text-column">
@@ -104,7 +100,7 @@ export default function Manage_post({ status }) {
             <div className="column-product-recommend">
                 <div className="recommend-column">
                     <div className="column-calendar">
-                        <img src="/assets/icons/icon-calendar.png" alt="image-calender"/>
+                        <img src="/assets/icons/icon-calendar.png" alt="image-calender" />
                         <FormetDate dateTime={dateToday} />
                     </div>
                     <div className="detail-text">
@@ -125,14 +121,14 @@ export default function Manage_post({ status }) {
                                     onClick={() => inputFirstImage.current.click()}
                                 />
                             ) : (
-                                <div className="bg-img" onClick={() => inputFirstImage.current.click()}>
+                                <div style={{ cursor: "pointer" }} className="bg-img" onClick={() => inputFirstImage.current.click()}>
                                     <i className="fa-regular fa-image"></i>
                                 </div>
                             )}
                         <input
                             type="file"
                             style={{ display: 'none' }}
-                            accept=".jpg,.jpeg,.png"
+                            accept=".jpg,.jpeg,.png,.webp"
                             ref={inputFirstImage}
                             onChange={(e) => inputImageOnChange(e, "first")}
                         />
@@ -151,14 +147,14 @@ export default function Manage_post({ status }) {
                                     onClick={() => inputSecondImage.current.click()}
                                 />
                             ) : (
-                                <div className="bg-img" onClick={() => inputSecondImage.current.click()}>
+                                <div style={{ cursor: "pointer" }} className="bg-img" onClick={() => inputSecondImage.current.click()}>
                                     <i className="fa-regular fa-image"></i>
                                 </div>
                             )}
                         <input
                             type="file"
                             style={{ display: 'none' }}
-                            accept=".jpg,.jpeg,.png"
+                            accept=".jpg,.jpeg,.png,.webp"
                             ref={inputSecondImage}
                             onChange={(e) => inputImageOnChange(e, "second")}
                         />
@@ -177,14 +173,14 @@ export default function Manage_post({ status }) {
                                     onClick={() => inputThirdImage.current.click()}
                                 />
                             ) : (
-                                <div className="bg-img" onClick={() => inputThirdImage.current.click()}>
+                                <div style={{ cursor: "pointer" }} className="bg-img" onClick={() => inputThirdImage.current.click()}>
                                     <i className="fa-regular fa-image"></i>
                                 </div>
                             )}
                         <input
                             type="file"
                             style={{ display: 'none' }}
-                            accept=".jpg,.jpeg,.png"
+                            accept=".jpg,.jpeg,.png,.webp"
                             ref={inputThirdImage}
                             onChange={(e) => inputImageOnChange(e, "third")}
                         />
@@ -203,21 +199,21 @@ export default function Manage_post({ status }) {
                                     onClick={() => inputFourthImage.current.click()}
                                 />
                             ) : (
-                                <div className="bg-img" onClick={() => inputFourthImage.current.click()}>
+                                <div style={{ cursor: "pointer" }} className="bg-img" onClick={() => inputFourthImage.current.click()}>
                                     <i className="fa-regular fa-image"></i>
                                 </div>
                             )}
                         <input
                             type="file"
                             style={{ display: 'none' }}
-                            accept=".jpg,.jpeg,.png"
+                            accept=".jpg,.jpeg,.png,.webp"
                             ref={inputFourthImage}
                             onChange={(e) => inputImageOnChange(e, "fourth")}
                         />
                     </div>
                     <form>
                         <label>แคปชั่น (Caption)</label>
-                        <textarea onChange={(e) => setCaption(e.target.value)}></textarea>
+                        <textarea style={{ padding : '0.7rem'}} value={caption} onChange={(e) => setCaption(e.target.value)}></textarea>
                     </form>
                     <div className="column-button">
                         <button className="btn-left" onClick={() => handleClickCreateProduct()}>โพสต์</button>

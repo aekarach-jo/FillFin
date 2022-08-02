@@ -7,7 +7,8 @@ let initialState = {
     isLogin: false,
     isStore: false,
     emptyPackage: false,
-    memberDetail: ""
+    memberDetail: "",
+    dateExpire : 0
 }
 
 function reducer(state, action) {
@@ -22,6 +23,8 @@ function reducer(state, action) {
             return { ...state, memberDetail: action.data };
         case "emptyPackage":
             return { ...state, emptyPackage: action.data };
+        case "dateExpire":
+            return { ...state, dateExpire: action.data };
         default:
             return state;
     }
@@ -59,8 +62,15 @@ export function AppWrapper({ children }) {
             set_emptyPackage: (params) => {
                 dispatch({ type: "emptyPackage", data: params })
             }
+        },
+        dateExpire: {
+            get_dateExpire: state.dateExpire,
+            set_dateExpire: (params) => {
+                dispatch({ type: "dateExpire", data: params })
+            }
         }
     }
+    // console.log(state);
     return <AppContext.Provider value={value}>{children}</AppContext.Provider>
 }
 

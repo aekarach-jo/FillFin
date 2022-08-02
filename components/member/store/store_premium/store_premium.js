@@ -1,15 +1,17 @@
-import { setCookies } from 'cookies-next';
 import Image from 'next/image';
-import React, { Fragment } from 'react'
+import React, { Fragment } from 'react';
 import nextConfig from '../../../../next.config';
+import ContactAdmin from '../../../subComponent/contactAdmin';
 import Show_post from './show_post/show_post';
 import Show_preoder from './show_preoder/show_preoder';
 import Show_product from './show_product/show_product';
-
+import { useAppContext } from '../../../../config/state';
+import st from '../../../../styles/product/premium.module.scss'
 const apiUrl = nextConfig.apiPath
-export default function Store_premium({ stores }) {
+export default function Store_premium({ stores, qrCode, statusChange }) {
+    const state = useAppContext()
     const { all_product, pre_order, review, store_detail, store_post } = stores;
-
+    const isStore = state.isStore.get_isStore
     return (
         <Fragment>
             <div className="stone-premiem">
@@ -18,39 +20,43 @@ export default function Store_premium({ stores }) {
                         <div className="column-text-left">
                             <Image width={100} height={100} src={`${apiUrl}/${store_detail.profile_img}`} />
                         </div>
-                        <div className="column-text-right">
+                        <div className="column-text-right" >
                             <h2>{store_detail.name}</h2>
                             <div className="column-text">
                                 <div className="text-left">
-                                    <p>{store_detail.age}</p>
-                                    <p>{store_detail.bwh}</p>
+                                    <p>อายุ : {store_detail.age}</p>
+                                    <p>สัดส่วน BWH : {store_detail.bwh}</p>
                                 </div>
                                 <div className="text-right">
-                                    <p>{store_detail.weight}</p>
-                                    <p>{store_detail.height}</p>
+                                    <p>น้ำหนัก : {store_detail.weight} กก.</p>
+                                    <p>ส่วนสูง : {store_detail.height} ชม.</p>
                                 </div>
+                                {isStore &&
+                                    <div >
+                                        <button className={st.backToStore} onClick={() => statusChange(true)}>
+                                            <i className="fa-regular fa-eye" />
+                                            ดูมุมมองร้านค้า
+                                        </button>
+                                    </div>
+                                }
                             </div>
                         </div>
                     </div>
-                    {store_detail.standard
-                        ? <button onClick={() => statusChange(true)}>Back to store view</button>
-                        : null
-                    }
                     <div className="column-text-center">
-                        <h3>คอนเซ็ปร้าน</h3>
+                        <h3>คอนเซ็ปต์ร้าน</h3>
                         <p>{store_detail.concept}</p>
                     </div>
-                    {/* <iframe src={"https://www.youtube.com/embed/CUfPYWtydgk"} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe> */}
-                    <video
-                        className="video"
-                        style={{ width: '100%' }}
-                        controls
-                        muted
-                        autoPlay
-                        src={`http://192.168.1.51:3000/streaming/video/2022/07/AWAKENING_NEWZEALAND.mp4`}
-                        poster='/assets/images/sale.png'
-
-                    />
+                    {store_detail.profile_video &&
+                        <video
+                            className="video"
+                            style={{ width: '100%' }}
+                            controls
+                            muted
+                            autoPlay
+                            src={`${apiUrl}/streaming/${store_detail.profile_video}`}
+                            poster='/assets/images/product.png'
+                        />
+                   }
                     <div className="column-box-product">
                         <Show_post postList={store_post} />
                     </div>
@@ -79,7 +85,7 @@ export default function Store_premium({ stores }) {
                     </div>
                 </div>
             </div>
-
+            <ContactAdmin qrCode={qrCode} />
         </Fragment>
     )
 }

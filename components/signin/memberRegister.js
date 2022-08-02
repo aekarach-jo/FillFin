@@ -40,14 +40,14 @@ export default function MemberRegister({ packageData, content }) {
       });
       return false;
     }
-    // if (username.length != 10) {
-    //   Swal.fire({
-    //     icon: "warning",
-    //     position: "center",
-    //     title: "กรุณากรอกเบอร์โทรศัพท์ให้ครบ",
-    //   });
-    //   return false;
-    // }
+    if (username.length != 10) {
+      Swal.fire({
+        icon: "warning",
+        position: "center",
+        title: "กรุณากรอกเบอร์โทรศัพท์ให้ครบ",
+      });
+      return false;
+    }
 
     if (password != confirmPassword) {
       Swal.fire({
@@ -85,37 +85,49 @@ export default function MemberRegister({ packageData, content }) {
 
 
   async function register(formRegis) {
-    const apiRegis = await axios({
-      method: "POST",
-      url: `${apiUrl}/api/member/register`,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: JSON.stringify(formRegis),
-    })
-    const data = apiRegis.data
-    if (data.status == true) {
-      await Swal.fire({
-        icon: "success",
-        title: data.description,
-        position: "center",
-        showConfirmButton: false,
-        timer: 1000,
-      }).then(() => {
+    try {
+      const apiRegis = await axios({
+        method: "POST",
+        url: `${apiUrl}/api/member/register`,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: JSON.stringify(formRegis),
+      })
+      const data = apiRegis.data
+      if (data.status == true) {
+        // await Swal.fire({
+        //   icon: "success",
+        //   title: data.description,
+        //   position: "center",
+        //   showConfirmButton: false,
+        //   timer: 1000,
+        // })
+        // .then(() => {
         setCookies('gender', formRegis.gender) // เก็บ gender ไว้ดึงข้อมูลในหน้า package ว่าก่อนหน้านี้เลือกอะไรไป
         setCookies('package', formRegis.package_id) // เก็บ package_id ไว้ดึงข้อมูลในหน้า package ว่าก่อนหน้านี้เลือกอะไรไป
         setCookies("member_code", data.memberCode); // เก็บ user-code ไว้ดึงข้อมูลในหน้า payment
         router.push(`/member/package`)
-      });
-    } else {
+        // });
+      }
+    }
+    catch (err) {
+      console.log(err);
+      let message = ""
+      if (err.response.data.description == "username has been used.") {
+        message = 'เบอร์โทรศัพท์นี้มีในระบบแล้ว'
+      }
       await Swal.fire({
         icon: "error",
-        title: resJson.description,
+        title: message,
         position: "center",
         showConfirmButton: false,
-        timer: 1000,
+        timer: 1200,
       })
     }
+
+
+
   }
 
   function onClickCancel() {
@@ -150,7 +162,6 @@ export default function MemberRegister({ packageData, content }) {
                   loop
                   autoPlay
                   src={`${apiUrl}/streaming${content.videoLink}`}
-                // poster='/assets/images/sale.png'
                 />
               </div>
               <div className="column-right">
@@ -176,18 +187,18 @@ export default function MemberRegister({ packageData, content }) {
                         </div>
                         <input
                           onChange={(e) => {
-                            // if (
-                            //   /^[\d]+$/.test(
-                            //     e.target.value.trim()
-                            //   ) || e.target.value == ""
-                            // ) {
+                            if (
+                              /^[\d]+$/.test(
+                                e.target.value.trim()
+                              ) || e.target.value == ""
+                            ) {
                               setUsername(e.target.value.trim());
-                            // }
+                            }
                           }}
                           type="text"
                           value={username}
                           placeholder="Username"
-                          // maxLength={10}
+                          maxLength={10}
                         />
                       </div>
                       <div className="form">

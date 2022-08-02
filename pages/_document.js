@@ -66,7 +66,7 @@ export default function Document() {
           rel="stylesheet"
           href="https://unpkg.com/swiper@8/swiper-bundle.min.css"
         />
-        
+
       </Head>
       <body>
         <Main />

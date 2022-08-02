@@ -5,9 +5,10 @@ import Swal from 'sweetalert2'
 import nextConfig from '../../../next.config'
 import ChooseImage from '../../subComponent/manage-image/chooseImage'
 import ShowImage from '../../subComponent/manage-image/showImage'
+import st from '../../../styles/store/store.module.scss'
 
 const apiUrl = nextConfig.apiPath
-export default function Manage_allPreorder({ preOrderList , status}) {
+export default function Manage_allPreorder({ preOrderList, status }) {
     function handleConfirmDelete(product_code) {
         Swal.fire({
             icon: 'warning',
@@ -46,27 +47,27 @@ export default function Manage_allPreorder({ preOrderList , status}) {
             </div>
             {preOrderList.length > 0
                 ? <>
-                    <div className="column-product-recommend">
+                    <div className={`column-product-recommend ${st.box}`}>
                         {preOrderList?.map((data, index) => (
-                            <div key={index} className="recommend-column">
+                            <div key={index}  className={`recommend-column ${st.recCol}`}>
                                 <ShowImage image={data.product_img} />
-                                <div className="column-img-bottom">
+                                <div className="column-img-bottom" style={{ display: 'flex', margin: '0.5rem 0' }}>
                                     <ChooseImage image={data.product_img} />
                                 </div>
-                                <div className="column-text-bottom">
+                                <div className={`column-text-bottom ${st.productAll}`}>
                                     <h4>{data.name}</h4>
-                                    <div className="column-gift">
-                                        {data.clip != "no"
-                                            ?
-                                            <>
+                                    {data.clip != "no"
+                                        ?
+                                        <>
+                                            <div className="column-gift">
                                                 <img src="/assets/icons/icon-gift.png" alt="image-gift" />
                                                 <span>มีคลิป</span>
-                                            </>
-                                            : null
-                                        }
-                                    </div>
+                                            </div>
+                                        </>
+                                        : null
+                                    }
                                     <p>{data.content_product}</p>
-                                    <div className="column-btn">
+                                    <div className={`column-btn ${st.colBtn}`}>
                                         <button
                                             className="btn-left">
                                             <i className="fa-solid fa-cart-shopping" />{data.price}</button>
@@ -81,7 +82,7 @@ export default function Manage_allPreorder({ preOrderList , status}) {
 
                     </div>
                 </>
-                :  <div className="column-product-recommend" style={{ height : '0px' , overflow : "hidden"}}>ไม่มีสินค้า PRE-ORDER</div>
+                : <div className="column-product-recommend" style={{ height: '0px', overflow: "hidden" }}>ไม่มีสินค้า PRE-ORDER</div>
             }
         </Fragment>
     )

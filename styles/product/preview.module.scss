@@ -1,0 +1,21 @@
+.contentHeight {
+    min-height: calc(100vh - 164px);
+}
+
+@media screen and(max-width: 680px) {
+    .contentHeight {
+        position: relative;
+        min-height: calc(100vh - 98px);
+    }
+}
+
+.chooseImage {
+    margin-top : 1rem;
+    display: flex !important;
+    width: fit-content !important;
+}
+
+.textPrice{
+    font-size: 30px;
+    font-weight: 500;
+}

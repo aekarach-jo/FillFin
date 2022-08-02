@@ -6,14 +6,14 @@ import axios from 'axios';
 import Store_member from '../../../components/member/store/store_member/store_member';
 import Store_premium from '../../../components/member/store/store_premium/store_premium';
 
-export default function StoreId({ store, bannerCover, bannerAds }) {
+export default function StoreId({ store, bannerCover, bannerAds, qrCode }) {
   const standard = store.standard
   if (standard) { // package guest and member
     return (
       <Fragment>
         <Head>Store</Head>
         <Cover banner={bannerCover.banner} />
-        <Store_member stores={store} bannerAds={bannerAds.ads} />
+        <Store_member stores={store} bannerAds={bannerAds.ads} qrCode={qrCode} />
       </Fragment>
     )
   }
@@ -22,7 +22,7 @@ export default function StoreId({ store, bannerCover, bannerAds }) {
       <Fragment>
         <Head>Store</Head>
         <Cover banner={bannerCover.banner} />
-        <Store_premium stores={store} />
+        <Store_premium stores={store} qrCode={qrCode} />
       </Fragment>
     )
   }
@@ -37,7 +37,7 @@ export async function getServerSideProps({ query, res }) {
     gender: gender,
     page: "store"
   }
-  const [getStorebyStoreCode, getBannerCover, getBannerAds] = await Promise.all([
+  const [getStorebyStoreCode, getBannerCover, getBannerAds, apiContentLine] = await Promise.all([
     axios({
       method: 'GET',
       url: `${apiUrl}/api/product/${gender}/store/${store_code}`,
@@ -56,13 +56,18 @@ export async function getServerSideProps({ query, res }) {
     axios({
       method: 'GET',
       url: `${apiUrl}/api/website/getAds/store`
+    }),
+    axios({
+      method: 'GET',
+      url: `${apiUrl}/api/website/content/line-website`
     })
   ])
   return {
     props: {
       store: getStorebyStoreCode.data.data,
       bannerCover: getBannerCover.data,
-      bannerAds: getBannerAds.data
+      bannerAds: getBannerAds.data,
+      qrCode: apiContentLine.data.content
     }
   }
 }

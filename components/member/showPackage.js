@@ -4,11 +4,13 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { Fragment, useEffect, useState } from 'react'
 import Swal from 'sweetalert2';
+import { useAppContext } from '../../config/state';
 import nextConfig from '../../next.config';
 import Styles from '../../styles/package.module.scss'
 
 const apiUrl = nextConfig.apiPath
 export default function ShowPackage({ packagesList }) {
+    const state = useAppContext()
     const router = useRouter()
     const [packageGender, setPackageGender] = useState(packagesList)
     const [gender, setGender] = useState(getCookie("gender"));
@@ -17,6 +19,7 @@ export default function ShowPackage({ packagesList }) {
 
     useEffect(() => {
         apiGetStatusPackage()
+        apiCheckPackage()
         // กรองเอาเฉพาะแพ็คเกจของเพศที่สมัคร
     }, []);
 
@@ -48,6 +51,31 @@ export default function ShowPackage({ packagesList }) {
             });
         }
     }
+
+    async function apiCheckPackage() {
+        const mcode = getCookie("member_code");
+        try {
+          const sPackage = await axios({
+            method: "GET",
+            url: `${apiUrl}/api/package/checkPackage/${mcode}`,
+          });
+          const statusPack = sPackage.data;
+          console.log(statusPack);
+          if (!statusPack.status) {
+            state.emptyPackage.set_emptyPackage(true)
+          } else {
+            state.emptyPackage.set_emptyPackage(false)
+          }
+        } catch (err) {
+          console.log(err);
+          Swal.fire({
+            icon: "error",
+            position: "center",
+            // title: err.response.statusText,
+          });
+        }
+      }
+
     function choosPackage(pack) {
         console.log(pack);
         Swal.fire({

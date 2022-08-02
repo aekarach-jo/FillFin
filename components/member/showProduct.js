@@ -10,23 +10,27 @@ import ContactUs from "../subComponent/contactUs";
 import ChooseImage from "../subComponent/manage-image/chooseImage";
 import HoverImage from "../subComponent/manage-image/hoverImage";
 import ShowImage from "../subComponent/manage-image/showImage";
-
+import st from '../../styles/product/productAll.module.scss'
+import Pagination from "../subComponent/pagination";
 const apiUrl = nextConfig.apiPath;
 
-export default function ShowProduct({ stores }) {
+export default function ShowProduct({ stores ,banner}) {
   const { store_all, product_recom } = stores.data;
   const [searchStore, setSearchStore] = useState("")
   const [value] = useDebounce(searchStore, 500);
+  const [page, setPage] = useState()
 
   const [storeAll, setStoreAll] = useState(stores.data.store_all)
-
   const current_page = stores.data.current_page
-
+  const pages = {
+    current_page: stores.data.current_page,
+    per_page: stores.data.per_page,
+    total_page: stores.data.total_page,
+    total_store: stores.data.total_store
+  }
   useEffect(() => {
-    console.log(stores);
     search()
   }, [value])
-
   async function search() {
     const params = new URLSearchParams({
       page: current_page,
@@ -54,30 +58,33 @@ export default function ShowProduct({ stores }) {
               <h2>สินค้าแนะนำ</h2>
               <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. </p>
               <div className="column-product-recommend">
-                {product_recom?.map((data, index) => (
-                  <Fragment key={index}>
-                    <div className="recommend-column">
-                      <ShowImage image={data.product_img} />
-                      <div className="column-img-bottom" style={{ display: 'flex', margin : '0.5rem 0'}}>
-                        <ChooseImage image={data.product_img} />
+                {product_recom.length > 0
+                  ? <>
+                    {product_recom?.map((data, index) => (
+                      <div key={index} className={`recommend-column ${st.productAll_storeCard}`}>
+                        <ShowImage image={data.product_img} />
+                        <div className="column-img-bottom" style={{ display: 'flex', margin: '0.5rem 0' }}>
+                          <ChooseImage image={data.product_img} />
+                        </div>
+                        <div className="column-text-bottom">
+                          <h4>{data.name_product}</h4>
+                          <p className={st.textContent}>{data.content_product}</p>
+                          {data.canbuy
+                            ? <button><i className="fa-solid fa-cart-shopping" />{data.price}</button>
+                            : <button style={{ cursor: "not-allowed" }} ><i className="fa-solid fa fa-eye-slash" /></button>
+                          }
+                        </div>
                       </div>
-                      <div className="column-text-bottom">
-                        <h4>{data.name_product}</h4>
-                        <p>{data.content_product}</p>
-                        {data.canbuy
-                          ? <button><i className="fa-solid fa-cart-shopping" />{data.price}</button>
-                          : <button style={{ cursor: "not-allowed" }} ><i className="fa-solid fa fa-eye-slash" /></button>
-                        }
-                      </div>
-                    </div>
-                  </Fragment>
-                ))}
+                    ))}
+                  </>
+                  : <p>ไม่มีสินค้าแนะนำ</p>
+                }
               </div>
             </div>
             <div className="column-right">
               <div className="text-column-top">
-                <h2>WOMEN</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. </p>
+                <h2>{banner.title}</h2>
+                <p>{banner.content}</p>
               </div>
               <form className="search">
                 <input type="text" placeholder="ค้นหาชื่อร้าน" name="search" onChange={(e) => { setSearchStore(e.target.value) }} />
@@ -87,7 +94,7 @@ export default function ShowProduct({ stores }) {
               </form>
               <div className="column-product">
                 {storeAll?.map((data, index) => (
-                  <div key={index} className="column" style={{ position: 'relative' }}>
+                  <div key={index} className={`column ${st.productAll_storeCard}`}>
                     <Link href={`/member/store/${data.store_code}`}>
                       <div>
                         <div
@@ -105,52 +112,26 @@ export default function ShowProduct({ stores }) {
                         </div>
                         <div
                           className="column-center "
-                          style={{ cursor: "pointer", paddingBottom: '2rem' }}
+                          style={{ cursor: "pointer" }}
                         >
                           {!data.preOrder
                             ? <HoverImage image={data.product_img} />
                             : <img src={`${apiUrl}${data.product_img}`} alt="image-preOrder" />
                           }
-                          <p>{data.content_product}</p>
+                          <p className={st.textContent} style={{ textAlign: 'center' }}>{data.content_product}</p>
                         </div>
                       </div>
                     </Link>
                     <div className="column-bottom">
-                      {data.canbuy
-                        ? <>
-                          {data.preOrder
-                            ? <Link href={`/member/store/${data.store_code}`}><button style={{ position: 'absolute', bottom: 0 }}><i className="fa-regular fa-clock"></i>สั่งจองเท่านั้น ... รายการ</button></Link>
-                            : <Link href={`/member/store/${data.store_code}`}><button style={{ position: 'absolute', bottom: 0 }}>สินค้าในร้านทั้งหมด ... รายการ</button></Link>
-                          }
-                        </>
-                        : <button style={{ bottom: 0 }} ><i className="fa-solid fa fa-eye-slash" aria-hidden="true" /></button>
+                      {data.preOrder
+                        ? <Link href={`/member/store/${data.store_code}`}><button ><i className="fa-regular fa-clock"></i>สั่งจองเท่านั้น {data.totalProduct} รายการ</button></Link>
+                        : <Link href={`/member/store/${data.store_code}`}><button >สินค้าในร้านทั้งหมด {data.totalProduct} รายการ</button></Link>
                       }
                     </div>
                   </div>
                 ))}
               </div>
-              <div className="pagination">
-                <button>
-                  <i className="fa-solid fa-angle-left" />
-                </button>
-                <a href="#" className="active">
-                  1
-                </a>
-                <a href="#">2</a>
-                <a href="#">3</a>
-                <a href="#">4</a>
-                <a href="#">5</a>
-                <a href="#" className="center">
-                  ...
-                </a>
-                <a href="#">7</a>
-                <a href="#">8</a>
-                <a href="#">9</a>
-                <a href="#">10</a>
-                <button>
-                  <i className="fa-solid fa-chevron-right" />
-                </button>
-              </div>
+              <Pagination page={pages} />
             </div>
           </div>
         </div>

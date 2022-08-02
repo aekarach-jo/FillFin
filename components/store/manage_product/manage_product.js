@@ -3,9 +3,8 @@ import React, { Fragment, useEffect, useRef, useState } from 'react'
 import axios from "axios";
 import FormData from "form-data";
 import Swal from 'sweetalert2'
-import Image from 'next/image'
 import nextConfig from '../../../next.config';
-import st from '../../../styles/store.module.scss'
+import st from '../../../styles/store/store.module.scss'
 
 const apiUrl = nextConfig.apiPath
 
@@ -30,7 +29,7 @@ export default function Manage_product({ status }) {
             return false;
         }
         if (
-            ["image/jpeg", "iamge/jpg", "image/png"].includes(e.target.files[0].type)
+            ["image/jpeg", "iamge/jpg", "image/png", "image/webp"].includes(e.target.files[0].type)
         ) {
             const URLs = URL.createObjectURL(e.target.files[0]);
             setImageobj(prev => ({
@@ -50,30 +49,30 @@ export default function Manage_product({ status }) {
 
 
     function handleClickCreateProduct() {
-        if (inputFirstImage.current.value == "" ||
-            inputSecondImage.current.value == "" ||
-            inputThirdImage.current.value == "" ||
-            inputFourthImage.current.value == "") {
-            Swal.fire({
-                title: "กรุณาเพิ่มรูปภาพให้ครบ",
-                icon: "warning",
-                position: "center",
-                timer: 1000,
-                showConfirmButton: false
-            });
-            return false;
-        }
+        // if (inputFirstImage.current.value == "" ||
+        //     inputSecondImage.current.value == "" ||
+        //     inputThirdImage.current.value == "" ||
+        //     inputFourthImage.current.value == "") {
+        //     Swal.fire({
+        //         title: "กรุณาเพิ่มรูปภาพให้ครบ",
+        //         icon: "warning",
+        //         position: "center",
+        //         timer: 1000,
+        //         showConfirmButton: false
+        //     });
+        //     return false;
+        // }
 
-        Swal.fire({
-            title: "success",
-            icon: "success",
-            position: "center",
-        });
+        // Swal.fire({
+        //     title: "success",
+        //     icon: "success",
+        //     position: "center",
+        // });
         const formData = new FormData()
-        formData.append("image", inputFirstImage.current.files[0])
-        formData.append("image", inputSecondImage.current.files[0])
-        formData.append("image", inputThirdImage.current.files[0])
-        formData.append("image", inputFourthImage.current.files[0])
+        formData.append("standard", inputFirstImage.current.files[0])
+        formData.append("standard", inputSecondImage.current.files[0])
+        formData.append("premium", inputThirdImage.current.files[0])
+        formData.append("premium", inputFourthImage.current.files[0])
         formData.append("name_member", nameMember)
         formData.append("content_member", contentMember)
         formData.append("name_premium", namePremium)
@@ -95,6 +94,18 @@ export default function Manage_product({ status }) {
             data: params
         })
         status()
+        setEmptyForm()
+    }
+
+    function setEmptyForm() {
+        setImageobj({})
+        setNameMember('')
+        setNamePremium('')
+        setContentMember('')
+        setContentPremium('')
+        setPriceStandard('')
+        setPricePremium('')
+        setClip('')
     }
     return (
         <Fragment>
@@ -108,8 +119,8 @@ export default function Manage_product({ status }) {
                         <i className="fa-solid fa-user" />
                         <h2>ข้อมูลส่วน Member ( จะแสดงในส่วน Premium ด้วย )</h2>
                     </div>
-                    <div className="column-images">
-                        <div className="left">
+                    <div className={`column-images ${st.colImage}`}>
+                        <div className={`left ${st.boxImage}`}>
                             {imageObj.first
                                 ? (
                                     <img
@@ -126,16 +137,16 @@ export default function Manage_product({ status }) {
                             <input
                                 type="file"
                                 style={{ display: 'none' }}
-                                accept=".jpg,.jpeg,.png"
+                                accept=".jpg,.jpeg,.png,.webp"
                                 ref={inputFirstImage}
                                 onChange={(e) => inputImageOnChange(e, "first")}
                             />
                             {imageObj.second
                                 ? (
                                     <img
+                                        className={st.manage_image}
                                         src={imageObj.second}
                                         alt="image-second"
-                                        className={st.manage_image}
                                         onClick={() => inputSecondImage.current.click()}
                                     />
                                 ) : (
@@ -146,20 +157,26 @@ export default function Manage_product({ status }) {
                             <input
                                 type="file"
                                 style={{ display: 'none' }}
-                                accept=".jpg,.jpeg,.png"
+                                accept=".jpg,.jpeg,.png,.webp"
                                 ref={inputSecondImage}
                                 onChange={(e) => inputImageOnChange(e, "second")}
                             />
                         </div>
-                        <div className="right">
-                            <div className="column-input">
+                        <div className="right" style={{ marginTop :"1rem" }}>
+                            <div className="column-input" style={{ maxWidth:'246px'}}>
                                 <div className="column-label">
                                     <label >ราคา</label>
                                     <label >BTH</label>
                                 </div>
                                 <input type="text"
                                     value={priceStandard}
-                                    onChange={(e) => setPriceStandard(e.target.value)} />
+                                    maxLength={10}
+                                    onChange={(e) => {
+                                        if (
+                                            /^[0-9]+$/.test(e.target.value) ||
+                                            e.target.value == ""
+                                        ) { setPriceStandard(e.target.value) }
+                                    }} />
                                 <div className="text-bottom">
                                     <p>***หมายเหตุ รวมค่าส่ง</p>
                                 </div>
@@ -171,6 +188,7 @@ export default function Manage_product({ status }) {
                             <label >ชื่อสินค้า</label>
                             <input type="text"
                                 value={nameMember}
+                                maxLength={50}
                                 onChange={(e) => setNameMember(e.target.value)} />
                         </div>
                         <div className="column-input">
@@ -187,8 +205,8 @@ export default function Manage_product({ status }) {
                         <i className="fa-solid fa-crown" />
                         <h2>ข้อมูลส่วน  Premiem, Exclusive (กรณีมีรูปอื่นนอกเหนือจากส่วน Member)</h2>
                     </div>
-                    <div className="column-images">
-                        <div className="left">
+                    <div className={`column-images ${st.colImage}`}>
+                        <div className={`left ${st.boxImage}`}>
                             {imageObj.third
                                 ? (
                                     <img
@@ -205,7 +223,7 @@ export default function Manage_product({ status }) {
                             <input
                                 type="file"
                                 style={{ display: 'none' }}
-                                accept=".jpg,.jpeg,.png"
+                                accept=".jpg,.jpeg,.png,.webp"
                                 ref={inputThirdImage}
                                 onChange={(e) => inputImageOnChange(e, "third")}
                             />
@@ -225,13 +243,13 @@ export default function Manage_product({ status }) {
                             <input
                                 type="file"
                                 style={{ display: 'none' }}
-                                accept=".jpg,.jpeg,.png"
+                                accept=".jpg,.jpeg,.png,.webp"
                                 ref={inputFourthImage}
                                 onChange={(e) => inputImageOnChange(e, "fourth")}
                             />
                         </div>
-                        <div className="right">
-                            <div className="column-input">
+                        <div className="right"style={{ marginTop :"1rem" }}>
+                            <div className="column-input" style={{ maxWidth : '246px'}}>
                                 <div className="column-label">
                                     <label >ราคา</label>
                                     <label >BTH</label>
@@ -239,7 +257,13 @@ export default function Manage_product({ status }) {
                                 <input
                                     type="text"
                                     value={pricePremium}
-                                    onChange={(e) => setPricePremium(e.target.value)} />
+                                    maxLength={10}
+                                    onChange={(e) => {
+                                        if (
+                                            /^[0-9]+$/.test(e.target.value) ||
+                                            e.target.value == ""
+                                        ) { setPricePremium(e.target.value) }
+                                    }} />
                                 <div className="column-checkbox">
                                     <input className="check-input" type="checkbox" defaultValue={clip} onChange={() => setClip('yes')} />
                                     <label >มีคลิป</label>
@@ -256,6 +280,7 @@ export default function Manage_product({ status }) {
                             <input
                                 type="text"
                                 value={namePremium}
+                                maxLength={50}
                                 onChange={(e) => setNamePremium(e.target.value)}
                             />
                         </div>

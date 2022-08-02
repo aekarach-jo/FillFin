@@ -9,11 +9,12 @@ import Manage_allProduct from "./manage_allProduct/manage_allProduct";
 import Manage_post from "./manage_post/manage_post";
 import Manage_preorder from "./manage_preorder/manage_preorder";
 import Manage_product from "./manage_product/manage_product";
-import st from '../../styles/store.module.scss'
+import st from '../../styles/store/store.module.scss'
 import ModalEdit from "./modal/modalEdit";
-
+import ContactUs from "../subComponent/contactUs";
+import ContactAdmin from "../subComponent/contactAdmin";
 const apiUrl = nextConfig.apiPath;
-export default function Store({ stores, statusChange }) {
+export default function Store({ stores, statusChange, qrCode }) {
   const { all_product, pre_order, review, store_detail, store_post } = stores;
   const [allProduct, setAllProduct] = useState(all_product)
   const [preAllOder, setPreAllOder] = useState(pre_order)
@@ -25,10 +26,8 @@ export default function Store({ stores, statusChange }) {
 
   useEffect(() => {
     if (statusGetDataAll) {
-
       getDataAll();
     }
-    console.log(all_product);
   }, [statusGetDataAll]);
 
   async function updateConcept() {
@@ -107,10 +106,10 @@ export default function Store({ stores, statusChange }) {
             </div>
             <div className="box-column">
               <div className="head-text-column">
-                <h2>เขียนคำอธิบายคอนเซ็ปร้าน</h2>
+                <h2>เขียนคำอธิบายคอนเซ็ปต์ร้าน</h2>
               </div>
               <form>
-                <label>คอนเซ็ปร้าน (คำอธิบายตัวตนของผู้ขาย)</label>
+                <label>คอนเซ็ปต์ร้าน (คำอธิบายตัวตนของผู้ขาย)</label>
                 <textarea
                   placeholder={store_detail.concept}
                   onChange={(e) => setConcept(e.target.value)} />
@@ -135,7 +134,7 @@ export default function Store({ stores, statusChange }) {
               <Manage_post status={handleStatusChange} />
             </div>
             <div className="column-box-product">
-              <Manage_profilePost postList={storePost}  status={handleStatusChange}/>
+              <Manage_profilePost postList={storePost} status={handleStatusChange} />
             </div>
           </div>
           <div className="product-column-right">
@@ -147,14 +146,16 @@ export default function Store({ stores, statusChange }) {
             </div>
 
             <div className="column-box-product">
-              <Manage_allProduct productList={allProduct}  status={handleStatusChange}/>
+              <Manage_allProduct productList={allProduct} status={handleStatusChange} />
             </div>
             <div className="column-box-product">
-              <Manage_allPreorder preOrderList={preAllOder}  status={handleStatusChange}/>
+              <Manage_allPreorder preOrderList={preAllOder} status={handleStatusChange} />
             </div>
           </div>
         </div>
+        <ContactUs />
       </div>
+      <ContactAdmin qrCode={qrCode} />
     </Fragment>
   );
 }

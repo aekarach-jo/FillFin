@@ -11,11 +11,16 @@ import ContactUs from '../../../subComponent/contactUs'
 const apiUrl = nextConfig.apiPath
 export default function PaymentSummary() {
     const router = useRouter()
+    const [dropdownActiveBank, setDropdownActiveBank] = useState(false)
+    const inputImage = useRef(null);
 
+    // ข้อมูลแพ็กเกจ
     const [cartList, setCartList] = useState()
     const [totalPrice, setTotalPrice] = useState()
     const [netPrice, setNetPrice] = useState()
 
+
+    // ฟอร์มรายละเอียดที่อยู่
     const [fullname, setFullname] = useState()
     const [address, setAddress] = useState()
     const [phone, setPhone] = useState()
@@ -24,13 +29,9 @@ export default function PaymentSummary() {
     const [province, setProvince] = useState()
     const [postalCode, setPostalCode] = useState()
     const [note, setNote] = useState()
-
-    const inputImage = useRef(null);
     const [image, setImage] = useState(null);
     const [bankList, setBankList] = useState([]);
     const [bank, setBank] = useState("");
-
-    const [dropdownActiveBank, setDropdownActiveBank] = useState(false)
 
     useEffect(() => {
         getCartList(),
@@ -42,29 +43,29 @@ export default function PaymentSummary() {
             return false;
         }
         if (
-            ["image/jpeg", "iamge/jpg", "image/png"].includes(e.target.files[0].type)
+            ["image/jpeg", "iamge/jpg", "image/png", "image/webp"].includes(e.target.files[0].type)
         ) {
             const URLs = URL.createObjectURL(e.target.files[0]);
             setImage(URLs);
         } else {
             Swal.fire({
-                title: "กรุณาอัฟโหลดเฉพาะไฟล์รูปภาพ",
+                title: "กรุณาอัปโหลดเฉพาะไฟล์รูปภาพ",
                 icon: "warning",
                 position: "center",
             });
         }
     }
 
-    function popupShowImage(image){
+    function popupShowImage(image) {
         Swal.fire({
             imageUrl: image,
             imageWidth: 400,
             imageHeight: 520,
             imageAlt: 'Custom image',
-            showConfirmButton : false,
-            background : 'rgba(0,0,0,0)',
+            showConfirmButton: false,
+            background: 'rgba(0,0,0,0)',
 
-          })
+        })
     }
 
     async function getCartList() {
@@ -104,7 +105,7 @@ export default function PaymentSummary() {
         if (!image) {
             Swal.fire({
                 icon: "warning",
-                title: "กรุณาอัฟโหลดสลิป",
+                title: "กรุณาอัปโหลดสลิป",
             });
             return false;
         }
@@ -225,7 +226,16 @@ export default function PaymentSummary() {
                                     <label >*เบอร์โทร</label>
                                     <input
                                         type="text"
-                                        onChange={(e) => setPhone(e.target.value.trim())}
+                                        value={phone}
+                                        onChange={(e) => {
+                                            if (
+                                              /^[0-9]+$/.test(
+                                                e.target.value.trim()
+                                              ) || e.target.value == ""
+                                            ) {
+                                              setPhone(e.target.value.trim());
+                                            }
+                                          }}
                                         maxLength={10}
                                     />
                                 </div>
@@ -234,6 +244,7 @@ export default function PaymentSummary() {
                                         <label >*ตำบล/แขวง</label>
                                         <input
                                             type="text"
+                                            maxLength={20}
                                             onChange={(e) => setSubDistrict(e.target.value)}
                                         />
                                     </div>
@@ -241,6 +252,7 @@ export default function PaymentSummary() {
                                         <label >*อำเภอ/เขต</label>
                                         <input
                                             type="text"
+                                            maxLength={20}
                                             onChange={(e) => setDistrict(e.target.value)}
                                         />
                                     </div>
@@ -250,6 +262,7 @@ export default function PaymentSummary() {
                                         <label >*จังหวัด</label>
                                         <input
                                             type="text"
+                                            maxLength={20}
                                             onChange={(e) => setProvince(e.target.value)}
                                         />
                                     </div>
@@ -257,13 +270,23 @@ export default function PaymentSummary() {
                                         <label >*รหัสไปรษณีย์</label>
                                         <input
                                             type="text"
-                                            onChange={(e) => setPostalCode(e.target.value.trim())}
+                                            maxLength={5}
+                                            value={postalCode}
+                                            onChange={(e) => {
+                                                if (
+                                                    /^[0-9]+$/.test(
+                                                        e.target.value.trim()
+                                                    ) || e.target.value == ""
+                                                ) { setPostalCode(e.target.value.trim()) }
+                                            }}
                                         />
                                     </div>
                                 </div>
                                 <div className="column-input">
                                     <label >ข้อความฝากถึงผู้ขาย</label>
-                                    <textarea onChange={(e) => setNote(e.target.value)} />
+                                    <textarea
+                                        maxLength={200}
+                                        onChange={(e) => setNote(e.target.value)} />
                                 </div>
                             </form>
                         </div>
@@ -290,7 +313,7 @@ export default function PaymentSummary() {
                                                         setBank(data)
                                                     }
                                                     }>
-                                                        <img src={`${apiUrl}/${data.image}`} alt="image-bankList"/>
+                                                        <img src={`${apiUrl}/${data.image}`} alt="image-bankList" />
                                                         {data.bank_name} / {data.bank_number} / {data.name}
                                                     </div>
                                                 ))}
@@ -312,7 +335,7 @@ export default function PaymentSummary() {
                                                     width: "100%",
                                                     height: "100%",
                                                     objectFit: "contain",
-                                                    cursor : 'pointer'
+                                                    cursor: 'pointer'
                                                 }}
                                                 onClick={() => popupShowImage(image)}
                                             />
@@ -328,10 +351,10 @@ export default function PaymentSummary() {
                                         />
                                     </div>
                                     <div className="right">
-                                        <h3>อัฟโหลดสลิป</h3>
-                                        <p>ขนาดอัฟโหลดไฟล์ภาพ ไม่เกิน 5 Mb</p>
+                                        <h3>อัปโหลดสลิป</h3>
+                                        <p>ขนาดอัปโหลดไฟล์ภาพ ไม่เกิน 5 Mb</p>
                                         <button type='button' onClick={() => inputImage.current.click()}>
-                                            อัฟโหลด
+                                            อัปโหลด
                                         </button>
                                     </div>
                                 </div>

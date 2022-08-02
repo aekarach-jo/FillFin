@@ -5,23 +5,32 @@ import StoreRegister from "../../components/signin/StoreRegister";
 import nextConfig from "../../next.config";
 
 const apiUrl = nextConfig.apiPath
-export default function register({ content }) {
+export default function register({ content ,qrCode}) {
   return (
     <Fragment>
-       <Head>
+      <Head>
         <title>Register</title>
       </Head>
-      <StoreRegister content={content}/>
+      <StoreRegister content={content} qrCode={qrCode}/>
     </Fragment>
   );
 }
 
-export async function getServerSideProps(){
-  const apiContent = await axios({
-    method : 'GET',
-    url : `${apiUrl}/api/website/content/term-store`
-  })
+export async function getServerSideProps() {
+  const [apiContentStore, apiContentLine] = await Promise.all([
+    axios({
+      method: 'GET',
+      url: `${apiUrl}/api/website/content/term-store`
+    }),
+    axios({
+      method: 'GET',
+      url: `${apiUrl}/api/website/content/line-website`
+    })
+  ])
   return {
-    props : {content : apiContent.data.content}
+    props: { 
+      content: apiContentStore.data.content ,
+      qrCode : apiContentLine.data.content
+    }
   }
 }

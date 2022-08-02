@@ -1,0 +1,44 @@
+.productAll_storeCard {
+    justify-content: space-between;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+@media screen and(max-width : 680px) {
+    .productAll_storeCard {
+        justify-content: space-between;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+    }
+}
+
+.productAll_productRec {
+    height: 21rem;
+    justify-content: space-between;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+
+.textContent {
+    text-align: start;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.textContent:hover {
+    height: max-content;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: auto;
+    overflow-x: hidden;
+}
+
+.textContent::-webkit-scrollbar {
+    display: none;
+}

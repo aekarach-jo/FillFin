@@ -57,48 +57,34 @@ export default function Login({ banner }) {
         formLogin
       );
       const data = onLogin.data;
-      console.log(onLogin);
+      console.log(data);
       if (data.status) {
-        {
-          console.log(555)
-          pathLogin == "member"
-            ? (
-              state.isLogin.set_login(true),
-              state.memberDetail.set_memberDetail(data.data.userName),
-              setCookies("name", data.data.userName),
-              setCookies("access_token", data.data.access_token),
-              setCookies("refresh_token", data.data.refresh_token),
-              setCookies("member_code", data.data.member_code),
-              setCookies("gender", data.data.gender),
-              setCookies("package", data.data.packageId)
+        pathLogin == "member"
+          ? (
+            state.isLogin.set_login(true),
+            state.memberDetail.set_memberDetail(data.data.userName),
+            state.dateExpire.set_dateExpire(data.data.dateExpire),
+            setCookies("name", data.data.userName),
+            setCookies("access_token", data.data.access_token),
+            setCookies("refresh_token", data.data.refresh_token),
+            setCookies("member_code", data.data.member_code),
+            setCookies("gender", data.data.gender),
+            setCookies("package", data.data.packageId),
+            setCookies("dateExpire", data.data.dateExpire),
+            apiGetStatusPackage()
             )
             : ( // pathLogin == "Store"
-              state.memberDetail.set_memberDetail(data.data.storeName),
-              state.isStore.set_isStore(true),
-              state.isLogin.set_login(true),
-              setCookies("name", data.data.storeName),
-              setCookies("access_token", data.data.access_token),
-              setCookies("refresh_token", data.data.refresh_token),
-              setCookies("storeName", data.data.storeName),
-              setCookies("gender", data.data.gender),
-              setCookies("storeCode", data.data.storeCode)
-            )
-        }
-
-        Swal.fire({
-          title: data.description,
-          icon: "success",
-          timer: 1000,
-          showCancelButton: false,
-          showConfirmButton: false,
-        }).then(() => {
-          if (pathLogin == "member") {
-            apiGetStatusPackage();
-          } else if (pathLogin == "store") {
-            state.isStore.set_isStore(true)
-            router.push("/store");
-          }
-        });
+            state.memberDetail.set_memberDetail(data.data.storeName),
+            state.isStore.set_isStore(true),
+            state.isLogin.set_login(true),
+            setCookies("name", data.data.storeName),
+            setCookies("access_token", data.data.access_token),
+            setCookies("refresh_token", data.data.refresh_token),
+            setCookies("storeName", data.data.storeName),
+            setCookies("gender", data.data.gender),
+            setCookies("storeCode", data.data.storeCode),
+            router.push("/store")
+          )
       } else {
         await Swal.fire({
           title: "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง",
@@ -233,15 +219,15 @@ export default function Login({ banner }) {
                       type="text"
                       value={username}
                       placeholder="Username"
-                      // maxLength={10}
+                      maxLength={10}
                       onChange={(e) => {
-                        // if (
-                        //   /^[0-9]+$/.test(
-                        //     e.target.value.trim()
-                        //   ) || e.target.value == ""
-                        // ) {
+                        if (
+                          /^[0-9]+$/.test(
+                            e.target.value.trim()
+                          ) || e.target.value == ""
+                        ) {
                           setUsername(e.target.value.trim());
-                        // }
+                        }
                       }}
                     />
                   </div>

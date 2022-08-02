@@ -1,10 +1,10 @@
 import axios from 'axios'
 import { getCookie } from 'cookies-next'
 import FormData from 'form-data'
-import Image from 'next/image'
 import React, { Fragment, useRef, useState } from 'react'
 import Swal from 'sweetalert2'
 import nextConfig from '../../../next.config'
+import st from '../../../styles/store/store.module.scss'
 
 export default function Manage_preorder({ status }) {
     const inputFirstImage = useRef([])
@@ -21,7 +21,7 @@ export default function Manage_preorder({ status }) {
             return false;
         }
         if (
-            ["image/jpeg", "iamge/jpg", "image/png"].includes(e.target.files[0].type)
+            ["image/jpeg", "iamge/jpg", "image/png", "image/webp"].includes(e.target.files[0].type)
         ) {
             const URLs = URL.createObjectURL(e.target.files[0]);
             setImageobj(prev => ({
@@ -51,21 +51,27 @@ export default function Manage_preorder({ status }) {
             confirmButtonText: 'ตกลง'
         }).then(res => { //ยังไม่ล้างข้อความ
             if (res.isConfirmed) {
-                setImageobj(""),
-                    setPrice(""),
-                    setClip('no'),
-                    setProductName(""),
-                    setDescription("")
+                setEmptyForm()
             }
         })
     }
 
     function handleClickCreatePost() {
-        if (inputFirstImage.current.value == "" || inputSecondImage == "") {
+        // if (inputFirstImage.current.value == [] || inputSecondImage.current.value == []) {
+        //     Swal.fire({
+        //         title: "กรุณาเพิ่มรูปภาพให้ครบ",
+        //         icon: "warning",
+        //         position: "center",
+        //         timer: 1000,
+        //         showConfirmButton: false
+        //     });
+        //     return false;
+        // }
+        if (!price || !productName || !description) {
             Swal.fire({
                 position: 'center',
-                icon: 'center',
-                title: 'กรุณาเพิ่มรูปภาพให้ครบ',
+                icon: 'warning',
+                title: 'กรุณาเพิ่มข้อมูลให้ครบ',
                 timer: 1000,
                 showConfirmButton: false
             })
@@ -73,8 +79,8 @@ export default function Manage_preorder({ status }) {
         }
 
         const formData = new FormData()
-        formData.append('image', inputFirstImage.current.files[0])
-        formData.append('image', inputSecondImage.current.files[0])
+        formData.append('premium', inputFirstImage.current.files[0])
+        formData.append('premium', inputSecondImage.current.files[0])
         formData.append('name_premium', productName)
         formData.append('content_premium', description)
         formData.append('price_premium', price)
@@ -99,7 +105,16 @@ export default function Manage_preorder({ status }) {
             icon: "success",
             position: "center",
         });
+        setEmptyForm()
         status()
+    }
+
+    function setEmptyForm() {
+        setImageobj({})
+        setProductName("")
+        setDescription("")
+        setPrice("")
+        setClip("no")
     }
 
     return (
@@ -114,32 +129,25 @@ export default function Manage_preorder({ status }) {
                         <i className="fa-solid fa-clock" />
                         <h2>ลงสินค้า</h2>
                     </div>
-                    <div className="column-images">
-                        <div className="left">
+                    <div className={`column-images ${st.colImage}`}>
+                        <div className={`left ${st.boxImage}`}>
                             {imageObj.first
                                 ? (
                                     <img
                                         src={imageObj.first}
                                         alt="image-first"
-                                        style={{
-                                            border: '1px solid #e7e7e7',
-                                            borderRadius: "20px",
-                                            width: "246px",
-                                            height: "246px",
-                                            objectFit: "cover",
-                                            cursor: "pointer"
-                                        }}
+                                        className={st.manage_image}
                                         onClick={() => inputFirstImage.current.click()}
                                     />
                                 ) : (
-                                    <i className="fa-regular fa-image"
-                                        style={{ cursor: "pointer" }}
-                                        onClick={() => inputFirstImage.current.click()} />
+                                    <div onClick={() => inputFirstImage.current.click()}>
+                                        <i className={`fa-regular fa-image ${st.iconEmpty}`} ></i>
+                                    </div>
                                 )}
                             <input
                                 type="file"
                                 style={{ display: 'none' }}
-                                accept=".jpg,.jpeg,.png"
+                                accept=".jpg,.jpeg,.png,.webp"
                                 ref={inputFirstImage}
                                 onChange={(e) => inputImageOnChange(e, "first")}
                             />
@@ -148,39 +156,38 @@ export default function Manage_preorder({ status }) {
                                     <img
                                         src={imageObj.second}
                                         alt="iamge-second"
-                                        style={{
-                                            border: '1px solid #e7e7e7',
-                                            borderRadius: "20px",
-                                            width: "246px",
-                                            height: "246px",
-                                            objectFit: "cover",
-                                            cursor: "pointer"
-                                        }}
+                                        className={st.manage_image}
                                         onClick={() => inputSecondImage.current.click()}
                                     />
                                 ) : (
-                                    <i className="fa-regular fa-image"
-                                        style={{ cursor: "pointer" }}
-                                        onClick={() => inputSecondImage.current.click()} />
+                                    <div onClick={() => inputSecondImage.current.click()}>
+                                        <i className={`fa-regular fa-image ${st.iconEmpty}`} ></i>
+                                    </div>
                                 )}
                             <input
                                 type="file"
                                 style={{ display: 'none' }}
-                                accept=".jpg,.jpeg,.png"
+                                accept=".jpg,.jpeg,.png,.webp"
                                 ref={inputSecondImage}
                                 onChange={(e) => inputImageOnChange(e, "second")}
                             />
                         </div>
                         <div className="right">
-                            <div className="column-input">
+                            <div className="column-input" style={{ maxWidth: '246px' }}>
                                 <div className="column-label">
                                     <label >ราคา</label>
                                     <label >BTH</label>
                                 </div>
                                 <input
                                     type="text"
-                                    onChange={(e) => setPrice(e.target.value)}
                                     value={price}
+                                    maxLength={10}
+                                    onChange={(e) => {
+                                        if (
+                                            /^[0-9]+$/.test(e.target.value) ||
+                                            e.target.value == ""
+                                        ) { setPrice(e.target.value) }
+                                    }}
                                 />
                                 <div className="column-checkbox">
                                     <input className="check-input" type="checkbox" value={clip} onChange={() => setClip('yes')} />
@@ -198,6 +205,7 @@ export default function Manage_preorder({ status }) {
                             <input
                                 type="text"
                                 value={productName}
+                                maxLength={50}
                                 onChange={(e) => setProductName(e.target.value)}
                             />
                         </div>
@@ -205,6 +213,7 @@ export default function Manage_preorder({ status }) {
                             <label >รายละเอียดสินค้า</label>
                             <textarea
                                 value={description}
+                                maxLength={100}
                                 onChange={(e) => setDescription(e.target.value)}
                             />
                         </div>

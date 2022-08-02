@@ -25,15 +25,22 @@ export default function Payment() {
   const [statusPackage, setStatusPackage] = useState()
   const [dropdownActiveBank, setDropdownActiveBank] = useState(false)
 
-
   useEffect(() => {
     apiGetpackage(),
-      getBank(),
-      apiGetStatusPackage()
+      getBank()
   }, [toggleShowPass]);
+
   async function apiGetpackage() {
-    const packageId = getCookie("package")
     const member_code = getCookie('member_code')
+    const renewPackage = getCookie("renewPackage")
+    const packageRegis = getCookie("package")
+    let packageId = {}
+    if (renewPackage != undefined && packageRegis == null) {
+      packageId = renewPackage
+    } else {
+      packageId = packageRegis
+      apiGetStatusPackage()
+    }
     try {
       const getPackage = await axios({
         method: 'POST',
@@ -63,7 +70,7 @@ export default function Payment() {
     catch (err) {
       console.log(err);
       Swal.fire({
-        title: "err.response.description",
+        title: err.response.statusText,
         icon: 'error',
         position: 'center',
       })
@@ -81,7 +88,7 @@ export default function Payment() {
       }
     })
     const payStatus = sPackage.data
-    if (payStatus.data == 'confirm') {
+    if (payStatus.statusPay == 'confirm') {
       Swal.fire({
         title: 'อนุมัติแล้ว กรุณาล็อกอินใหม่อีกครั้ง',
         icon: 'success',
@@ -101,13 +108,13 @@ export default function Payment() {
       return false;
     }
     if (
-      ["image/jpeg", "iamge/jpg", "image/png"].includes(e.target.files[0].type)
+      ["image/jpeg", "iamge/jpg", "image/png", "image/webp"].includes(e.target.files[0].type)
     ) {
       const URLs = URL.createObjectURL(e.target.files[0]);
       setImage(URLs);
     } else {
       Swal.fire({
-        title: "กรุณาอัฟโหลดเฉพาะไฟล์รูปภาพ",
+        title: "กรุณาอัปโหลดเฉพาะไฟล์รูปภาพ",
         icon: "warning",
         position: "center",
       });
@@ -136,7 +143,7 @@ export default function Payment() {
     if (!image) {
       Swal.fire({
         icon: "warning",
-        title: "กรุณาอัฟโหลดสลิป",
+        title: "กรุณาอัปโหลดสลิป",
       });
       return false;
     }
@@ -151,15 +158,24 @@ export default function Payment() {
       cancelButtonText: 'ยกเลิก'
     }).then((res) => {
       if (res.isConfirmed) {
-        createPayment()
+        choosePayment()
       }
     })
+  }
+
+  function choosePayment() {
+    const renewPackage = getCookie("renewPackage")
+    const packageRegis = getCookie("package")
+    if (renewPackage != undefined && packageRegis == null) {
+      createRenewalPayment()
+    } else {
+      createPayment()
+    }
   }
 
   async function createPayment() {
     const mcode = getCookie("member_code")
     const packId = getCookie("package")
-
     try {
       let formData = new FormData();
       formData.append('slip', inputImage.current.files[0])
@@ -192,16 +208,48 @@ export default function Payment() {
     } catch (err) {
       console.log(err);
     }
-  };
+  }
+
+  async function createRenewalPayment() {
+    const access_token = getCookie("access_token")
+    try {
+      let formData = new FormData();
+      formData.append('slip', inputImage.current.files[0])
+      formData.append('bankRef', bank.id)
+      const create = await axios({
+        method: "POST",
+        url: `${apiUrl}/api/package/renewal`,
+        headers : {
+          Authorization : `Bearer ${access_token}`
+        },
+        data: formData,
+      })
+      const data = create.data
+      if (data.status) {
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'สำเร็จ รอการอนุมัติ',
+        }).then(() => {
+          setStatusPackage("pending")
+        })
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   function showImageSlip(e) {
     const getImage = e.target.getAttribute("src")
     Swal.fire({
-      text: "ธนาคารที่ชำระ :" + " " + bank.bank_name,
+      // text: "ธนาคารที่ชำระ :" + " " + bank.bank_name,
       imageUrl: getImage,
       imageWidth: 400,
       imageHeight: 450,
+      background: 'rgba(0,0,0,0)',
+      color: '#fff',
       imageAlt: 'Custom image',
+      showConfirmButton: false
     })
   }
 
@@ -239,8 +287,8 @@ export default function Payment() {
               </table>
             </div>
             <div className="column-detail-member">
-              <h2>ข้อมูลผู้สมัครสมาชิก</h2>
-              <div className="text-column">
+              <h2 style={{ marginBottom: '2rem' }}>ข้อมูลผู้สมัครสมาชิก</h2>
+              <div className="text-column justify-center">
                 <div className="column-left">
                   <p>
                     ชื่อผู้ใช้<span>(User)</span>
@@ -284,12 +332,12 @@ export default function Payment() {
                     <div className="pay-dropdown">
                       <div className="dropdown-toggle" onClick={() => setDropdownActiveBank(prev => !prev)}>
                         <div className="dropdown-toggle-left" style={{ display: 'flex' }}>
-                          <img 
-                          src={`${apiUrl}${bank.image}`} 
-                          width={35} 
-                          height={25} 
-                          alt="image-bank"
-                          style={{ alignItems: "center", marginRight: '1rem' }} />
+                          <img
+                            src={`${apiUrl}${bank.image}`}
+                            width={35}
+                            height={25}
+                            alt="image-bank"
+                            style={{ alignItems: "center", marginRight: '1rem' }} />
                           <span>
                             {bank.bank_name} / {bank.bank_number} / {bank.name}
                           </span>
@@ -308,7 +356,7 @@ export default function Payment() {
                                 setBank(data)
                               }
                               }>
-                                <img src={`${apiUrl}${data.image}`} alt="image-banklist"/>
+                                <img src={`${apiUrl}${data.image}`} alt="image-banklist" />
                                 {data.bank_name} / {data.bank_number} / {data.name}
                               </div>
                             ))}
@@ -345,10 +393,10 @@ export default function Payment() {
                         />
                       </div>
                       <div className="column-right">
-                        <h3>อัฟโหลดสลิป</h3>
-                        <p>ขนาดอัฟโหลดไฟล์ภาพ ไม่เกิน 5 Mb</p>
+                        <h3>อัปโหลดสลิป</h3>
+                        <p>ขนาดอัปโหลดไฟล์ภาพ ไม่เกิน 5 Mb</p>
                         <button onClick={() => inputImage.current.click()}>
-                          อัฟโหลด
+                          อัปโหลด
                         </button>
                       </div>
                     </div>

@@ -1,18 +1,34 @@
+import { Rating } from '@mui/material';
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { Fragment } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import Swal from 'sweetalert2';
 import { useAppContext } from '../../../../config/state';
 import nextConfig from '../../../../next.config';
 import ChooseImage from '../../../subComponent/manage-image/chooseImage';
 import ShowImage from '../../../subComponent/manage-image/showImage';
+import st from '../../../../styles/store/member_page/memberPage.module.scss'
+import Pagination from '../../../subComponent/pagination';
+import ContactAdmin from '../../../subComponent/contactAdmin';
 
 const apiUrl = nextConfig.apiPath
-export default function Store_member({ stores, bannerAds }) {
-    const { all_product, pre_order, review, store_detail, store_post } = stores;
+export default function Store_member({ stores, bannerAds, qrCode }) {
     const state = useAppContext()
+    const { all_product, pre_order, review, store_detail, store_post } = stores;
+    const [usernameListSenesor, setUsernameListSensor] = useState()
+
+    useEffect(() => {
+        setSensorUsername()
+    }, [])
+    console.log(stores);
+    const pages = {
+        current_page: stores.current_page,
+        per_page: stores.per_page,
+        total_page: stores.total_page,
+        total_store: stores.total_store
+    }
 
     const Toast = Swal.mixin({
         toast: true,
@@ -25,6 +41,16 @@ export default function Store_member({ stores, bannerAds }) {
             toast.addEventListener('mouseleave', Swal.resumeTimer)
         }
     })
+
+    function setSensorUsername() {
+        let usernameReview = []
+        for (let i = 0; i < review.length; i++) {
+            const slic = review[i].memberName.slice(5, 8)
+            const repl = review[i].memberName.replace(slic, "****")
+            usernameReview.push(repl)
+            setUsernameListSensor(usernameReview)
+        }
+    }
 
     async function handleAddtoCard(product_code) {
         const access_token = getCookie("access_token")
@@ -70,31 +96,31 @@ export default function Store_member({ stores, bannerAds }) {
                     </div>
                 </div>
                 <div className="column-text-bottom">
-                    <h4>คอนเซ็ปร้าน</h4>
+                    <h4>คอนเซ็ปต์ร้าน</h4>
                     <p>{store_detail.concept}</p>
                 </div>
                 <div className="column-text-list">
                     <h2>รายการสินค้า</h2>
-                    <p>รายการสินค้าทั้งหมด 25 รายการ</p>
+                    <p>รายการสินค้าทั้งหมด {all_product.length} รายการ</p>
                 </div>
             </div>
-            <div className="column-list-product">
+            <div className={`column-list-product ${st.colList}`}>
                 {all_product.length > 0
                     ?
                     <>
                         {all_product?.map((data, index) => (
-                            <div key={index} className="column-list recommend-column">
+                            <div key={index} className={`column-list recommend-column ${st.productAll_product}`}>
                                 <Link href={`/member/store/product/${data.product_code}`} >
                                     <div>
                                         <ShowImage image={data.product_img} />
                                     </div>
                                 </Link>
-                                <div className="column-img-bottom" style={{ display : 'flex'}}>
+                                <div className="column-img-bottom" style={{ display: 'flex' }}>
                                     <ChooseImage image={data.product_img} />
                                 </div>
                                 <div className="column-list-bottom">
                                     <h4>{data.name_product}</h4>
-                                    <p>{data.content_product}</p>
+                                    <p className={st.textContent}>{data.content_product}</p>
                                     {data.canbuy
                                         ? <button style={{ cursor: "pointer" }} onClick={() => handleAddtoCard(data.product_code)}><i className="fa-solid fa-cart-shopping" />{data.price}</button>
                                         : <button style={{ cursor: "not-allowed" }}><i className="fa-solid fa fa-eye-slash" aria-hidden="true" /></button>
@@ -111,81 +137,29 @@ export default function Store_member({ stores, bannerAds }) {
             <div className="column-img-sale">
                 <Image width={1096} height={300} src={`${apiUrl}/${bannerAds[0].image}`} alt="" />
             </div>
-    
+
             <div className="column-menu-review">
                 <div className="menu-review">
                     <h3>รีวิวจากลูกค้า</h3>
-                    <p>15 การรีวิว</p>
+                    <p>{review.length} การรีวิว</p>
                 </div>
-                <div className="column-review">
-                    <div className="column-review-left">
-                        <i className="fa-solid fa-user" />
+                {review?.map((data, index) => (
+                    <div key={index} className="column-review">
+                        <div className="column-review-left">
+                            <i className="fa-solid fa-user" />
+                        </div>
+                        <div className="column-review-right">
+                            <h3>{data.memberName}</h3>
+                            <p>{data.message}</p>
+                        </div>
+                        <div className="flex justify-end" style={{ display: 'flex', justifyContent: 'flex-end', position: 'absolute', right: "58px" }}>
+                            <Rating readOnly name="size-medium" value={data.star} />
+                        </div>
                     </div>
-                    <div className="column-review-right">
-                        <h3>Volutpat cras nunc neque sit facilisis.</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lacus, aenean a fermentum ullamcorper proin proin id et pellentesque. Quis sapien ultrices.</p>
-                    </div>
-                </div>
-                <div className="column-review">
-                    <div className="column-review-left">
-                        <i className="fa-solid fa-user" />
-                    </div>
-                    <div className="column-review-right">
-                        <h3>Volutpat cras nunc neque sit facilisis.</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lacus, aenean a fermentum ullamcorper proin proin id et pellentesque. Quis sapien ultrices.</p>
-                    </div>
-                </div>
-                <div className="column-review">
-                    <div className="column-review-left">
-                        <i className="fa-solid fa-user" />
-                    </div>
-                    <div className="column-review-right">
-                        <h3>Volutpat cras nunc neque sit facilisis.</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lacus, aenean a fermentum ullamcorper proin proin id et pellentesque. Quis sapien ultrices.</p>
-                    </div>
-                </div>
-                <div className="column-review">
-                    <div className="column-review-left">
-                        <i className="fa-solid fa-user" />
-                    </div>
-                    <div className="column-review-right">
-                        <h3>Volutpat cras nunc neque sit facilisis.</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lacus, aenean a fermentum ullamcorper proin proin id et pellentesque. Quis sapien ultrices.</p>
-                    </div>
-                </div>
-                <div className="column-review">
-                    <div className="column-review-left">
-                        <i className="fa-solid fa-user" />
-                    </div>
-                    <div className="column-review-right">
-                        <h3>Volutpat cras nunc neque sit facilisis.</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lacus, aenean a fermentum ullamcorper proin proin id et pellentesque. Quis sapien ultrices.</p>
-                    </div>
-                </div>
-                <div className="column-review">
-                    <div className="column-review-left">
-                        <i className="fa-solid fa-user" />
-                    </div>
-                    <div className="column-review-right">
-                        <h3>Volutpat cras nunc neque sit facilisis.</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lacus, aenean a fermentum ullamcorper proin proin id et pellentesque. Quis sapien ultrices.</p>
-                    </div>
-                </div>
-                <div className="pagination">
-                    <button><i className="fa-solid fa-angle-left" /></button>
-                    <a href="#" className="active">1</a>
-                    <a href="#">2</a>
-                    <a href="#">3</a>
-                    <a href="#">4</a>
-                    <a href="#">5</a>
-                    <a href="#" className="center">...</a>
-                    <a href="#">7</a>
-                    <a href="#">8</a>
-                    <a href="#">9</a>
-                    <a href="#">10</a>
-                    <button><i className="fa-solid fa-chevron-right" /></button>
-                </div>
+                ))}
+                <Pagination page={pages} />
             </div>
+            <ContactAdmin qrCode={qrCode} />
         </Fragment>
     )
 }

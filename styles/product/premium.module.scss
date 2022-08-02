@@ -1,0 +1,35 @@
+.backToStore {
+    background: linear-gradient(180deg, #FF95B5 0%, #C93A87 100%);
+    border-radius: 10px;
+    height: 50px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    column-gap: 10px;
+    cursor: pointer;
+    font-size: 24px;
+    padding: 1rem;
+    border: none;
+}
+
+@media screen and(max-width : 768px) {
+    .backToStore {
+        background: linear-gradient(180deg, #FF95B5 0%, #C93A87 100%);
+        border-radius: 10px;
+        height: 40px;
+        width: 175px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        column-gap: 10px;
+        cursor: pointer;
+        font-size: 16px;
+        padding: 1rem;
+        border: none;
+        margin-left: auto;
+        margin-top: 1rem;
+    }
+}

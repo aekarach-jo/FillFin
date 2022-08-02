@@ -1,10 +1,14 @@
 import axios from "axios";
-import { getCookie, removeCookies } from "cookies-next";
+import { getCookie, removeCookies, setCookies } from "cookies-next";
+import moment from "moment";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
+import Swal from "sweetalert2";
 import { useAppContext } from "../../config/state";
 import nextConfig from "../../next.config";
+import { now } from "moment";
+import useOutsideClick from "./useOutsideClick";
 
 const apiUrl = nextConfig.apiPath
 export default function Nav() {
@@ -17,6 +21,10 @@ export default function Nav() {
   const [username, setUsername] = useState(getCookie('name'))
   const [isStore, setIsStore] = useState(getCookie("storeName"))
   const [emptyPackage, setEmptyPackage] = useState(getCookie("emptyPackage"))
+  const [statusPackage, setStatusPackage] = useState(false)
+  const [dateExpire, setDateExpire] = useState(getCookie('dateExpire'))
+  const [showDateExpire, setShowDateExpire] = useState()
+  const dropdown = useRef();
 
   const getIsStore = state.isStore.get_isStore
   const isLogin = state.isLogin.get_login
@@ -24,29 +32,88 @@ export default function Nav() {
   const empPackage = state.emptyPackage.get_emptyPackage
   const cartQty = state.cartQty.get_cart_qty
   const usernameCon = state.memberDetail.get_memberDetail
+  const dateEx = state.dateExpire.get_dateExpire
 
   useEffect(() => {
-    checkLogin()
-  }, [isLogin])
+    checkLogin(),
+      formetDateExpire()
+    onClickOutsideBtn()
+    if (isLogin && !store) {
+      apiGetStatusPackage()
+    }
+  }, [isLogin, dropdownActiveMenu, dropdownActive])
+
+  function onClickOutsideBtn() {
+    const checkIfClickedOutside = e => {
+      if (dropdown.current && !dropdown.current.contains(e.target)) {
+        setDropdownActiveMenu(false)
+        setDropdownActive(false)
+      }
+    }
+    document.addEventListener("mousedown", checkIfClickedOutside)
+    return () => {
+      document.removeEventListener("mousedown", checkIfClickedOutside)
+    }
+  }
+
+  function formetDateExpire() {
+    if (dateEx != 0) {
+      setShowDateExpire(moment(dateEx).diff(now(), 'days'))
+    }
+    setShowDateExpire(moment(dateExpire).diff(now(), 'days'))
+  }
 
   async function checkLogin() {
     const access_token = getCookie("access_token")
-    if (access_token) {
-      const apiCheck = await axios({
-        method: 'POST',
-        url: `${apiUrl}/api/member/checkToken`,
-        headers: { 'Content-Type': 'application/json' },
-        data: JSON.stringify({
-          token: access_token
+    try {
+      if (access_token) {
+        const apiCheck = await axios({
+          method: 'POST',
+          url: `${apiUrl}/api/member/checkToken`,
+          headers: { 'Content-Type': 'application/json' },
+          data: JSON.stringify({
+            token: access_token
+          })
+        }).then(res => {
+          if (res.data.status) {
+            state.isLogin.set_login(true)
+            getUsername()
+          }
         })
-      })
-      if (apiCheck.data.status) {
-        state.isLogin.set_login(true)
-        getUsername()
-      } else {
-        state.isLogin.set_login(false)
+
+      }
+    } catch (err) {
+      console.log(err);
+      if (!err.response.data.status) {
+        refreshToken()
       }
     }
+  }
+
+  async function refreshToken() {
+    const refresh_token = getCookie('refresh_token')
+    const refresh = await axios({
+      method: 'POST',
+      url: `${apiUrl}/api/member/getToken`,
+      headers: { 'Content-Type': 'application/json' },
+      data: JSON.stringify({
+        token: refresh_token
+      })
+    }).then(res => {
+      console.log(res);
+      if (res.data.status) {
+        setCookies('access_token', res.data.token)
+      } else {
+        Swal.fire({
+          icon: 'warning',
+          position: "center",
+          title: 'กรุณาล็อกอินใหม่อีกครั้ง',
+          confirmButtonText: 'ตกลง'
+        }).then(() => {
+          onSignOut()
+        })
+      }
+    })
   }
 
   function getUsername() {
@@ -56,7 +123,7 @@ export default function Nav() {
       const slic = cookieUsername.slice(5, 8)
       const repl = cookieUsername.replace(slic, "****")
       setUser(repl)
-      if (isStore == undefined) {
+      if (isStore == undefined && !store) {
         getCartList()
         setCart(state.cartQty.get_cart_qty)
       } else {
@@ -94,6 +161,16 @@ export default function Nav() {
     removeCookies("refresh_token")
     removeCookies("emptyPackage")
     removeCookies("package")
+    removeCookies("storeCode")
+    removeCookies("isLogin")
+    removeCookies("isLoginCookie")
+    removeCookies("renewPackage")
+    removeCookies("dateExpire")
+
+
+    setUsername('')
+    setIsStore(undefined)
+    setEmptyPackage('')
 
     state.cartQty.set_cart_qty(0)
     state.isLogin.set_login(false)
@@ -103,9 +180,50 @@ export default function Nav() {
     router.push('/')
   }
 
+
+  async function apiGetStatusPackage() { // กรณีรีเฟรชหน้าจอหลังจากแอดมินอนุมัติ
+    const mcode = getCookie("member_code")
+    const access_token = getCookie("access_token")
+    const sPackage = await axios({
+      method: 'GET',
+      url: `${apiUrl}/api/package/statusPayment/${mcode}`,
+      headers: {
+        Authorization: `Bearer ${access_token}`
+      }
+    })
+    const payStatus = sPackage.data
+    if (payStatus.statusPay == 'pending') {
+      setStatusPackage(true)
+    } else {
+      setStatusPackage(false)
+    }
+  }
+
+  async function handleAddPackage() {
+    const mcode = getCookie("member_code");
+    try {
+      const sPackage = await axios({
+        method: "GET",
+        url: `${apiUrl}/api/package/checkPackage/${mcode}`,
+      });
+      if (sPackage.data.status) {
+        const packageId = sPackage.data.package.package_id;
+        setCookies('renewPackage', packageId)
+        router.push('/member/payment')
+      }
+    } catch (err) {
+      console.log(err);
+      Swal.fire({
+        icon: "error",
+        position: "center",
+        title: err.response.data.description,
+      });
+    }
+  }
+
   return (
     <Fragment>
-      <header>
+      <header >
         <div className="column-right">
           <div className="column-left">
             <Link href='/'>
@@ -117,30 +235,49 @@ export default function Nav() {
           {isLogin
             ?
             <>
-              {!emptyPackage && !empPackage && !getIsStore
+              {!store && !empPackage
                 ? <div className="column-time-member">
-                  <p><i className="fa-regular fa-clock" />เวลาสมาชิกคงเหลือ: 365 วัน</p>
-                  <button className="btn-apply">เพิ่มระยะเวลา</button>
+                  <p><i className="fa-regular fa-clock" />เวลาสมาชิกคงเหลือ: {showDateExpire} วัน</p>
+                  <button className="btn-apply" onClick={() => handleAddPackage()}>เพิ่มระยะเวลา</button>
                 </div>
                 : false
               }
               <div className="column-dropdown-tel">
-                <button onClick={() => setDropdownActive(prev => !prev)}>{user || usernameCon}<i className="fa-solid fa-angle-down" /></button>
-                <div className={`dropdown-tel  ${dropdownActive && 'active'}`} id="dropdown-tel">
-                  {isStore == undefined
-                    ? <>
-                      <div className="column-time-member">
-                        <p><i className="fa-regular fa-clock" />เวลาสมาชิกคงเหลือ: 365 วัน</p>
-                        <button className="btn-apply">เพิ่มระยะเวลา</button>
-                      </div>
-                      <Link href='/member/order'>
-                        <button>รายการสั่งซื้อ</button>
-                      </Link>
-                    </>
-                    : false
-                  }
-                  <button onClick={() => onSignOut()}>ออกจากระบบ</button>
-                </div>
+                <button id='dropdown' onClick={() => setDropdownActive(prev => !prev)}>{user || usernameCon}<i className="fa-solid fa-angle-down" /></button>
+                {dropdownActive &&
+                  <div ref={dropdown} className={`dropdown-tel active`} id="dropdown-menu">
+                    {!store
+                      ?
+                      <>
+                        {!empPackage
+                          ?
+                          <>
+                            <div className="column-time-member">
+                              <p><i className="fa-regular fa-clock" />เวลาสมาชิกคงเหลือ: {showDateExpire} วัน</p>
+                              <button className="btn-apply" onClick={() => handleAddPackage()}>เพิ่มระยะเวลา</button>
+                            </div>
+                            {statusPackage
+                              ? <Link href='/member/payment'>
+                                <button onClick={() => setDropdownActive(prev => !prev)}>ชำระค่าสมาชิก</button>
+                              </Link>
+                              : <Link href='/member/order'>
+                                <button onClick={() => setDropdownActive(prev => !prev)}>รายการสั่งซื้อ</button>
+                              </Link>
+                            }
+                          </>
+                          : false
+                        }
+                      </>
+                      :
+                      <>
+                        <Link href='/store'>
+                          <button onClick={() => setDropdownActive(!dropdownActive)}>ไปที่ร้านค้า</button>
+                        </Link>
+                      </>
+                    }
+                    <button onClick={() => (onSignOut(), setDropdownActive(!dropdownActive))}>ออกจากระบบ</button>
+                  </div>
+                }
               </div>
               {!emptyPackage && !empPackage && !getIsStore
                 ? <div className="column-btn-cart-shopping">
@@ -155,20 +292,22 @@ export default function Nav() {
               }
 
               <div className="column-menubar">
-                <button className="btn-bars" onClick={() => setDropdownActiveMenu(prev => !prev)}><i className="fa-solid fa-bars" /></button>
-                <div className={`navbar ${dropdownActiveMenu && 'active'}`} id="navbar">
-                  <ul>
-                    <li>
-                      <Link href="/content/terms-of-service"><p style={{ cursor: 'pointer' }}>Terms of Service</p></Link>
-                    </li>
-                    <li>
-                      <Link href="/content/privacy-policy"><p style={{ cursor: 'pointer' }}>Privacy Policy</p></Link>
-                    </li>
-                    <li>
-                      <Link href="#">ติดต่อเรา</Link>
-                    </li>
-                  </ul>
-                </div>
+                <button className="btn-bars" onClick={() => setDropdownActiveMenu(!dropdownActiveMenu)}><i className="fa-solid fa-bars" /></button>
+                {dropdownActiveMenu && (
+                  <div ref={dropdown} className="navbar active">
+                    <ul >
+                      <li onClick={() => setDropdownActiveMenu(!dropdownActiveMenu)}>
+                        <Link href="/content/terms-of-service"><p style={{ cursor: 'pointer' }}>Terms of Service</p></Link>
+                      </li>
+                      <li onClick={() => setDropdownActiveMenu(!dropdownActiveMenu)}>
+                        <Link href="/content/privacy-policy"><p style={{ cursor: 'pointer' }}>Privacy Policy</p></Link>
+                      </li>
+                      <li onClick={() => setDropdownActiveMenu(!dropdownActiveMenu)}>
+                        <Link href="#">ติดต่อเรา</Link>
+                      </li>
+                    </ul>
+                  </div>
+                )}
               </div>
             </>
             :
@@ -179,11 +318,6 @@ export default function Nav() {
               <Link href="/store/register">
                 <button className="btn-apply">สมัครร้านค้า</button>
               </Link>
-              {/* <Link href="/member/cart">
-              <button className="btn">
-                <i className="fa-solid fa-cart-shopping" />
-              </button>
-              </Link> */}
             </>
           }
         </div>

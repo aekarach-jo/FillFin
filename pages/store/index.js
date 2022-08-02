@@ -6,7 +6,7 @@ import Store from '../../components/store/Store';
 import Cover from '../../components/subComponent/cover';
 import nextConfig from '../../next.config';
 
-export default function StorePage({ storeObj, bannerCover }) {
+export default function StorePage({ storeObj, bannerCover,qrCode }) {
   const [changeView, setChangeView] = useState(true)
   function updateChangeView(bool) {
     setChangeView(bool);
@@ -15,7 +15,7 @@ export default function StorePage({ storeObj, bannerCover }) {
     return (
       <Fragment>
         <Head><title>Store</title></Head>
-        <Store stores={storeObj.data} statusChange={updateChangeView} />
+        <Store stores={storeObj.data} statusChange={updateChangeView} qrCode={qrCode}/>
       </Fragment>
     )
   } else {
@@ -23,7 +23,7 @@ export default function StorePage({ storeObj, bannerCover }) {
       <Fragment>
         <Head><title>UserView</title></Head>
         <Cover banner={bannerCover}/>
-        <Store_premium stores={storeObj.data} statusChange={updateChangeView} />
+        <Store_premium stores={storeObj.data} statusChange={updateChangeView} qrCode={qrCode}/>
       </Fragment>
     )
   }
@@ -37,7 +37,7 @@ export async function getServerSideProps({ res }) {
     gender: gender,
     page: "all-store"
   }
-  const [onGetStoreData, getBannerCover] = await Promise.all([
+  const [onGetStoreData, getBannerCover,apiContentLine] = await Promise.all([
     axios({
       method: 'GET',
       url: `${apiUrl}/api/store/getDataAll`,
@@ -52,6 +52,10 @@ export async function getServerSideProps({ res }) {
         'Content-Type': 'application/json'
       },
       data: formGetBanner
+    }),
+    axios({
+      method: 'GET',
+      url: `${apiUrl}/api/website/content/line-website`
     })
   ])
   const store = onGetStoreData.data
@@ -59,7 +63,8 @@ export async function getServerSideProps({ res }) {
   return {
     props: {
       storeObj: store,
-      bannerCover : bannerCover
+      bannerCover : bannerCover,
+      qrCode : apiContentLine.data.content
     }
   }
 }

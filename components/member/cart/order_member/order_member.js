@@ -1,3 +1,4 @@
+import { height } from '@mui/system';
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
 import moment from 'moment';
@@ -11,6 +12,7 @@ export default function Order_member() {
     const [order, setOrder] = useState([])
     useEffect(() => {
         getOrder();
+        console.log(order);
     }, [])
 
     async function getOrder() {
@@ -30,6 +32,22 @@ export default function Order_member() {
         return <p>วันที่สั่งซื้อ<span>{dateTime}</span></p>
     }
 
+    async function getAllProduct() {
+        const access_token = getCookie('access_token')
+        const getAll = await axios({
+            method: 'GET',
+            url: `${apiUrl}/api/member/getOrder`,
+            headers: {
+                Authorization: `Bearer ${access_token}`
+            }
+        }).then(res => {
+            setOrder(res.data.order)
+            console.log(res.data.order);
+        })
+
+    }
+
+
 
     return (
         <Fragment>
@@ -47,18 +65,18 @@ export default function Order_member() {
                     </div>
                 </div>
                 <ContactUs />
-                <div className="column-order-list">
+                <div className="column-order-list" style={{ zIndex: 0 }}>
                     <div className="head-text-top">
-                        <p style={{ fontSize : '24px'}}>รายการออเดอร์</p>
+                        <p style={{ fontSize: '24px' }}>รายการออเดอร์</p>
                     </div>
 
-                    <div className="column-list" style={{ marginBottom : "5rem"}}>
+                    <div className="column-list" style={{ marginBottom: "5rem" }}>
                         <div className="text-head">
                             <p className="text-head-left">รายการสินค้า</p>
                             <p>ราคา</p>
                             <p>การจัดส่ง</p>
                         </div>
-                        {order
+                        {order.length > 0
                             ?
                             <>
                                 {order?.map((orders, index) => (
@@ -71,11 +89,11 @@ export default function Order_member() {
                                                 : <p>การชำระเงิน<span>ชำระแล้ว</span></p>
                                             }
                                         </div>
-                                        <ProductList productList={orders.product} orderDetail={orders} qty={orders.product.length} />
+                                        <ProductList productList={orders.product} orderDetail={orders} qty={orders.product.length} getAllProduct={getAllProduct} />
                                     </div>
                                 ))}
                             </>
-                            : <p style={{ marginLeft: 'auto', marginRight: 'auto' }}>ไม่มีออเดอร์</p>
+                            : <p style={{ padding: '1rem', height: "3rem", textAlign: 'center' }}>ไม่มีออเดอร์</p>
                         }
                     </div>
                 </div>

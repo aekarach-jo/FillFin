@@ -127,8 +127,15 @@ export default function Payment() {
       url: `${apiUrl}/api/bank/get`,
     })
     const bank = bankData.data
-    setBank(bank.data[0])
-    setBankList(bank.data)
+    console.log(bank.data);
+    for (let bank_item of bank.data) {
+      if (bank_item.status == 'active') {
+        setBank(bank_item)
+        setBankList(bank.data)
+      } else {
+        console.log(bank);
+      }
+    }
     setTimeout(() => setIsLoadSuccess(true), 2000);
   };
 
@@ -219,8 +226,8 @@ export default function Payment() {
       const create = await axios({
         method: "POST",
         url: `${apiUrl}/api/package/renewal`,
-        headers : {
-          Authorization : `Bearer ${access_token}`
+        headers: {
+          Authorization: `Bearer ${access_token}`
         },
         data: formData,
       })
@@ -332,15 +339,20 @@ export default function Payment() {
                     <div className="pay-dropdown">
                       <div className="dropdown-toggle" onClick={() => setDropdownActiveBank(prev => !prev)}>
                         <div className="dropdown-toggle-left" style={{ display: 'flex' }}>
-                          <img
-                            src={`${apiUrl}${bank.image}`}
-                            width={35}
-                            height={25}
-                            alt="image-bank"
-                            style={{ alignItems: "center", marginRight: '1rem' }} />
-                          <span>
-                            {bank.bank_name} / {bank.bank_number} / {bank.name}
-                          </span>
+                          {bank.status == 'active' &&
+                            <img
+                              src={`${apiUrl}${bank.image}`}
+                              width={35}
+                              height={25}
+                              alt="image-bank"
+                              style={{ alignItems: "center", marginRight: '1rem' }} />
+                          }
+                          {bank.status == 'active'
+                            ? <span>
+                              {bank.bank_name} / {bank.bank_number} / {bank.name}
+                            </span>
+                            : "ไม่พบบัญชีธนาคาร"
+                          }
                         </div>
                         <div className="dropdown-toggle-right">
                           <i className="fa-solid fa-angle-down" />
@@ -351,15 +363,17 @@ export default function Payment() {
                           ?
                           <>
                             {bankList?.map((data, index) => (
-                              <div key={index} className="dropdown-item" onClick={() => {
-                                setDropdownActiveBank(prev => !prev)
-                                setBank(data)
-                              }
-                              }>
-                                <img src={`${apiUrl}${data.image}`} alt="image-banklist" />
-                                {data.bank_name} / {data.bank_number} / {data.name}
-                              </div>
-                            ))}
+                              <div key={index}>
+                                {data.status == 'active' &&
+                                  <div className="dropdown-item" onClick={() => {
+                                    setDropdownActiveBank(prev => !prev)
+                                    setBank(data)
+                                  }
+                                  }>
+                                    <img src={`${apiUrl}${data.image}`} alt="image-banklist" />
+                                    {data.bank_name} / {data.bank_number} / {data.name}
+                                  </div>
+                                }</div>))}
                           </>
                           : <p>ไม่มีข้อมูล</p>
                         }

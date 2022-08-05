@@ -74,11 +74,11 @@ export default function Show_product({ productList }) {
                 <h2>สินค้าทั้งหมด</h2>
                 <p>รายการสินค้าทั้งหมด {productList.length} รายการ</p>
             </div>
-            <div className={`column-product-recommend ${st.box}`}>
+            <div className={`column-product-recommend ${st.box}`} style={{ height: "100%" }}>
                 {productList.length > 0
                     ? <>
                         {productList?.map((data, index) => (
-                            <div key={index} className="recommend-column" style={{ margin : 'auto'}}>
+                            <div key={index} className="recommend-column">
                                 <Link href={`/member/store/product/${data.product_code}`} >
                                     <div>
                                         <ShowImage image={data.product_img} />
@@ -101,8 +101,8 @@ export default function Show_product({ productList }) {
                                     }
                                     <p className={st.textContent}>{data.content_product}</p>
                                     {data.canbuy
-                                        ? <button style={{ cursor: "pointer",  }} onClick={() => handleAddtoCard(data.product_code)}><i className="fa-solid fa-cart-shopping" />{data.price}</button>
-                                        : <button style={{ cursor: "not-allowed",  }} ><i className="fa-solid fa fa-eye-slash" aria-hidden="true" /></button>
+                                        ? <button style={{ cursor: "pointer", }} onClick={() => handleAddtoCard(data.product_code)}><i className="fa-solid fa-cart-shopping" />{data.price}</button>
+                                        : <button style={{ cursor: "not-allowed", }} ><i className="fa-solid fa fa-eye-slash" aria-hidden="true" /></button>
                                     }
                                 </div>
                             </div>

@@ -12,35 +12,41 @@ export default function Show_post({ postList }) {
                 <p>โพสต์ทั้งหมด ... รายการ</p>
             </div>
             <div className="column-product-recommend">
-                {postList?.map((data, index) => (
-                    <div key={index} className="recommend-column">
-                        <div className="column-calendar">
-                            <img src="/assets/icons/icon-calendar.png" alt="image-icon-calender"/>
-                            <FormatDate dateTime={data.date}/>
-                        </div>
-                        <div className="detail-text">
-                        <p>{data.caption}</p>
-                        </div>
-                        <div className="column-img">
-                            <ShowImagePost image={data.post_img} />
-                        </div>
-                    </div>
-                ))}
+                {postList.length > 0
+                    ?
+                    <>
+                        {postList?.map((data, index) => (
+                            <div key={index} className="recommend-column">
+                                <div className="column-calendar">
+                                    <img src="/assets/icons/icon-calendar.png" alt="image-icon-calender" />
+                                    <FormatDate dateTime={data.date} />
+                                </div>
+                                <div className="detail-text">
+                                    <p>{data.caption}</p>
+                                </div>
+                                <div className="column-img">
+                                    <ShowImagePost image={data.post_img} />
+                                </div>
+                            </div>
+                        ))}
+                    </>
+                    : <div className="column-product-recommend" style={{ height: '100%', overflow: "hidden" }}>ไม่มีโพส</div>
+                }
             </div>
         </Fragment>
     )
 }
 
 
-function FormatDate({dateTime}){
+function FormatDate({ dateTime }) {
     dateTime = moment().format("DD MMM YYYY");
     return <h4>{dateTime}</h4>
-  }
-  
+}
+
 
 function ShowImagePost({ image }) {
     if (!image) {
-        return <img src="/assets/images/empty.png" alt="image-empty"/>
+        return <img src="/assets/images/empty.png" alt="image-empty" />
     }
     const apiUrl = nextConfig.apiPath
     let image_split = image.split(",");

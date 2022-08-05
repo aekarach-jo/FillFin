@@ -14,7 +14,7 @@ export default function Show_preoder({ preOrderList }) {
                 ? <>
                     <div className={`column-product-recommend ${st.box}`}>
                         {preOrderList?.map((data, index) => (
-                            <div key={index} className="recommend-column" style={{ margin: 'auto' }}>
+                            <div key={index} className="recommend-column">
                                 <ShowImage image={data.product_img} />
                                 <div className="column-img-bottom" style={{ display: 'flex', margin: '0.5rem 0' }}>
                                     <ChooseImage image={data.product_img} />

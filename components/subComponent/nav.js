@@ -8,7 +8,6 @@ import Swal from "sweetalert2";
 import { useAppContext } from "../../config/state";
 import nextConfig from "../../next.config";
 import { now } from "moment";
-import useOutsideClick from "./useOutsideClick";
 
 const apiUrl = nextConfig.apiPath
 export default function Nav() {
@@ -59,8 +58,9 @@ export default function Nav() {
   function formetDateExpire() {
     if (dateEx != 0) {
       setShowDateExpire(moment(dateEx).diff(now(), 'days'))
+    }else{
+      setShowDateExpire(moment(dateExpire).diff(now(), 'days'))
     }
-    setShowDateExpire(moment(dateExpire).diff(now(), 'days'))
   }
 
   async function checkLogin() {
@@ -177,6 +177,7 @@ export default function Nav() {
     state.isStore.set_isStore(false)
     state.emptyPackage.set_emptyPackage(false)
     state.memberDetail.set_memberDetail("")
+    state.dateExpire.set_dateExpire(0)
     router.push('/')
   }
 

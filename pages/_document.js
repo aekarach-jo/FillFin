@@ -23,7 +23,7 @@ export default function Document() {
         <link rel="stylesheet" href="/assets/css/detail-pay.min.css" />
 
         {/* หน้า Store-premium */}
-        <link rel="stylesheet" href="/assets/css/stone-exclusive.min.css" />
+        {/* <link rel="stylesheet" href="/assets/css/stone-exclusive.min.css" /> */}
 
         {/* หน้า Store-member */}
         <link rel="stylesheet" href="/assets/css/detail-stone.min.css" />

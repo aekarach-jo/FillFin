@@ -8,14 +8,16 @@ import Show_product from './show_product/show_product';
 import { useAppContext } from '../../../../config/state';
 import st from '../../../../styles/product/premium.module.scss'
 const apiUrl = nextConfig.apiPath
+
 export default function Store_premium({ stores, qrCode, statusChange }) {
     const state = useAppContext()
     const { all_product, pre_order, review, store_detail, store_post } = stores;
     const isStore = state.isStore.get_isStore
+    console.log(review)
     return (
         <Fragment>
             <div className="stone-premiem">
-                <div className="premiem-column-left">
+                <div className={`premiem-column-left ${st.contentCol}`}>
                     <div className="column-text-top">
                         <div className="column-text-left">
                             <Image width={100} height={100} src={`${apiUrl}/${store_detail.profile_img}`} />
@@ -56,32 +58,36 @@ export default function Store_premium({ stores, qrCode, statusChange }) {
                             src={`${apiUrl}/streaming/${store_detail.profile_video}`}
                             poster='/assets/images/product.png'
                         />
-                   }
-                    <div className="column-box-product">
+                    }
+                    <div className="column-box-product" >
                         <Show_post postList={store_post} />
                     </div>
                 </div>
-                <div className="premiem-column-right">
+                <div className={`premiem-column-right ${st.contentCol}`}>
                     <div className="column-box-product">
                         <Show_product productList={all_product} />
                     </div>
                     <div className="column-box-product">
                         <Show_preoder preOrderList={pre_order} />
                     </div>
-                    <div className="column-menu-review">
+                    <div className={`column-menu-review ${st.colReview}`}>
                         <div className="menu-review">
                             <h3>รีวิวจากลูกค้า</h3>
-                            <p>15 การรีวิว</p>
+                            <p>{review.length} การรีวิว</p>
                         </div>
-                        <div className="column-review">
-                            <div className="column-review-left">
-                                <i className="fa-solid fa-user" />
+                        {review?.map((data, index) => (
+                            <div key={index} className={st.contentHeight}>
+                                <div className="column-review">
+                                    <div className="column-review-left">
+                                        <i className="fa-solid fa-user" />
+                                    </div>
+                                    <div className="column-review-right">
+                                        <h3>{data.memberName}</h3>
+                                        <p>{data.message}</p>
+                                    </div>
+                                </div>
                             </div>
-                            <div className="column-review-right">
-                                <h3>Volutpat cras nunc neque sit facilisis.</h3>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lacus, aenean a fermentum ullamcorper proin proin id et pellentesque. Quis sapien ultrices.</p>
-                            </div>
-                        </div>
+                        ))}
                     </div>
                 </div>
             </div>

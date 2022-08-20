@@ -11,7 +11,7 @@ import ShowImage from '../../../../subComponent/manage-image/showImage'
 import st from '../../../../../styles/store/store.module.scss'
 const apiUrl = nextConfig.apiPath
 export default function Show_product({ productList }) {
-
+    console.log(productList)
     const state = useAppContext()
 
     const Toast = Swal.mixin({
@@ -88,7 +88,7 @@ export default function Show_product({ productList }) {
                                     <ChooseImage image={data.product_img} />
                                 </div>
                                 <div className={`column-text-bottom ${st.productAll}`}>
-                                    <h4>{data.name}</h4>
+                                    <h4>{data.name_product}</h4>
                                     {data.clip != "no"
                                         ?
                                         <>

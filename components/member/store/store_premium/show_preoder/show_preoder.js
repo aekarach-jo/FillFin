@@ -20,7 +20,7 @@ export default function Show_preoder({ preOrderList }) {
                                     <ChooseImage image={data.product_img} />
                                 </div>
                                 <div className={`column-text-bottom ${st.productAll}`}>
-                                    <h4>{data.name}</h4>
+                                    <h4>{data.name_product}</h4>
                                     {data.clip != "no"
                                         ?
                                         <>

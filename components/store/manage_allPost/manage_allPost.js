@@ -61,7 +61,7 @@ export default function Manage_allPost({ postList ,status}) {
             ))}
           </div>
         </>
-        : <div className="column-product-recommend" style={{ height: '4rem', overflow: "hidden" }}>ไม่มีสินค้า</div>
+        : <div className="column-product-recommend" style={{ height: '4rem', overflow: "hidden" }}>ไม่มีโพสต์</div>
       }
     </Fragment>
   )

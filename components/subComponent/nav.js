@@ -8,6 +8,7 @@ import Swal from "sweetalert2";
 import { useAppContext } from "../../config/state";
 import nextConfig from "../../next.config";
 import { now } from "moment";
+import jwt_decode from "jwt-decode";
 
 const apiUrl = nextConfig.apiPath
 export default function Nav() {
@@ -39,8 +40,51 @@ export default function Nav() {
     onClickOutsideBtn()
     if (isLogin && !store) {
       apiGetStatusPackage()
+      apiCheckToken()
     }
   }, [isLogin, dropdownActiveMenu, dropdownActive])
+
+  function apiCheckToken() {
+    setInterval(() => {
+      const access_token = getCookie('access_token')
+      const acc = jwt_decode(access_token)
+      const runTimePerSecond = (acc.exp - moment(Math.floor(Date.now() / 1000)));
+      console.log(runTimePerSecond);
+
+      if (runTimePerSecond < 30) {
+        console.log('time out');
+        refreshToken()
+        // return true;
+      }
+    }, 5000)
+  }
+  
+  async function refreshToken() {
+    const refresh_token = getCookie('refresh_token')
+    const refresh = await axios({
+      method: 'POST',
+      url: `${apiUrl}/api/member/getToken`,
+      headers: { 'Content-Type': 'application/json' },
+      data: JSON.stringify({
+        token: refresh_token
+      })
+    }).then(res => {
+      console.log(res);
+      if (res.data.status) {
+        setCookies('access_token', res.data.token)
+        state.isLogin.set_login(true)
+      } else {
+        Swal.fire({
+          icon: 'warning',
+          position: "center",
+          title: 'กรุณาล็อกอินใหม่อีกครั้ง',
+          confirmButtonText: 'ตกลง'
+        }).then(() => {
+          onSignOut()
+        })
+      }
+    })
+  }
 
   function onClickOutsideBtn() {
     const checkIfClickedOutside = e => {
@@ -58,7 +102,7 @@ export default function Nav() {
   function formetDateExpire() {
     if (dateEx != 0) {
       setShowDateExpire(moment(dateEx).diff(now(), 'days'))
-    }else{
+    } else {
       setShowDateExpire(moment(dateExpire).diff(now(), 'days'))
     }
   }
@@ -90,31 +134,7 @@ export default function Nav() {
     }
   }
 
-  async function refreshToken() {
-    const refresh_token = getCookie('refresh_token')
-    const refresh = await axios({
-      method: 'POST',
-      url: `${apiUrl}/api/member/getToken`,
-      headers: { 'Content-Type': 'application/json' },
-      data: JSON.stringify({
-        token: refresh_token
-      })
-    }).then(res => {
-      console.log(res);
-      if (res.data.status) {
-        setCookies('access_token', res.data.token)
-      } else {
-        Swal.fire({
-          icon: 'warning',
-          position: "center",
-          title: 'กรุณาล็อกอินใหม่อีกครั้ง',
-          confirmButtonText: 'ตกลง'
-        }).then(() => {
-          onSignOut()
-        })
-      }
-    })
-  }
+
 
   function getUsername() {
     const cookieUsername = getCookie('name')

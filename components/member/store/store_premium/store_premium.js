@@ -51,12 +51,17 @@ export default function Store_premium({ stores, qrCode, statusChange }) {
                     {store_detail.profile_video &&
                         <video
                             className="video"
-                            style={{ width: '100%' }}
+                            style={{ width: '100%' , height : '14%' , objectFit: 'contain' }}
                             controls
                             muted
                             autoPlay
+                            loop
                             src={`${apiUrl}/streaming/${store_detail.profile_video}`}
                             poster='/assets/images/product.png'
+                            onError={e => {
+                                e.target.setAttribute('src', '/assets/images/product.png');
+                                return false;
+                            }} 
                         />
                     }
                     <div className="column-box-product" >

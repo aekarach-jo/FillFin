@@ -3,35 +3,40 @@ $_md: 768px;
 $_lg: 1024px;
 $_xl: 1280px;
 $_2xl: 1536px;
+
+$mobile: only screen and (max-width : 767px); 
+$tablet: only screen and (min-width : 768px);
+$desktop: only screen and (min-width : 1025px);
+
 .sell-product{
     .sell-product-column{
         padding: 1rem;
-        @media screen and(min-width:$_md){
+        @media screen and(min-width:$tablet){
             padding: 1rem;
         }
-        @media screen and(min-width:$_xl){
+        @media screen and(min-width:$desktop){
             padding: 3rem;
             display: flex;
             column-gap: 3rem;
         }
         .product-column-left{
             width: 100%;
-            @media screen and(min-width:$_md){
+            @media screen and(min-width:$_tabletmd){
                 width: 100%;
             }
-            @media screen and(min-width:$_xl){
+            @media screen and(min-width:$desktop){
                 width: 50%;
             }
             .column-text-top{
                 display: flex;
                 column-gap: 1rem;
-                @media screen and(min-width:$_md){
+                @media screen and(min-width:$tablet){
                     column-gap: 2rem;
                     align-items: center;
                 }
                 h2{
                     font-size: 20px;
-                    @media screen and(min-width:$_md){
+                    @media screen and(min-width:$tablet){
                         font-size: 25px;
                     }
                 }
@@ -40,7 +45,7 @@ $_2xl: 1536px;
                         position: relative;
                         width: 70px;
                         height: 70px;
-                        @media screen and(min-width:$_md){
+                        @media screen and(min-width:$tablet){
                             width: 100px;
                             height: 100px;
                         }
@@ -49,7 +54,7 @@ $_2xl: 1536px;
                             height: 70px;
                             border-radius: 50%;
                             object-fit: cover;
-                            @media screen and(min-width:$_md){
+                            @media screen and(min-width:$tablet){
                                 width: 100px;
                                 height: 100px;
                             }

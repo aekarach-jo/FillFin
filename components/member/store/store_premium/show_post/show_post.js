@@ -9,7 +9,7 @@ export default function Show_post({ postList }) {
         <Fragment>
             <div className="text-box-top">
                 <h2>รายการโพสต์</h2>
-                <p>โพสต์ทั้งหมด ... รายการ</p>
+                <p>โพสต์ทั้งหมด {postList.length} รายการ</p>
             </div>
             <div className="column-product-recommend">
                 {postList.length > 0

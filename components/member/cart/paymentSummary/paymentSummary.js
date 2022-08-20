@@ -122,8 +122,8 @@ export default function PaymentSummary() {
         }).then((res) => {
             if (res.isConfirmed) {
                 const formData = new FormData()
-                formData.append('totalprice', totalPrice)
-                formData.append('netprice', netPrice)
+                // formData.append('totalprice', totalPrice)
+                // formData.append('netprice', netPrice)
                 formData.append('name', fullname)
                 formData.append('address', address)
                 formData.append('phone', phone)
@@ -213,12 +213,14 @@ export default function PaymentSummary() {
                                     <label >*ชื่อ</label>
                                     <input
                                         type="text"
+                                        defaultValue={fullname}
                                         onChange={(e) => setFullname(e.target.value)}
                                     />
                                 </div>
                                 <div className="column-input">
                                     <label >*ที่อยู่</label>
                                     <textarea
+                                        defaultValue={address}
                                         onChange={(e) => setAddress(e.target.value)}
                                     />
                                 </div>
@@ -229,13 +231,13 @@ export default function PaymentSummary() {
                                         value={phone}
                                         onChange={(e) => {
                                             if (
-                                              /^[0-9]+$/.test(
-                                                e.target.value.trim()
-                                              ) || e.target.value == ""
+                                                /^[0-9]+$/.test(
+                                                    e.target.value.trim()
+                                                ) || e.target.value == ""
                                             ) {
-                                              setPhone(e.target.value.trim());
+                                                setPhone(e.target.value.trim());
                                             }
-                                          }}
+                                        }}
                                         maxLength={10}
                                     />
                                 </div>
@@ -244,6 +246,7 @@ export default function PaymentSummary() {
                                         <label >*ตำบล/แขวง</label>
                                         <input
                                             type="text"
+                                            defaultValue={subDistrict}
                                             maxLength={20}
                                             onChange={(e) => setSubDistrict(e.target.value)}
                                         />
@@ -252,6 +255,7 @@ export default function PaymentSummary() {
                                         <label >*อำเภอ/เขต</label>
                                         <input
                                             type="text"
+                                            defaultValue={district}
                                             maxLength={20}
                                             onChange={(e) => setDistrict(e.target.value)}
                                         />
@@ -262,6 +266,7 @@ export default function PaymentSummary() {
                                         <label >*จังหวัด</label>
                                         <input
                                             type="text"
+                                            defaultValue={province}
                                             maxLength={20}
                                             onChange={(e) => setProvince(e.target.value)}
                                         />
@@ -286,6 +291,7 @@ export default function PaymentSummary() {
                                     <label >ข้อความฝากถึงผู้ขาย</label>
                                     <textarea
                                         maxLength={200}
+                                        defaultValue={note}
                                         onChange={(e) => setNote(e.target.value)} />
                                 </div>
                             </form>

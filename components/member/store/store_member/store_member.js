@@ -15,14 +15,15 @@ import ContactAdmin from '../../../subComponent/contactAdmin';
 
 const apiUrl = nextConfig.apiPath
 export default function Store_member({ stores, bannerAds, qrCode }) {
+    console.log(stores)
     const state = useAppContext()
     const { all_product, pre_order, review, store_detail, store_post } = stores;
     const [usernameListSenesor, setUsernameListSensor] = useState()
 
     useEffect(() => {
         setSensorUsername()
+        console.log(usernameListSenesor);
     }, [])
-    console.log(stores);
     const pages = {
         current_page: stores.current_page,
         per_page: stores.per_page,

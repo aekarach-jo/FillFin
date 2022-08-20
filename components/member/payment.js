@@ -238,6 +238,7 @@ export default function Payment() {
           icon: 'success',
           title: 'สำเร็จ รอการอนุมัติ',
         }).then(() => {
+          router.push('/login')
           setStatusPackage("pending")
         })
       }

@@ -40,6 +40,7 @@ export default function ShowPackage({ packagesList }) {
                 router.push(`/member/payment`);
             } else {
                 const found = packageGender.filter((p) => p.gender == gender)
+                console.log(found)
                 setPackage(found)
             }
         } catch (err) {

@@ -6,6 +6,7 @@ import nextConfig from '../../next.config';
 
 const apiUrl = nextConfig.apiPath
 export default function Banner({ banner }) {
+  console.log(banner);
   SwiperCore.use([Autoplay]);
   return (
     <Fragment>
